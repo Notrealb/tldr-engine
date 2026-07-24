@@ -29,8 +29,10 @@ s_plat_hurt_air = spr_plat_kris_hurt_air;
 s_plat_slash_ground = spr_plat_kris_slash_ground;
 s_plat_slash_ground_fg = spr_plat_kris_slash_ground_fg;
 s_plat_slash_ground_hbx = spr_plat_kris_slash_ground_hbx;
-
+s_plat_slash_npoints_ground = [[snd_ui_cancel_small, 1], [snd_heavyswing, 5], [snd_ultraswing, 9]]
+        
 s_plat_slash_air = spr_plat_kris_slash_air;
 s_plat_slash_air_fg = spr_plat_kris_slash_air_fg;
 s_plat_slash_air_hbx = spr_plat_kris_slash_air_hbx;
 s_plat_slash_air_land = spr_plat_kris_slash_air_land;
+s_plat_slash_npoints_air = [[snd_ui_cancel_small, 1], [snd_heavyswing, 5], [snd_ultraswing, 9], ["nul", 10]]

@@ -1,8 +1,9 @@
 var transtime_1 = 1
-var transtime_2 = 20
-var transtime_3 = 20
+var transtime_2 = 14
+var transtime_3 = 10
 
-//if !variable_instance_exists(self, "plat_parent") plat_parent = 
+audio_stop_sound(snd_grab); 
+audio_play_sound(snd_grab, 0, false, 1, 0, 1.25)
 
 if global.platforming_perspective == 0 {
 	cutscene_create();
@@ -11,6 +12,9 @@ if global.platforming_perspective == 0 {
     cutscene_party_follow(false);
     
     cutscene_func(function() {
+		with get_leader() {
+			player_platforming_movement_init()
+		}
         for (var i = 0; i < party_length(true); i ++) {
             with party_get_inst(global.party_names[i]) {
                 s_override = true;
@@ -19,10 +23,6 @@ if global.platforming_perspective == 0 {
         }
     });
     
-	cutscene_func(function(){
-        audio_stop_sound(snd_grab); 
-        audio_play_sound(snd_grab, 0, false, 1, 0, 1.25)
-    });
 	cutscene_sleep(transtime_1);
     
 	cutscene_audio_play(snd_platswap_2);
@@ -115,7 +115,13 @@ else if global.platforming_perspective == 1 {
 		cutscene_animate(inst.y, initial_y + 15, transtime_2, "sine_in_out", inst, "y");
 		cutscene_animate(inst.yoff, -2, transtime_2, "linear", inst, "yoff");
 	}
-	cutscene_sleep(transtime_2);
+	cutscene_sleep(transtime_2/8);
+	cutscene_func(function() {get_leader().image_index++})
+	cutscene_sleep(transtime_2/8);
+	cutscene_func(function() {get_leader().image_index++})
+	cutscene_sleep(transtime_2/8);
+	cutscene_func(function() {get_leader().image_index++})
+	cutscene_sleep((transtime_2/8) + (transtime_2/4));
     
     cutscene_audio_play(snd_impact);
 	cutscene_set_variable(get_leader(), "pf_enabled", false);

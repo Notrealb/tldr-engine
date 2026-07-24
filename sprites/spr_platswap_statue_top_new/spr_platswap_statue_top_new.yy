@@ -1,11 +1,11 @@
 {
   "$GMSprite":"v2",
   "%Name":"spr_platswap_statue_top_new",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":39,
   "bbox_left":1,
   "bbox_right":38,
-  "bbox_top":3,
+  "bbox_top":-14,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,
