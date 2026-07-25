@@ -13,8 +13,8 @@
     "path":"folders/@Engine/objects/ow/platforming.yy",
   },
   "parentObjectId":{
-    "name":"o_dummy",
-    "path":"objects/o_dummy/o_dummy.yy",
+    "name":"o_ow_interactable",
+    "path":"objects/o_ow_interactable/o_ow_interactable.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,
@@ -30,6 +30,8 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v2","%Name":"collide","filters":[],"listItems":[],"multiselect":false,"name":"collide","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"collide_plat","filters":[],"listItems":[],"multiselect":false,"name":"collide_plat","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"sprite_index_plat","filters":[],"listItems":[],"multiselect":false,"name":"sprite_index_plat","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
     {"$GMObjectProperty":"v2","%Name":"image_blend_plat","filters":[],"listItems":[],"multiselect":false,"name":"image_blend_plat","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"$FFFFFFFF","varType":7,},
     {"$GMObjectProperty":"v2","%Name":"visible","filters":[],"listItems":[],"multiselect":false,"name":"visible","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},

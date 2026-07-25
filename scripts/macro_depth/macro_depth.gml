@@ -22,4 +22,5 @@ enum DEPTH_PLATFORMER {
     //ACTORS = -2000,
     //FORE = -5000,
     //FORE2 = -5100,
+    SLASH = -4000,
 }

@@ -5,10 +5,12 @@ if global.platforming_perspective > .5 {
         sprite_index = sprite_index_plat;
     visible = visible_plat;
     depth = depth_plat;
+    collide = collide_plat;
 }
 else {
     if sprite_exists(sprite_index_start)
         sprite_index = sprite_index_start;
     visible = visible_start;
     depth = depth_start;
+    collide = collide_start;
 }

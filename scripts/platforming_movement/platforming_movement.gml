@@ -35,14 +35,15 @@ function player_platforming_movement_init(){
 	pf_currentgravity = pf__gravity;
 	pf_vspeed = 0;
 	pf_jump_key_held_time = 0;
-	pf_jumpstage = 0;
+	pf_jumpstage = "grounded";
 	pf_airtime = 0;
-	pf_cotoyetime = 0;
+	pf_coyotetime = 0;
 	pf_squattime = 0;
 	pf_jumpbuffer = 0;
 	pf_final_xchange = 0;
 	pf_final_ychange = 0;
     pf_land = 0;
+    pf_land_visual = 0;
     pf_grounded = true;
 	pf_airborn_jumps = 0;
 	pf_grounded_time = -1;
@@ -59,7 +60,8 @@ function player_platforming_movement_init(){
 	pf_attack_key_hold_buffer = 0;
 	pf_attack_airslash_buffer = 0;
 	
-	pf_statue_that_was_just_hit = -1;
+	pf_slashed_objects = -1;
+    pf_slashable_objects = [o_ow_plat_slashable];
 	
 	pf_impact_sfx = snd_punchmed;
 	
@@ -71,10 +73,11 @@ function player_platforming_movement_init(){
 
 function player_platforming_movement_execute(){
 	// Statue was hit?
-	if pf_statue_that_was_just_hit != -1 and instance_exists(pf_statue_that_was_just_hit) {
-		with pf_statue_that_was_just_hit {
-			event_user(0);
-		}
+	if ds_exists(pf_slashed_objects, ds_type_list) {
+        for (var i = 0; i < ds_list_size(pf_slashed_objects); i ++) {
+            with pf_slashed_objects[|i] 
+                event_user(0);
+        }
 	}
 	
 	// Mask
@@ -100,8 +103,8 @@ function player_platforming_movement_execute(){
 		if variable_instance_exists(inst, "collide") and inst.collide 
             array_push(pf_collide, inst);
 	}
-	var grounded = place_meeting(x, y+1, pf_collide);
-	var ceilded = place_meeting(x, y-4, pf_collide);
+	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);
+	var ceilded = place_meeting(x, bbox_top-1, pf_collide);
     var _turn_sprite = false;
 	
 	// Platforming Horizontal Movement ---------
@@ -192,7 +195,7 @@ function player_platforming_movement_execute(){
 		pf_airborn_jumps = 0;
 	if pf__allow_airborn_jumps and keyJumpPressed and y > pf__airborn_jump_ylimit {
 		grounded = true;
-		pf_airborn_jumps++;
+		pf_airborn_jumps ++;
 	}
 	
 	if !pf__canjump {
@@ -206,51 +209,53 @@ function player_platforming_movement_execute(){
         pf_jumpbuffer = max(pf_jumpbuffer - 1, 0);
 	
 	if grounded {
-		if pf_airtime > pf__airmintime and o_fader.image_alpha == 0 {
-            pf_land = 4;
+		if pf_airtime > pf__airmintime and o_fader.image_alpha == 0 && pf_jumpstage == "falling" {
+            pf_land = 3;
+            pf_land_visual = 6;
             instance_create(o_eff_generic_animation, x - 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: 1});
             instance_create(o_eff_generic_animation, x + 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: -1});
+            
             if pf_hmove == 0 and pf_attacktime == 0 and pf_airborn_jumps == 0
                 audio_play(snd_noise, , , 1.2);
 		}
-		pf_jumpstage = 0;
+		pf_jumpstage = "grounded";
 		pf_vspeed = 0;
 		pf_airtime = 0;
-		pf_cotoyetime = pf__coyotetimemax;
+		pf_coyotetime = pf__coyotetimemax;
 	}
-	else{
-		pf_airtime++;
-		if pf_jumpstage == 0
-			pf_jumpstage = 2;
+	else {
+		pf_airtime ++;
+		if pf_jumpstage == "grounded"
+			pf_jumpstage = "falling";
 	}
 	
 	var release_jump = false;
-	
 	if ceilded or (!keyJump and pf_airtime >= pf__coyotetimemax) {
         release_jump = true; 
-        pf_airtime = max(pf_airtime, pf__coyotetimemax++);
+        pf_airtime = max(pf_airtime, pf__coyotetimemax);
     }
 	
-	if !pf_jumpbuffer and pf_squattime <= 0 and (!grounded and pf_cotoyetime > 0) 
-        pf_cotoyetime --;
+	if !pf_jumpbuffer and pf_squattime <= 0 and (!grounded and pf_coyotetime > 0) 
+        pf_coyotetime --;
 		
-	if keyJump {
+	if keyJump && !pf_land {
 		pf_jump_key_held_time ++;
 		if pf_attacktime > 0
 			pf_jump_key_held_time = 0;
-		if pf_jump_key_held_time < 4 and (grounded or (pf_cotoyetime > 0 and pf_vspeed > -1)) and !pf_attacktime > 0 and !pf_hurt {
+        
+		if pf_jump_key_held_time < 4 and (grounded or (pf_coyotetime > 0 and pf_vspeed > -1)) and !pf_attacktime > 0 and !pf_hurt {
 		    var inc = 1;
 		    pf_squattime = max(pf_squattime + inc, 1);
 		    pf_jumpbuffer = 0;
         
 			if pf_squattime > pf__squattimemax {
 				pf_squattime = 0;
-				pf_cotoyetime = 0;
+				pf_coyotetime = 0;
             
 				if !ceilded {
 	                y -= 1; 
 	                pf_vspeed = -pf__jumpheight; 
-	                pf_jumpstage = 1; 
+	                pf_jumpstage = "jumping"; 
 	                audio_play(snd_ui_cancel_small, , , 1.5);
 	            }
 			}
@@ -261,9 +266,9 @@ function player_platforming_movement_execute(){
 	}
 	else {
 		pf_jump_key_held_time = 0;
-		if (pf_jumpstage == 1 and pf_airtime > pf__airmintime) {
+		if (pf_jumpstage == "jumping" and pf_airtime > pf__airmintime) {
 			release_jump = true;
-			pf_jumpstage = 2;
+			pf_jumpstage = "falling";
 		}
 	}
     
@@ -271,7 +276,7 @@ function player_platforming_movement_execute(){
 		pf_vspeed *= 0.5;
 	}
 	
-	if array_contains([1, 2], pf_jumpstage) and !grounded and pf_airtime > pf__airmintime {
+	if array_contains(["jumping", "falling"], pf_jumpstage) and !grounded and pf_airtime > pf__airmintime {
 		pf_vspeed += pf_currentgravity
 	}
 	
@@ -308,6 +313,8 @@ function player_platforming_movement_execute(){
     
     if pf_land > 0
         pf_land --;
+    if pf_land_visual > 0
+        pf_land_visual --;
 	
 	// Set moving
 	if pf_hmove != 0 or pf_final_ychange != 0 or !grounded {
@@ -345,11 +352,11 @@ function player_platforming_movement_execute(){
 	
 	if pf_attacktime > 0 or pf_attacking {
 		if grounded {
-			actor_platforming_combat_npointex(s_plat_slash_ground, s_plat_slash_ground_hbx, s_plat_slash_npoints_ground, pf_attack_key_hold_buffer, keyAttackPressed, keyJumpPressed);
+			actor_platforming_combat_npointex(s_plat_slash_ground, s_plat_slash_ground_hbx, s_plat_slash_ground_fg, s_plat_slash_npoints_ground, pf_attack_key_hold_buffer, keyAttackPressed, keyJumpPressed);
 			pf_attacktype = 1;
 		}
 		else {
-			actor_platforming_combat_npointex(s_plat_slash_air, s_plat_slash_air_hbx, s_plat_slash_npoints_air, pf_attack_key_hold_buffer, keyAttackPressed, keyJumpPressed);
+			actor_platforming_combat_npointex(s_plat_slash_air, s_plat_slash_air_hbx, s_plat_slash_air_fg, s_plat_slash_npoints_air, pf_attack_key_hold_buffer, keyAttackPressed, keyJumpPressed);
 			pf_attacktype = 2;
 		}
 		
@@ -363,7 +370,7 @@ function player_platforming_movement_execute(){
 	pf_attacktypeprev = pf_attacktype;
 	pf_attack_airslash_buffer = max(pf_attack_airslash_buffer-1, 0)
 	if pf_grounded
-		pf_grounded_time++;
+		pf_grounded_time ++;
 	else
 		pf_grounded_time = -1;
 }
@@ -377,7 +384,7 @@ function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
     if pf_xscale_prev != image_xscale && pf_turn_timer == 0
         pf_turn_timer = turn_anim_len;
     
-	if pf_airtime <= 1 and pf_jumpstage == 1{
+	if pf_airtime <= 1 and pf_jumpstage == "jumping" {
         sprite_index = s_plat_land;
         image_index = 0;
 	}
@@ -387,7 +394,7 @@ function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
         else if _dy >= 0 
             sprite_index = s_plat_jump_down;
     }
-    else if pf_land > 0 {
+    else if pf_land > 0 || pf_land_visual > 0 {
         sprite_index = s_plat_land;
         image_index = (image_number - 1) * pf_land/8;
     }
@@ -413,50 +420,51 @@ function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
         pf_turn_timer --;
 }
 
-function actor_platforming_combat_npointex(_sprite, _hbxsprite, _np_a, _keyAttackBuffer, _keyAttackPressed, _keyJumpPressed) { // 
-	var tempsprite = sprite_index
-	var tempimage = image_index
-	sprite_index = _sprite
+function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoints_array, _keyAttackBuffer, _keyAttackPressed, _keyJumpPressed) { // 
+	var tempsprite = sprite_index;
+	var tempimage = image_index;
+	sprite_index = _sprite;
+    
 	pf_attacking = true;
-	for (var i=0; i<array_length(_np_a); i++) {
-		if _np_a[i][0] == snd_ultraswing and pf_attacktime < _np_a[i][1] and ((!pf_grounded) or (pf_attacktype == 1 and pf_grounded_time < 4 and _keyAttackPressed)) 
-		{
-			pf_attacktime = _np_a[i][1]
+    
+	for (var i = 0; i < array_length(_npoints_array); i ++) {
+		if _npoints_array[i][0] == snd_ultraswing and pf_attacktime < _npoints_array[i][1] and ((!pf_grounded) or (pf_attacktype == 1 and pf_grounded_time < 4 and _keyAttackPressed)) {
+			pf_attacktime = _npoints_array[i][1]
 			pf_attackkeyheldtime = 0;
 		}
-		image_index = clamp(pf_attacktime, 0, sprite_get_number(sprite_index) - 1)
-		for (var j=1; j<array_length(_np_a[i]); j++) {
-			if (array_contains([floor(image_index)], _np_a[i][j])
-				and !_keyAttackBuffer
-				or (pf_attacktype != pf_attacktypeprev)
-				//or _keyJumpPressed
-			)
-			or (pf_attacktime >= sprite_get_number(sprite_index) - 1)
-			{
+		image_index = clamp(pf_attacktime, 0, sprite_get_number(sprite_index) - 1);
+        
+		for (var j = 1; j < array_length(_npoints_array[i]); j ++) {
+			if (array_contains([floor(image_index)], _npoints_array[i][j])
+                    and !_keyAttackBuffer
+                    or (pf_attacktype != pf_attacktypeprev)
+                    //or _keyJumpPressed
+                ) or (pf_attacktime >= sprite_get_number(sprite_index) - 1) 
+            {
 				pf_attacktime = 0;
 				sprite_index = tempsprite;
 				image_index = tempimage;
 			}
-			else if floor(image_index) == _np_a[i][j] and _keyAttackBuffer and image_index < floor(image_index) + pf__attackaddtime 
-			{
-				if _np_a[i][0] != "nul"
-					audio_play(_np_a[i][0]);
+			else if floor(image_index) == _npoints_array[i][j] and _keyAttackBuffer and image_index < floor(image_index) + pf__attackaddtime {
+				if _npoints_array[i][0] != "nul"
+					audio_play(_npoints_array[i][0]);
 				
-				var statuecheck = collision_rectangle(x-(pf_dir == DIR.LEFT ? 30 : 10), y+10, x+(pf_dir == DIR.RIGHT ? 30 : 10), y-50, o_ow_plat_statue, true, true)
-				if instance_exists(statuecheck) {
-					pf_statue_that_was_just_hit = statuecheck;
+				var potential_slashables = ds_list_create();
+                collision_rectangle_list(x - (pf_dir == DIR.LEFT ? 30 : 10), y+10, x + (pf_dir == DIR.RIGHT ? 30 : 10), y-50, pf_slashable_objects, true, true, potential_slashables, false);
+                
+				if ds_list_size(potential_slashables) > 0 {
+					pf_slashed_objects = potential_slashables;
 					audio_stop_sound(pf_impact_sfx);
 					audio_play(pf_impact_sfx);
 				}
 				
-				var hbx = instance_create_depth(x, y, depth - 2, o_eff_generic) //Test
-				hbx.sprite_index = _hbxsprite
-				hbx.image_xscale = image_xscale
-				hbx.image_index = clamp(i, 0, hbx.image_number - 1)
-				hbx.image_speed = 0
-				hbx.life = 20
-				hbx.image_blend = random_range(100100100,999999999)
-				//hbx.visible = false
+                var inst_linger = instance_create(o_eff_slash_linger, x, y, DEPTH_PLATFORMER.SLASH);
+                inst_linger.target = id;
+                inst_linger.sprite_index = _fgsprite;
+                inst_linger.image_xscale = image_xscale;
+                inst_linger.image_yscale = image_yscale;
+                inst_linger.image_index = image_index;
+                inst_linger.image_speed = 0;
 			}
 		}
 	}
