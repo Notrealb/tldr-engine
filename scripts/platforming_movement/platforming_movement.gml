@@ -47,6 +47,7 @@ function player_platforming_movement_init(){
     pf_grounded = true;
 	pf_airborn_jumps = 0;
 	pf_grounded_time = -1;
+	pf_ceil_clearance = 38;
 	
 	
 	pf__attackaddtime = 0.6
@@ -98,13 +99,13 @@ function player_platforming_movement_execute(){
             array_push(pf_collide, inst);
 		
 	}
+	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, pf_collide, true, true)
 	for (var i = 0; i < instance_number(o_ow_plat_groundlining); ++i) {
 		var inst = instance_find(o_ow_plat_groundlining, i);
 		if variable_instance_exists(inst, "collide") and inst.collide 
             array_push(pf_collide, inst);
 	}
 	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);
-	var ceilded = place_meeting(x, bbox_top-1, pf_collide);
     var _turn_sprite = false;
 	
 	// Platforming Horizontal Movement ---------

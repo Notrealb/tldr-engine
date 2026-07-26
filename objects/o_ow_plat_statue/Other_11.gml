@@ -62,7 +62,7 @@ if global.platforming_perspective == 0 {
         
 		cutscene_sleep(4 - i);
 		var inst = party_get_inst(global.party_names[i]);
-		cutscene_animate(offset_y, -2, 8, "sine_in", inst, "yoff");
+		cutscene_animate(offset_y, 0, 8, "sine_in", inst, "yoff");
 	}
 	cutscene_sleep(7)
 	cutscene_audio_play(snd_dtrans_flip,,, 1.3)
@@ -113,7 +113,7 @@ else if global.platforming_perspective == 1 {
         
 		cutscene_animate(inst.x, x + offset_x, transtime_2, "sine_in_out", inst, "x");
 		cutscene_animate(inst.y, initial_y + 15, transtime_2, "sine_in_out", inst, "y");
-		cutscene_animate(inst.yoff, -2, transtime_2, "linear", inst, "yoff");
+		cutscene_animate(inst.yoff, 0, transtime_2, "linear", inst, "yoff");
 	}
 	cutscene_sleep(transtime_2/8);
 	cutscene_func(function() {get_leader().image_index++})

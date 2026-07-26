@@ -14,7 +14,7 @@ if (is_player || is_follower) && !party_isup(name)
 	spr = party_getdata(name, "battle_sprites").defeat
 
 var xx = x + xoff + sine(.5, shake)
-var yy = y + yoff
+var yy = y + yoff + lerp(0, -2, global.platforming_perspective)
 
 var isave = image_blend
 image_blend = merge_color(image_blend, c_black, clamp(darken + darken_plat, 0, 1));
