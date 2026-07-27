@@ -39,11 +39,13 @@
     {"name":"inst_4D777487","path":"rooms/room_ex_garden_plat/room_ex_garden_plat.yy",},
     {"name":"inst_529150E8","path":"rooms/room_ex_garden_plat/room_ex_garden_plat.yy",},
     {"name":"inst_4C81010F","path":"rooms/room_ex_garden_plat/room_ex_garden_plat.yy",},
+    {"name":"inst_1A02796C","path":"rooms/room_ex_garden_plat/room_ex_garden_plat.yy",},
   ],
   "isDnd":false,
   "layers":[
     {"$GMRInstanceLayer":"","%Name":"inst_collision","depth":-100,"effectEnabled":true,"effectType":null,"gridX":20,"gridY":20,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v4","%Name":"inst_47974E8E","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_47974E8E","objectId":{"name":"o_ow_plat_block","path":"objects/o_ow_plat_block/o_ow_plat_block.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":14.0,"scaleY":2.0,"x":0.0,"y":360.0,},
+        {"$GMRInstance":"v4","%Name":"inst_1A02796C","colour":822083583,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_1A02796C","objectId":{"name":"o_ow_plat_nosafespotsaving","path":"objects/o_ow_plat_nosafespotsaving/o_ow_plat_nosafespotsaving.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":9.0,"scaleY":25.0,"x":0.0,"y":0.0,},
       ],"layers":[],"name":"inst_collision","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":true,"visible":true,},
     {"$GMRInstanceLayer":"","%Name":"inst_main","depth":0,"effectEnabled":true,"effectType":null,"gridX":10,"gridY":10,"hierarchyFrozen":false,"inheritLayerDepth":false,"inheritLayerSettings":false,"inheritSubLayers":true,"inheritVisibility":true,"instances":[
         {"$GMRInstance":"v4","%Name":"inst_6CDF309F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_6CDF309F","objectId":{"name":"o_ow_plat_statue","path":"objects/o_ow_plat_statue/o_ow_plat_statue.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":40.0,"y":407.0,},

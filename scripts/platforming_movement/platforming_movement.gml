@@ -49,6 +49,7 @@ function player_platforming_movement_init(){
 	pf_grounded_time = -1;
 	pf_ceil_clearance = 38;
 	
+	pf_savedsafeposition = [x, y];
 	
 	pf__attackaddtime = 0.6
 	pf__attack_airslash_buffer_max = 15;
@@ -108,7 +109,71 @@ function player_platforming_movement_execute(){
 	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);
     var _turn_sprite = false;
 	
+	// Position saving
+	if grounded
+	and !place_meeting(x, y, o_ow_plat_nosafespotsaving)
+	and place_meeting(x, bbox_bottom+1, pf_collide)
+	and place_meeting(x+14, bbox_bottom+4, pf_collide)
+	and place_meeting(x-14, bbox_bottom+4, pf_collide)
+	and !place_meeting(x, y, pf_collide)
+	{
+		pf_savedsafeposition = [x, y]
+	}
+	
+	// Pitfall rescue
+	if y > room_height + 100
+	and !collision_rectangle(bbox_left-10, y-pf_ceil_clearance, bbox_right+10, bbox_bottom+100, o_trigger_warp, true, true)
+	{
+		cutscene_create();
+		cutscene_player_canmove(false);
+		cutscene_sleep(10);
+		cutscene_set_variable(o_camera, "target", noone);
+		
+		if party_length(true) > 1 { for (var i = 1; i < party_length(true); i ++) {
+			var inst = party_get_inst(global.party_names[i])
+			cutscene_animate(inst.image_alpha, 0, 10, "linear", inst, "image_alpha")
+		}}
+		
+		cutscene_camera_pan(pf_savedsafeposition[0], pf_savedsafeposition[1], 16, true, "cubic_in_out");
+		
+		cutscene_func(function(){
+			get_leader().x = pf_savedsafeposition[0];
+			get_leader().y = o_camera.y + o_camera.height + 60;
+		})
+		cutscene_party_follow(true);
+		cutscene_party_interpolate();
+		cutscene_sleep(1);
+		
+		if party_length(true) > 1 { for (var i = 1; i < party_length(true); i ++) {
+			var inst = party_get_inst(global.party_names[i])
+			cutscene_animate(-2, 1, 20, "linear", inst, "image_alpha")
+		}}
+		cutscene_func(function(){
+			get_leader().vspeed = -10
+		})
+		cutscene_audio_play(snd_wing_pitfall)
+		cutscene_wait_until(function() {
+			return (get_leader().y <= get_leader().pf_savedsafeposition[1])
+		});
+		
+		cutscene_animate(-10, 10, 20, "linear", get_leader(), "vspeed")
+		cutscene_wait_until(function() {
+			var l = get_leader()
+			return (((l.y >= l.pf_savedsafeposition[1] - abs(l.vspeed)) or (l.y >= l.pf_savedsafeposition[1])) and l.vspeed > 0)
+		});
+		
+		cutscene_func(function(){
+			get_leader().vspeed = 0
+			get_leader().y = get_leader().pf_savedsafeposition[1]
+		})
+		cutscene_set_variable(o_camera, "target", get_leader())
+		cutscene_player_canmove(true);
+		cutscene_play();
+		return
+	}
+	
 	// Platforming Horizontal Movement ---------
+	//note: turning too slow + sometimes flips without decel; to-redo
 	pf_keyLeft = InputCheck(INPUT_VERB.LEFT);
 	pf_keyRight = InputCheck(INPUT_VERB.RIGHT);
 	var keyPressLeft = InputPressed(INPUT_VERB.LEFT);
@@ -162,7 +227,10 @@ function player_platforming_movement_execute(){
                 instance_create(o_eff_generic_animation, x + 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: -1});
             
 			var last_hspeed = pf_hmove;
-			pf_hmove -= _haccel;
+			if pf_hmove > 0
+				pf_hmove -= _hdecel;
+			else
+				pf_hmove -= _haccel;
             
 			//if run_zone {_hspeedmin = -(dashspeed_modified+4)}
             
@@ -174,7 +242,10 @@ function player_platforming_movement_execute(){
                 instance_create(o_eff_generic_animation, x - 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: 1});
             
 			var last_hspeed = pf_hmove;
-			pf_hmove += _haccel;
+			if pf_hmove < 0
+				pf_hmove += _hdecel;
+			else
+				pf_hmove += _haccel;
             
 			//if run_zone {_hspeedmax = dashspeed_modified-4}
             
@@ -188,10 +259,23 @@ function player_platforming_movement_execute(){
 	
 	// Platforming Jumping Vertical Movement --------
 	var keyIsInvertJumpAndAttack = false
-	var keyJump = keyIsInvertJumpAndAttack ? InputCheck(INPUT_VERB.SELECT) : InputCheck(INPUT_VERB.CANCEL)
-	var keyJumpPressed = keyIsInvertJumpAndAttack ? InputPressed(INPUT_VERB.SELECT) : InputPressed(INPUT_VERB.CANCEL)
-	var keyAttack = keyIsInvertJumpAndAttack ? InputCheck(INPUT_VERB.CANCEL) : InputCheck(INPUT_VERB.SELECT)
-	var keyAttackPressed = keyIsInvertJumpAndAttack ? InputPressed(INPUT_VERB.CANCEL) : InputPressed(INPUT_VERB.SELECT)
+	var verb_jump = keyIsInvertJumpAndAttack ? INPUT_VERB.SELECT : INPUT_VERB.CANCEL
+	var verb_attack = keyIsInvertJumpAndAttack ? INPUT_VERB.CANCEL : INPUT_VERB.SELECT
+	var keyJump = InputCheck(verb_jump)
+	var keyJumpPressed = InputPressed(verb_jump)
+	var keyAttack = InputCheck(verb_attack)
+	var keyAttackPressed = InputPressed(verb_attack)
+	//if keyJump and keyAttack and grounded
+	//	keyAttack = false;
+	//if keyJumpPressed and keyAttackPressed and grounded
+	//	keyAttackPressed = false;
+	
+	if pf_final_ychange > 0 and !collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom+15, pf_collide, true, true){
+		InputVerbConsume(verb_jump);
+		//if InputCheck(verb_attack) and !InputPressed(verb_attack) InputVerbConsume(verb_attack); 
+		//audio_play(snd_bump)
+	}
+	
 	if grounded
 		pf_airborn_jumps = 0;
 	if pf__allow_airborn_jumps and keyJumpPressed and y > pf__airborn_jump_ylimit {
@@ -211,13 +295,13 @@ function player_platforming_movement_execute(){
 	
 	if grounded {
 		if pf_airtime > pf__airmintime and o_fader.image_alpha == 0 && pf_jumpstage == "falling" {
-            pf_land = 3;
-            pf_land_visual = 6;
             instance_create(o_eff_generic_animation, x - 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: 1});
             instance_create(o_eff_generic_animation, x + 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: -1});
-            
-            if pf_hmove == 0 and pf_attacktime == 0 and pf_airborn_jumps == 0
+            if pf_hmove == 0 and pf_attacktime == 0 and pf_airborn_jumps == 0 {
                 audio_play(snd_noise, , , 1.2);
+	            pf_land = 8;
+	            //pf_land_visual = 6;
+			}
 		}
 		pf_jumpstage = "grounded";
 		pf_vspeed = 0;
@@ -239,8 +323,9 @@ function player_platforming_movement_execute(){
 	if !pf_jumpbuffer and pf_squattime <= 0 and (!grounded and pf_coyotetime > 0) 
         pf_coyotetime --;
 		
-	if keyJump && !pf_land {
+	if keyJump {
 		pf_jump_key_held_time ++;
+		
 		if pf_attacktime > 0
 			pf_jump_key_held_time = 0;
         
@@ -278,7 +363,7 @@ function player_platforming_movement_execute(){
 	}
 	
 	if array_contains(["jumping", "falling"], pf_jumpstage) and !grounded and pf_airtime > pf__airmintime {
-		pf_vspeed += pf_currentgravity
+		pf_vspeed += pf_currentgravity;
 	}
 	
 	// Platforming Finish Movement -----
@@ -314,8 +399,8 @@ function player_platforming_movement_execute(){
     
     if pf_land > 0
         pf_land --;
-    if pf_land_visual > 0
-        pf_land_visual --;
+   // if pf_land_visual > 0
+   //     pf_land_visual --;
 	
 	// Set moving
 	if pf_hmove != 0 or pf_final_ychange != 0 or !grounded {
@@ -352,7 +437,15 @@ function player_platforming_movement_execute(){
 		pf_attacktime += pf__attackaddtime;
 	
 	if pf_attacktime > 0 or pf_attacking {
-		if grounded {
+		var store_landingslash = false
+		if grounded and (pf_attacking and pf_attacktype == 2) {
+			pf_attacktime = 0;
+			pf_attacking = false;
+			InputVerbConsume(keyIsInvertJumpAndAttack ? INPUT_VERB.CANCEL : INPUT_VERB.SELECT);
+			pf_jump_key_held_time = 0;
+			pf_attack_key_hold_buffer = 0;
+		}
+		else if grounded {
 			actor_platforming_combat_npointex(s_plat_slash_ground, s_plat_slash_ground_hbx, s_plat_slash_ground_fg, s_plat_slash_npoints_ground, pf_attack_key_hold_buffer, keyAttackPressed, keyJumpPressed);
 			pf_attacktype = 1;
 		}
@@ -437,10 +530,10 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
         
 		for (var j = 1; j < array_length(_npoints_array[i]); j ++) {
 			if (array_contains([floor(image_index)], _npoints_array[i][j])
-                    and !_keyAttackBuffer
-                    or (pf_attacktype != pf_attacktypeprev)
-                    //or _keyJumpPressed
-                ) or (pf_attacktime >= sprite_get_number(sprite_index) - 1) 
+				and !_keyAttackBuffer
+				or (pf_attacktype != pf_attacktypeprev)
+			)
+			or (pf_attacktime >= sprite_get_number(sprite_index) - 1) 
             {
 				pf_attacktime = 0;
 				sprite_index = tempsprite;
@@ -448,7 +541,7 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
 			}
 			else if floor(image_index) == _npoints_array[i][j] and _keyAttackBuffer and image_index < floor(image_index) + pf__attackaddtime {
 				if _npoints_array[i][0] != "nul"
-					audio_play(_npoints_array[i][0]);
+					audio_play(_npoints_array[i][0], , , array_contains([snd_heavyswing, snd_ultraswing], _npoints_array[i][0]) ? 1.1 : 1);
 				
 				var potential_slashables = ds_list_create();
                 collision_rectangle_list(x - (pf_dir == DIR.LEFT ? 30 : 10), y+10, x + (pf_dir == DIR.RIGHT ? 30 : 10), y-50, pf_slashable_objects, true, true, potential_slashables, false);

@@ -1,16 +1,13 @@
 {
   "$GMObject":"",
-  "%Name":"o_eff_slash_linger",
-  "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":2,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-  ],
+  "%Name":"o_ow_plat_nosafespotsaving",
+  "eventList":[],
   "managed":true,
-  "name":"o_eff_slash_linger",
+  "name":"o_ow_plat_nosafespotsaving",
   "overriddenProperties":[],
   "parent":{
-    "name":"effects",
-    "path":"folders/@Engine/objects/effects.yy",
+    "name":"platforming",
+    "path":"folders/@Engine/objects/ow/platforming.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -30,7 +27,10 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":null,
+  "spriteId":{
+    "name":"spr_default_alt_1_1",
+    "path":"sprites/spr_default_alt_1_1/spr_default_alt_1_1.yy",
+  },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
