@@ -2,6 +2,14 @@ depth = -2000 - y;
 
 if is_in_battle and instance_exists(o_enc_bg) and o_enc_bg.alphain == true
     depth = DEPTH_ENCOUNTER.ACTORS - (y - guipos_y());
+if global.platforming_perspective == 1 {
+	for (var i = 0; i < party_length(true); i ++) {
+		if i == 0 depth -= party_length(true);
+		else if id == party_get_inst(global.party_names[i]) {
+			depth = get_leader().depth + i
+		}
+	}
+}
 if is_real(depth_override) 
     depth = depth_override;
 

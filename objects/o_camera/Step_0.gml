@@ -49,6 +49,7 @@ if instance_exists(target) {
             y = target.y;
         
         y += offset_y;
+		y -= lerp(0, 19.5, global.platforming_perspective);
         
         y_real = y; // save the real value before confining it
         if confined_on_y

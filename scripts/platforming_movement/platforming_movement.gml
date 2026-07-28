@@ -1,5 +1,7 @@
 global.platforming_perspective = 0
 global.allow_use_platswap_statue = true
+global.plataction_fade = 0
+global.allow_open_plataction = true
 
 function player_platforming_movement_init(){
 	if !instance_exists(o_ow_plat_statue) or !instance_exists(o_ow_plat_ground) {global.platforming_perspective=0}
@@ -26,6 +28,7 @@ function player_platforming_movement_init(){
 	pf__gravity = 1.25/2;
 	pf__canjump = true;
 	pf__allow_airborn_jumps = false;
+	pf__allow_bhopping = false;
 	pf__airborn_jump_max = 99;
 	pf__airborn_jump_ylimit = 100;
 	pf__jumpheight = 7;
@@ -48,6 +51,7 @@ function player_platforming_movement_init(){
 	pf_airborn_jumps = 0;
 	pf_grounded_time = -1;
 	pf_ceil_clearance = 38;
+	pf_auto_jump_next_land = false;
 	
 	pf_savedsafeposition = [x, y];
 	
@@ -73,7 +77,7 @@ function player_platforming_movement_init(){
 	with get_leader() {player_platforming_movement_init_hook();}
 }
 
-function player_platforming_movement_execute(){
+function player_platforming_execute(){
 	// Statue was hit?
 	if ds_exists(pf_slashed_objects, ds_type_list) {
         for (var i = 0; i < ds_list_size(pf_slashed_objects); i ++) {
@@ -261,26 +265,27 @@ function player_platforming_movement_execute(){
 	var keyIsInvertJumpAndAttack = false
 	var verb_jump = keyIsInvertJumpAndAttack ? INPUT_VERB.SELECT : INPUT_VERB.CANCEL
 	var verb_attack = keyIsInvertJumpAndAttack ? INPUT_VERB.CANCEL : INPUT_VERB.SELECT
-	var keyJump = InputCheck(verb_jump)
+	var keyJump = InputCheck(verb_jump) or place_meeting(x, y, pf_collide)
 	var keyJumpPressed = InputPressed(verb_jump)
 	var keyAttack = InputCheck(verb_attack)
 	var keyAttackPressed = InputPressed(verb_attack)
-	//if keyJump and keyAttack and grounded
-	//	keyAttack = false;
-	//if keyJumpPressed and keyAttackPressed and grounded
-	//	keyAttackPressed = false;
-	
-	if pf_final_ychange > 0 and !collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom+15, pf_collide, true, true){
-		InputVerbConsume(verb_jump);
-		//if InputCheck(verb_attack) and !InputPressed(verb_attack) InputVerbConsume(verb_attack); 
-		//audio_play(snd_bump)
-	}
 	
 	if grounded
 		pf_airborn_jumps = 0;
 	if pf__allow_airborn_jumps and keyJumpPressed and y > pf__airborn_jump_ylimit {
 		grounded = true;
 		pf_airborn_jumps ++;
+	}
+	
+	if pf_final_ychange > 0 and (pf_jump_key_held_time < 5 or pf__allow_bhopping) and keyJump and collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom+15, pf_collide, true, true) {
+		pf_auto_jump_next_land = true;
+		//audio_play(snd_break1)
+	}
+	if pf_jumpstage == "grounded" and pf_auto_jump_next_land {
+		pf_jump_key_held_time = 0;
+		keyJumpPressed = true;
+		//audio_play(snd_break2)
+		pf_auto_jump_next_land = false;
 	}
 	
 	if !pf__canjump {
@@ -341,7 +346,8 @@ function player_platforming_movement_execute(){
 				if !ceilded {
 	                y -= 1; 
 	                pf_vspeed = -pf__jumpheight; 
-	                pf_jumpstage = "jumping"; 
+	                pf_jumpstage = "jumping";
+					pf_auto_jump_next_land = false;
 	                audio_play(snd_ui_cancel_small, , , 1.5);
 	            }
 			}
@@ -467,6 +473,12 @@ function player_platforming_movement_execute(){
 		pf_grounded_time ++;
 	else
 		pf_grounded_time = -1;
+		
+	// -------- plataction opening ---------
+	if global.allow_open_plataction and InputPressed(INPUT_VERB.SPECIAL) {
+		audio_play(snd_spearrise)
+		instance_create(o_ui_plataction)
+	}
 }
 
 function actor_platforming_animate(_grounded, _dx, _dy, _dir) {

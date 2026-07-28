@@ -15,6 +15,6 @@ for (var i = 0; i < party_length(true); ++i) {
         min_party_y = inst.y;
 }
 
-depth = -2000 - y - 1;
+depth = -2000 - y - 1 - party_length(true); // All the plat stuff eventually needs some proper depth macros and offset vars instead of just using -y
 if collide == false and maker.collide_while_plat == false and maker.pulpit == false 
 	depth = -2000;

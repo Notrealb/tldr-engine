@@ -489,6 +489,7 @@
     {"id":{"name":"o_ui_menu","path":"objects/o_ui_menu/o_ui_menu.yy",},},
     {"id":{"name":"o_ui_money_display","path":"objects/o_ui_money_display/o_ui_money_display.yy",},},
     {"id":{"name":"o_ui_naming","path":"objects/o_ui_naming/o_ui_naming.yy",},},
+    {"id":{"name":"o_ui_plataction","path":"objects/o_ui_plataction/o_ui_plataction.yy",},},
     {"id":{"name":"o_ui_quit","path":"objects/o_ui_quit/o_ui_quit.yy",},},
     {"id":{"name":"o_ui_recruits","path":"objects/o_ui_recruits/o_ui_recruits.yy",},},
     {"id":{"name":"o_ui_save_select","path":"objects/o_ui_save_select/o_ui_save_select.yy",},},

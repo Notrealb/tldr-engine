@@ -1,7 +1,6 @@
 /// @description player input
 if pf_enabled > 0 { // Platforming mode
-	player_platforming_movement_execute();
-	//player_platforming_combat_execute();
+	player_platforming_execute();
 }
 else { // Standard mode
 	player_standard_movement_execute();

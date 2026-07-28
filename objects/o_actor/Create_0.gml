@@ -266,6 +266,8 @@ is_party = false
 		
 		&& !global.console
         && global.player_moveable_global
+		
+		&& !instance_exists(o_ui_plataction)
 	}
 }
 
