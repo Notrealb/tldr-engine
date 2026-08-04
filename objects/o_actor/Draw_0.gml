@@ -13,8 +13,11 @@ if (hurt > 0 && is_in_battle || run_away && is_in_battle && is_enemy) && !(insta
 if (is_player || is_follower) && !party_isup(name)
 	spr = party_getdata(name, "battle_sprites").defeat
 
+var ppyo = 2
+if instance_exists(o_dev_pf_controller) ppyo = (o_dev_pf_controller.default_perspectiveangle * o_dev_pf_controller.default_tilesize)
+
 var xx = x + xoff + sine(.5, shake)
-var yy = y + yoff + lerp(0, -2, global.platforming_perspective)
+var yy = y + yoff + lerp(0, -ppyo, global.platforming_perspective)
 
 var isave = image_blend
 image_blend = merge_color(image_blend, c_black, clamp(darken + darken_plat, 0, 1));

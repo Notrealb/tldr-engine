@@ -1,16 +1,16 @@
 // Set Y
-y = lerp(initial_y, initial_y + (tile_height*wall_distance), global.platforming_perspective)
+y = lerp(ystart, ystart + (tile_height*wall_distance), global.platforming_perspective)
 
 // Set connected object's Y
 if array_length(connected_instances_bg) > 0 {
     for (var i = 0; i < array_length(connected_instances_bg); i += 1){
         with connected_instances_bg[i] {
-            if !variable_instance_exists(self, "initial_y") 
-                initial_y = y;
+            if !variable_instance_exists(self, "ystart") 
+                ystart = y;
             if !variable_instance_exists(self, "plat_ydifference") 
                 plat_ydifference = y - other.ystart;
             
-            y = lerp(initial_y, initial_y + (other.tile_height * other.wall_distance) - plat_ydifference, global.platforming_perspective);
+            y = lerp(ystart, ystart + (other.tile_height * other.wall_distance) - plat_ydifference, global.platforming_perspective);
             
             if global.platforming_perspective >= 1 && !(variable_instance_exists(id, "custom_platforming_depth") && custom_platforming_depth)
                 depth = DEPTH_PLATFORMER.BACK2

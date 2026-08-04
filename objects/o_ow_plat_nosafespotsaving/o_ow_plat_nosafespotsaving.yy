@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_default_alt_1_1",
-    "path":"sprites/spr_default_alt_1_1/spr_default_alt_1_1.yy",
+    "name":"spr_default_alt_1",
+    "path":"sprites/spr_default_alt_1/spr_default_alt_1.yy",
   },
   "spriteMaskId":null,
   "visible":false,

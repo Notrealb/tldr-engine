@@ -4,7 +4,7 @@ global.plataction_fade = 0
 global.allow_open_plataction = true
 
 function player_platforming_movement_init(){
-	if !instance_exists(o_ow_plat_statue) or !instance_exists(o_ow_plat_ground) {global.platforming_perspective=0}
+	if !instance_exists(o_ow_plat_statue) or !instance_exists(o_pf_wall) {global.platforming_perspective=0}
 	
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
@@ -98,18 +98,22 @@ function player_platforming_execute(){
 	
 	// Collision array
 	pf_collide = [];
+	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
+		var inst = instance_find(o_pf_wall, i);
+		if variable_instance_exists(inst, "collide") and inst.collide
+            array_push(pf_collide, inst);
+	}
 	for (var i = 0; i < instance_number(o_ow_plat_ground); ++i) {
 		var inst = instance_find(o_ow_plat_ground, i);
 		if variable_instance_exists(inst, "collide") and inst.collide
             array_push(pf_collide, inst);
-		
 	}
 	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, pf_collide, true, true)
-	for (var i = 0; i < instance_number(o_ow_plat_groundlining); ++i) {
-		var inst = instance_find(o_ow_plat_groundlining, i);
-		if variable_instance_exists(inst, "collide") and inst.collide 
-            array_push(pf_collide, inst);
-	}
+	//for (var i = 0; i < instance_number(o_pf_walllining); ++i) {
+	//	var inst = instance_find(o_pf_walllining, i);
+	//	if variable_instance_exists(inst, "collide") and inst.collide 
+    //        array_push(pf_collide, inst);
+	//}
 	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);
     var _turn_sprite = false;
 	

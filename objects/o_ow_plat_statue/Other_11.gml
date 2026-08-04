@@ -40,18 +40,18 @@ if global.platforming_perspective == 0 {
         
         with inst {
             for (var j = 0; j < ground_find_range; j += 2) {
-                with instance_place(x, y + j, o_ow_plat_ground) {
+                with instance_place(x, y + j, o_pf_wall) {
                     plat_parent = id;
                 }
                 if instance_exists(plat_parent)
                     break;
             }
             if !instance_exists(plat_parent)
-                plat_parent = instance_nearest(x, y, o_ow_plat_ground);
+                plat_parent = instance_nearest(x, y, o_pf_wall);
         };
         
 		if instance_exists(plat_parent) 
-            cutscene_animate(inst.y, plat_parent.initial_y - (-(plat_parent.tile_height * plat_parent.wall_distance)), 14, "sine_in_out", inst, "y");
+            cutscene_animate(inst.y, plat_parent.ystart - (-(plat_parent.tilesize * plat_parent.wall_closeness_in_tiles)), 14, "sine_in_out", inst, "y");
 		
 		cutscene_animate(0, offset_y, 8, "sine_out", inst, "yoff")
 	}
@@ -112,7 +112,7 @@ else if global.platforming_perspective == 1 {
         var offset_x = ((i + 1) div 2) * cos(i * pi) * 20;
         
 		cutscene_animate(inst.x, x + offset_x, transtime_2, "sine_in_out", inst, "x");
-		cutscene_animate(inst.y, initial_y + 15, transtime_2, "sine_in_out", inst, "y");
+		cutscene_animate(inst.y, ystart + 15, transtime_2, "sine_in_out", inst, "y");
 		cutscene_animate(inst.yoff, 0, transtime_2, "linear", inst, "yoff");
 	}
 	cutscene_sleep(transtime_2/8);

@@ -18,14 +18,25 @@ var blend = merge_color(image_blend, blend_while_plat, global.platforming_perspe
 
 // start plat palette
 with o_ow_plat_palette_controller start();
-    
-// Draw wall
+
+// matrix
 matrix_set(matrix_world, matrix_build(x, y, 0, 0, 0, 0, 1, 1, 1));
+
+// Draw floor if it's set to span
+if floor_tilesback_amount > 0 and floor_sprite_is_span {
+	for (var i = 0.5; i < max(floor_tilesback_amount*tile_height*pers, 2*2); i += 0.5) {
+		draw_sprite_ext(floor_sprite, draw_get_subimg(floor_sprite_is_span), 0, 0-i, image_xscale, image_yscale, 0, blend, image_alpha*plathidden);
+	}
+}
+
+// Draw wall
 draw_sprite_ext(sprite_index, image_index, 0, 0, image_xscale, image_yscale, 0, blend, image_alpha*plathidden);
+
+// Reset matrix
 matrix_reset();
 
-// Draw floor
-if floor_tilesback_amount > 0 {
+// Draw floor if not set to span
+if floor_tilesback_amount > 0 and !floor_sprite_is_span{
     if !is_undefined(floor_drawer) && is_callable(floor_drawer) {
 		matrix_set(matrix_world, matrix_build(x, y, 0, 0, 0, 0, 1, clamp(1*pers, 0, 1), 1));
         var floor_height = (floorbackclamping*tile_height);
