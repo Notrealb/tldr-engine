@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"platforming_movement",
+  "%Name":"second_edition_pf",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"platforming_movement",
+  "name":"second_edition_pf",
   "parent":{
     "name":"player",
     "path":"folders/@Engine/scripts/player.yy",

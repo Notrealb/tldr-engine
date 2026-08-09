@@ -36,6 +36,7 @@ is_party = false
 	player_array_exceptions = [o_exception];
 	player_platforming_movement_init() // set vars for platforming
 	player_platforming_movement_init_hook = function(){} // hook for custom init vars
+	player_secondeditionplatforming_init() // wip
 }
 { // enemy specific
 	chaser = false

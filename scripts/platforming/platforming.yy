@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"platforming",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"platforming",
+  "parent":{
+    "name":"player",
+    "path":"folders/@Engine/scripts/player.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
