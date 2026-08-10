@@ -34,7 +34,7 @@ function ex_misc_draw_grass(_x, _y, _w, _h, _blend, _alpha) {
                 _sprite = spr_ex_ow_garden_grass_bottom_right;
             
             
-            draw_sprite_stretched(_sprite, draw_get_subimg(_sprite) + (_x / 320) + (i * 0.125) + (j * 0.125) + (_y / 320), _x + (20 * i), _y + (20 * j), ww, hh);
+            draw_sprite_stretched_ext(_sprite, draw_get_subimg(_sprite) + (_x / 320) + (i * 0.125) + (j * 0.125) + (_y / 320), _x + (20 * i), _y + (20 * j), ww, hh, _blend, _alpha);
         }
     }
 }

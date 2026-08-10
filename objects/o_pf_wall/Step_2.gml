@@ -26,5 +26,13 @@ y = __y_lerp
 
 // Collision
 if gpp == 0 and solid_while_not_pf {collide = true} else {collide = false}
-if gpp == 1 and solid_while_pf and !use_pulpit_collision {collide = true} else {collide = false}
+if gpp == 1 and solid_while_pf and use_pulpit_collision {
+	var l = get_leader()
+	if l.y<l.yprevious or place_meeting(x,y,l) {collide = false} else {collide = true}
+} 
+else if gpp == 1 and solid_while_pf {collide = true} else {collide = false}
+
+// Alpha
 if !visible_while_pf and !visible_while_not_pf {visible = false}
+else if !visible_while_pf {image_alpha = 1-gpp}
+else if !visible_while_not_pf {image_alpha = gpp}

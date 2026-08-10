@@ -1,20 +1,20 @@
 {
   "$GMObject":"",
-  "%Name":"o_ow_plat_slashable",
+  "%Name":"o_pf_slashable",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"o_ow_plat_slashable",
+  "name":"o_pf_slashable",
   "overriddenProperties":[],
   "parent":{
     "name":"platforming",
     "path":"folders/@Engine/objects/ow/platforming.yy",
   },
   "parentObjectId":{
-    "name":"o_ow_plat_decor",
-    "path":"objects/o_ow_plat_decor/o_ow_plat_decor.yy",
+    "name":"o_pf_decor",
+    "path":"objects/o_pf_decor/o_pf_decor.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

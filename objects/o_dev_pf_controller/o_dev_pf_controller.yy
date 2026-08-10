@@ -27,6 +27,8 @@
     {"$GMObjectProperty":"v2","%Name":"default_tilesize","filters":[],"listItems":[],"multiselect":false,"name":"default_tilesize","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"default_perspectiveangle","filters":[],"listItems":[],"multiselect":false,"name":"default_perspectiveangle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.1","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"all_additional_y_offset_in_tiles_while_pf","filters":[],"listItems":[],"multiselect":false,"name":"all_additional_y_offset_in_tiles_while_pf","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"all_wall_palette","filters":[],"listItems":[],"multiselect":false,"name":"all_wall_palette","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_pf_wall_df_palette","path":"sprites/spr_pf_wall_df_palette/spr_pf_wall_df_palette.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_pf_wall_df_palette","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"all_floor_palette","filters":[],"listItems":[],"multiselect":false,"name":"all_floor_palette","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

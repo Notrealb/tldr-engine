@@ -1,3 +1,6 @@
+/// @desc slashed
+//event_inherited()
+
 var transtime_1 = 1
 var transtime_2 = 14
 var transtime_3 = 10

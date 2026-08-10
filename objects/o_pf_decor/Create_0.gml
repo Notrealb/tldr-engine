@@ -1,4 +1,4 @@
-//event_inherited()
+event_inherited()
 
 if !instance_exists(wall_parent) {
 	var t = noone

@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"o_ow_plat_nosafespotsaving",
+  "%Name":"o_pf_nosafespotsaving",
   "eventList":[],
   "managed":true,
-  "name":"o_ow_plat_nosafespotsaving",
+  "name":"o_pf_nosafespotsaving",
   "overriddenProperties":[],
   "parent":{
     "name":"platforming",

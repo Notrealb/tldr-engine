@@ -1,7 +1,7 @@
-global.platforming_perspective = 0
-global.allow_use_platswap_statue = true
-global.plataction_fade = 0
-global.allow_open_plataction = true
+//global.platforming_perspective = 0
+//global.allow_use_platswap_statue = true
+//global.plataction_fade = 0
+//global.allow_open_plataction = true
 
 // super wip re-re-overhaul for some good terrain support
 

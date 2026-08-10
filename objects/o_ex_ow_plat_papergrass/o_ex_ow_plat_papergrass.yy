@@ -2,7 +2,7 @@
   "$GMObject":"",
   "%Name":"o_ex_ow_plat_papergrass",
   "eventList":[
-    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
   "name":"o_ex_ow_plat_papergrass",
@@ -12,8 +12,8 @@
     "path":"tldr-engine.yyp",
   },
   "parentObjectId":{
-    "name":"o_ow_plat_slashable",
-    "path":"objects/o_ow_plat_slashable/o_ow_plat_slashable.yy",
+    "name":"o_pf_slashable",
+    "path":"objects/o_pf_slashable/o_pf_slashable.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

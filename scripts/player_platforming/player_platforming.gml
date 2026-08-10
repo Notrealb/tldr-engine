@@ -4,7 +4,7 @@ global.plataction_fade = 0
 global.allow_open_plataction = true
 
 function player_platforming_movement_init(){
-	if !instance_exists(o_ow_plat_statue) or !instance_exists(o_pf_wall) {global.platforming_perspective=0}
+	if !instance_exists(o_pf_platswap_statue) or !instance_exists(o_pf_wall) {global.platforming_perspective=0}
 	
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
@@ -67,7 +67,7 @@ function player_platforming_movement_init(){
 	pf_attack_airslash_buffer = 0;
 	
 	pf_slashed_objects = -1;
-    pf_slashable_objects = [o_ow_plat_slashable];
+    pf_slashable_objects = [o_pf_slashable];
 	
 	pf_impact_sfx = snd_punchmed;
 	
@@ -82,9 +82,12 @@ function player_platforming_execute(){
 	if ds_exists(pf_slashed_objects, ds_type_list) {
         for (var i = 0; i < ds_list_size(pf_slashed_objects); i ++) {
             with pf_slashed_objects[|i] 
-                event_user(0);
+                event_user(1);
         }
 	}
+	
+	// ..
+	var _turn_sprite = false;
 	
 	// Mask
 	mask_index = playermask;
@@ -100,26 +103,35 @@ function player_platforming_execute(){
 	pf_collide = [];
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
-		if variable_instance_exists(inst, "collide") and inst.collide
+		if variable_instance_exists(inst, "collide") and inst.collide and inst.object_index!=o_pf_pulpit
+		//and (!variable_instance_exists(inst, "use_pulpit_collision") or (variable_instance_exists(inst, "use_pulpit_collision") and !inst.use_pulpit_collision))
             array_push(pf_collide, inst);
-	}
+	} 
 	for (var i = 0; i < instance_number(o_ow_plat_ground); ++i) {
 		var inst = instance_find(o_ow_plat_ground, i);
 		if variable_instance_exists(inst, "collide") and inst.collide
             array_push(pf_collide, inst);
 	}
 	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, pf_collide, true, true)
-	//for (var i = 0; i < instance_number(o_pf_walllining); ++i) {
-	//	var inst = instance_find(o_pf_walllining, i);
-	//	if variable_instance_exists(inst, "collide") and inst.collide 
-    //        array_push(pf_collide, inst);
-	//}
+	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
+		var inst = instance_find(o_pf_wall, i);
+		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(pf_collide, inst)
+		//and (!variable_instance_exists(inst, "use_pulpit_collision") or (variable_instance_exists(inst, "use_pulpit_collision") and inst.use_pulpit_collision))
+            array_push(pf_collide, inst);
+	}
+	for (var i = 0; i < instance_number(o_ow_plat_groundlining); ++i) {
+		var inst = instance_find(o_ow_plat_groundlining, i);
+		if variable_instance_exists(inst, "collide") and inst.collide 
+            array_push(pf_collide, inst);
+	}
 	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);
-    var _turn_sprite = false;
+	
+	//if InputPressed(INPUT_VERB.CANCEL)
+	//	show_debug_message(string(pf_collide))
 	
 	// Position saving
 	if grounded
-	and !place_meeting(x, y, o_ow_plat_nosafespotsaving)
+	and !place_meeting(x, y, o_pf_nosafespotsaving)
 	and place_meeting(x, bbox_bottom+1, pf_collide)
 	and place_meeting(x+14, bbox_bottom+4, pf_collide)
 	and place_meeting(x-14, bbox_bottom+4, pf_collide)
@@ -269,7 +281,7 @@ function player_platforming_execute(){
 	var keyIsInvertJumpAndAttack = false
 	var verb_jump = keyIsInvertJumpAndAttack ? INPUT_VERB.SELECT : INPUT_VERB.CANCEL
 	var verb_attack = keyIsInvertJumpAndAttack ? INPUT_VERB.CANCEL : INPUT_VERB.SELECT
-	var keyJump = InputCheck(verb_jump) or place_meeting(x, y, pf_collide)
+	var keyJump = InputCheck(verb_jump) //or place_meeting(x, y, pf_collide)
 	var keyJumpPressed = InputPressed(verb_jump)
 	var keyAttack = InputCheck(verb_attack)
 	var keyAttackPressed = InputPressed(verb_attack)
