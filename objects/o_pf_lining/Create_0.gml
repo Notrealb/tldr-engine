@@ -1,2 +1,0 @@
-maker = noone
-params = undefined

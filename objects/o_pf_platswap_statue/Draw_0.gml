@@ -9,7 +9,7 @@ var shinescaley = (1.35 + (0.15 * cos(shinetimer * 0.015))) / 2
 var shinefinalalpha = shinealpha * gpp * (0.5 + (0.15 * sin(shinetimer * 0.02)))
 if gpp > 0.5 and can_hit {shinealpha += 0.1} else {shinealpha -= 0.1}
 shinealpha = clamp(shinealpha, 0, 1)
-draw_sprite_ext(spr_platswap_statue_light, 0, xx, y, shinescalex, shinescaley, 0, c_lime, shinefinalalpha)
+draw_sprite_ext(spr_pf_platswap_statue_light, 0, xx, y, shinescalex, shinescaley, 0, c_lime, shinefinalalpha)
 
 // Draw the statue
 pal_index = cap_wraparound(pal_index + 0.2, 6)

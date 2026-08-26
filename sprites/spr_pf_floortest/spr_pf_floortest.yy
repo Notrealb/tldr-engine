@@ -44,8 +44,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"pf",
-    "path":"folders/@Engine/sprites/ow/platforming/pf.yy",
+    "name":"platforming",
+    "path":"folders/@Engine/sprites/ow/platforming.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

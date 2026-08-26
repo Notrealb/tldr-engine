@@ -108,20 +108,10 @@ function player_platforming_execute(){
 		if variable_instance_exists(inst, "collide") and inst.collide and !inst.use_pulpit_collision
             array_push(pf_collide, inst);
 	} 
-	for (var i = 0; i < instance_number(o_ow_plat_ground); ++i) {
-		var inst = instance_find(o_ow_plat_ground, i);
-		if variable_instance_exists(inst, "collide") and inst.collide
-            array_push(pf_collide, inst);
-	}
 	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, pf_collide, true, true)
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(pf_collide, inst)
-            array_push(pf_collide, inst);
-	}
-	for (var i = 0; i < instance_number(o_ow_plat_groundlining); ++i) {
-		var inst = instance_find(o_ow_plat_groundlining, i);
-		if variable_instance_exists(inst, "collide") and inst.collide 
             array_push(pf_collide, inst);
 	}
 	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);

@@ -66,8 +66,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_pf_wall_df",
-    "path":"sprites/spr_pf_wall_df/spr_pf_wall_df.yy",
+    "name":"spr_pf_wall",
+    "path":"sprites/spr_pf_wall/spr_pf_wall.yy",
   },
   "spriteMaskId":null,
   "visible":true,

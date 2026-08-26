@@ -52,45 +52,37 @@ function ex_misc_draw_grass(_x, _y, _w, _h, _blend, _alpha) {
         }
     }
 }
-function ex_misc_draw_grass_basic(_x, _y, _w, _h, _blend, _alpha) {
+function ex_misc_draw_grass_lining_basic(_x, _y, _w, _h, _blend, _alpha) {
 	var index = o_world.frames * 0.2
-	var spr_lin = spr_ex_ow_garden_grass_lining_b
+	var spr_lin = spr_ex_ow_garden_grass_lining_upper
 	
 	for (var i = 0; i < _w/20; i += 1) {
-        var wwu = min(i*20 + 20, _w-1) % 20;
-        if wwu == 0 
-            wwu = 20;
-		
-        var wwl = min(i*20 + 20, _w) % 20;
-        if wwl == 0 
-            wwl = 20;
+        var ww = min(i*20 + 20, _w) % 20;
+        if ww == 0 
+            ww = 20;
         
-		var img = cap_wraparound(index + (_x / 320) + (i * 0.125) + (_y / 320), 7.999 + 10)
+		var img = cap_wraparound(index + (_x / 320) + (i * 0.125) + (_y / 320), 7.999 + 10);
 		if img >= 4
-			img = 0
+			img = 0;
 		
-        draw_sprite_ext(spr_lin, img, _x + (20 * i), _y, wwl/20, 1, 0, _blend, _alpha);
+        draw_sprite_ext(spr_lin, img, _x + (20 * i), _y, ww/20, 1, 0, _blend, _alpha);
     }
 }
-function ex_misc_draw_grass_accurate(_x, _y, _w, _h, _blend, _alpha) {
+function ex_misc_draw_grass_lining_accurate(_x, _y, _w, _h, _blend, _alpha) {
 	var index = o_world.frames * 0.2
 	var spr_lin_upper = spr_ex_ow_garden_grass_lining_upper
 	var spr_lin_lower = spr_ex_ow_garden_grass_lining_lower
 	
 	for (var i = 0; i < _w/20; i += 1) {
-        var wwu = min(i*20 + 20, _w-1) % 20;
-        if wwu == 0 
-            wwu = 20;
-		
-        var wwl = min(i*20 + 20, _w) % 20;
-        if wwl == 0 
-            wwl = 20;
+        var ww = min(i*20 + 20, _w) % 20;
+        if ww == 0 
+            ww = 20;
         
-		var img = cap_wraparound(index + (_x / 320) + (i * 0.125) + (_y / 320), 7.999 + 0)
+		var img = cap_wraparound(index + (_x / 320) + (i * 0.125) + (_y / 320), 7.999 + 0);
 		if img >= 4
-			img = 0
+			img = 0;
 		
-        draw_sprite_ext(spr_lin_upper, img, _x + 0.5 + (20 * i), _y - 10, wwu/20, 1, 0, _blend, _alpha);
-        draw_sprite_ext(spr_lin_lower, img, _x + (20 * i), _y - 5, wwl/20, 1, 0, _blend, _alpha);
+        draw_sprite_ext(spr_lin_upper, img, _x + 0.5 + (20 * i), _y - 10, ww/20, 1, 0, _blend, _alpha);
+        draw_sprite_ext(spr_lin_lower, img, _x + (20 * i), _y - 5, ww/20, 1, 0, _blend, _alpha);
     }
 }

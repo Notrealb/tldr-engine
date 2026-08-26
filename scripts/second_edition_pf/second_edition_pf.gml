@@ -37,12 +37,7 @@ function player_secondeditionplatforming_execute() {
 		var inst = instance_find(o_pf_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide
             array_push(plf_collide, inst);
-	}
-	for (var i = 0; i < instance_number(o_ow_plat_ground); ++i) {		  //temporary
-		var inst = instance_find(o_ow_plat_ground, i);					  //temporary
-		if variable_instance_exists(inst, "collide") and inst.collide	  //temporary
-            array_push(plf_collide, inst);								  //temporary
-	}																	  //temporary
+	}														  //temporary
 	
 	//Sense
 	var bbl = bbox_left
