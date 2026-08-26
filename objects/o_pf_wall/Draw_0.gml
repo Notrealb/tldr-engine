@@ -1,31 +1,33 @@
 if image_alpha <= 0 or !visible exit;
 
-var testblend = merge_color(image_blend, c_red, abs(wall_closeness_in_tiles)/4)
+var testblend = c_white//merge_color(image_blend, c_red, abs(wall_closeness_in_tiles)/4)
 
-var flr_spr = floor_use_next_image_instead ? sprite_index : floor_sprite;
+__y_after_offset = lerp(y, y + o_dev_pf_controller.default_platformsdrawyoffset, global.platforming_perspective)
+
+var flr_spr = floor_use_next_wall_image_instead ? sprite_index : floor_sprite;
 if !sprite_exists(flr_spr) {flr_spr = spr_default};
-var flr_img = floor_use_next_image_instead ? image_index+1 : draw_get_subimg(flr_spr);
+var flr_img = floor_use_next_wall_image_instead ? image_index+1 : draw_get_subimg(flr_spr);
 
 var gpp = global.platforming_perspective;
 var bltts = floor_backlength_in_tiles * tilesize;
 if flatten_while_plat {bltts = lerp(floor_backlength_in_tiles, 2, gpp) * tilesize;}
 var wal_width = image_xscale * sprite_get_width(sprite_index);
-var wal_height = image_yscale * sprite_get_width(sprite_index);
-var flr_height = bltts * (1-((1-perspectiveangle)*gpp));
-var p
+var wal_height = image_yscale * sprite_get_height(sprite_index);
 
-// Set matrix
-matrix_set(matrix_world, matrix_build(x, y, 0, 0, 0, 0, 1, 1, 1));
-//if o_dev_pf_controller.palette_sprite != noone {o_dev_pf_controller.pal_start()}
-
-// Floor draw
-p = (floor_palette!=noone ? floor_palette : (o_dev_pf_controller.all_floor_palette!=noone ? o_dev_pf_controller.all_floor_palette : noone))
-if p!=noone pal_swap_set(p, gpp * (sprite_get_width(p) - 1), false)
+// Draw the floor
+matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, 1, 1));
+var flr_squish = (1-((1-perspectiveangle)*gpp))
+var flr_height = bltts * flr_squish;
+if floor_will_squish_with_matrix and !array_contains(["span"], floor_drawer){
+	matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, (1-((1-perspectiveangle)*gpp)), 1));
+	flr_height = bltts;
+}
+_pf_paletteswap_set(floor_palette, floor_palette_index_array)
 if floor_backlength_in_tiles > 0
 and floor_drawer!="nothing"
 and !(gpp == 1 and perspectiveangle == 0)
 {
-	if floor_drawer == undefined {
+	if floor_drawer == undefined or floor_drawer == "matrixsquish"{
 		var b = merge_color(testblend, c_fuchsia, 0.5)
 		draw_sprite_ext(flr_spr, flr_img, 0, -flr_height, wal_width/sprite_get_width(flr_spr), flr_height/sprite_get_height(flr_spr), 0, b, image_alpha);
 	}
@@ -39,16 +41,14 @@ and !(gpp == 1 and perspectiveangle == 0)
 		floor_drawer(0, -flr_height, wal_width, flr_height, b, image_alpha);
 	}
 }
-pal_swap_reset();
 
-// Wall draw
-p = (wall_palette!=noone ? wall_palette : (o_dev_pf_controller.all_wall_palette!=noone ? o_dev_pf_controller.all_wall_palette : noone))
-if p!=noone pal_swap_set(p, gpp * (sprite_get_width(p) - 1), false)
+// Draw the wall
+matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, 1, 1));
+_pf_paletteswap_set(wall_palette, wall_palette_index_array)
 draw_sprite_ext(sprite_index, image_index, 0, 0, image_xscale, image_yscale, 0, testblend, image_alpha);
+
+// Reset anything that needs to be reset
+matrix_reset();
 pal_swap_reset();
 
-// Reset matrix
-matrix_reset();
-//if o_dev_pf_controller.palette_sprite != noone {o_dev_pf_controller.pal_stop()}
-
-
+//draw_text_scale(string(depth), x, __y_after_offset, 0.5, c_white, 0.4)

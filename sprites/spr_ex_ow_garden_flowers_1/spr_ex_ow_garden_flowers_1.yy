@@ -1,11 +1,11 @@
 {
   "$GMSprite":"v2",
   "%Name":"spr_ex_ow_garden_flowers_1",
-  "bboxMode":0,
+  "bboxMode":2,
   "bbox_bottom":33,
   "bbox_left":0,
   "bbox_right":13,
-  "bbox_top":0,
+  "bbox_top":32,
   "collisionKind":1,
   "collisionTolerance":0,
   "DynamicTexturePage":false,

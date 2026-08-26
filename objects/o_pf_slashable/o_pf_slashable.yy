@@ -7,7 +7,10 @@
   ],
   "managed":true,
   "name":"o_pf_slashable",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_decor","path":"objects/o_pf_decor/o_pf_decor.yy",},"propertyId":{"name":"depth_use_wall_depth","path":"objects/o_pf_decor/o_pf_decor.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_decor","path":"objects/o_pf_decor/o_pf_decor.yy",},"propertyId":{"name":"depth_offset","path":"objects/o_pf_decor/o_pf_decor.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"-1",},
+  ],
   "parent":{
     "name":"platforming",
     "path":"folders/@Engine/objects/ow/platforming.yy",

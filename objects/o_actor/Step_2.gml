@@ -1,15 +1,30 @@
-depth = -2000 - y;
-
 if is_in_battle and instance_exists(o_enc_bg) and o_enc_bg.alphain == true
     depth = DEPTH_ENCOUNTER.ACTORS - (y - guipos_y());
-if global.platforming_perspective == 1 {
-	for (var i = 0; i < party_length(true); i ++) {
-		if i == 0 depth -= party_length(true);
-		else if id == party_get_inst(global.party_names[i]) {
-			depth = get_leader().depth + i
+else if global.platforming_perspective and instance_exists(o_dev_pf_controller) {
+	if o_dev_pf_controller.actors_depth_override
+		depth = actors_depth_override
+	else if o_dev_pf_controller.do_autodepthsort_actors {
+		for (var i = 0; i < party_length(true); i ++) {
+			if id == party_get_inst(global.party_names[i]) {
+				var _c = get_leader().pf_collide
+				//if !(place_meeting(x, y, o_pf_wall) and !place_meeting(x, y, _c))
+					depth = -party_length(true) + i;
+				var wt = instance_place(x, y+2, _c);
+				if wt {
+					var bltts = (wt.floor_backlength_in_tiles * wt.tilesize);
+					var d_b = wt.depth;
+					var d_f = wt.depth - (bltts * 2);
+					depth = lerp(d_f, d_b, 0.3)
+					depth -= party_length(true)
+				}
+				if i != 0 and depth <= get_leader().depth
+					depth = get_leader().depth + i;
+			}
 		}
 	}
 }
+else
+	depth = -2000 - y;
 if is_real(depth_override) 
     depth = depth_override;
 

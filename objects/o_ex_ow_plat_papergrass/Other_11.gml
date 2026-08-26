@@ -8,6 +8,7 @@ var _y_center = (bbox_bottom + bbox_top) / 2;
 with instance_create(o_eff_generic_animation, x, _y_center, depth) {
     sprite_index = spr_eff_plat_impact;
     image_speed = 1;
+	depth = other._particle_depth
 }
 
 repeat (10) {
@@ -20,6 +21,7 @@ repeat (10) {
         friction = random_range(.2, .4);
         
         image_blend = other.image_blend;
+		depth = other._particle_depth
     }
 }
 

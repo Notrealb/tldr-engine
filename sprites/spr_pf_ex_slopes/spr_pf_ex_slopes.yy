@@ -28,7 +28,7 @@
   ],
   "name":"spr_pf_ex_slopes",
   "nineSlice":null,
-  "origin":0,
+  "origin":6,
   "parent":{
     "name":"pf",
     "path":"folders/@Engine/sprites/ow/platforming/pf.yy",
@@ -96,7 +96,7 @@
     "visibleRange":null,
     "volume":1.0,
     "xorigin":0,
-    "yorigin":0,
+    "yorigin":160,
   },
   "swatchColours":null,
   "swfPrecision":0.5,

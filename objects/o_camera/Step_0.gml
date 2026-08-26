@@ -17,8 +17,6 @@ if instance_exists(target) {
             else 
                 x = x_real + spd;
         }
-        else if global.platforming_perspective > .5
-            x = target.x;
         else
             x = target.x;
         
@@ -43,13 +41,12 @@ if instance_exists(target) {
             else 
                 y = y_real + spd;
         }
-        else if global.platforming_perspective > .5
-            y = target.y;
         else
             y = target.y;
         
         y += offset_y;
-		y -= lerp(0, 19.5, global.platforming_perspective);
+		var pfyrise = instance_exists(o_dev_pf_controller) ? o_dev_pf_controller.camera_y_rise : 18
+		y -= lerp(0, pfyrise, global.platforming_perspective);
         
         y_real = y; // save the real value before confining it
         if confined_on_y

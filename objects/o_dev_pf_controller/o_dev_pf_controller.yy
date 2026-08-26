@@ -1,7 +1,9 @@
 {
   "$GMObject":"",
   "%Name":"o_dev_pf_controller",
-  "eventList":[],
+  "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+  ],
   "managed":true,
   "name":"o_dev_pf_controller",
   "overriddenProperties":[],
@@ -24,11 +26,15 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
+    {"$GMObjectProperty":"v2","%Name":"camera_y_rise","filters":[],"listItems":[],"multiselect":false,"name":"camera_y_rise","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"18","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"default_tilesize","filters":[],"listItems":[],"multiselect":false,"name":"default_tilesize","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"20","varType":1,},
     {"$GMObjectProperty":"v2","%Name":"default_perspectiveangle","filters":[],"listItems":[],"multiselect":false,"name":"default_perspectiveangle","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0.1","varType":0,},
+    {"$GMObjectProperty":"v2","%Name":"default_platformsdrawyoffset","filters":[],"listItems":[],"multiselect":false,"name":"default_platformsdrawyoffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"2","varType":0,},
     {"$GMObjectProperty":"v2","%Name":"all_additional_y_offset_in_tiles_while_pf","filters":[],"listItems":[],"multiselect":false,"name":"all_additional_y_offset_in_tiles_while_pf","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":0,},
-    {"$GMObjectProperty":"v2","%Name":"all_wall_palette","filters":[],"listItems":[],"multiselect":false,"name":"all_wall_palette","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resource":{"name":"spr_pf_wall_df_palette","path":"sprites/spr_pf_wall_df_palette/spr_pf_wall_df_palette.yy",},"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"spr_pf_wall_df_palette","varType":5,},
-    {"$GMObjectProperty":"v2","%Name":"all_floor_palette","filters":[],"listItems":[],"multiselect":false,"name":"all_floor_palette","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"","varType":5,},
+    {"$GMObjectProperty":"v2","%Name":"do_autodepthsort_walls","filters":[],"listItems":[],"multiselect":false,"name":"do_autodepthsort_walls","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"False","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"do_autodepthsort_decor","filters":[],"listItems":[],"multiselect":false,"name":"do_autodepthsort_decor","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"do_autodepthsort_actors","filters":[],"listItems":[],"multiselect":false,"name":"do_autodepthsort_actors","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
+    {"$GMObjectProperty":"v2","%Name":"actors_depth_override","filters":[],"listItems":[],"multiselect":false,"name":"actors_depth_override","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"undefined","varType":4,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

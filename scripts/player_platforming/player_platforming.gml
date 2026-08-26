@@ -74,6 +74,8 @@ function player_platforming_movement_init(){
 	pf_hurt = false; //u
 	pf_hitstop = 0; //u
 	
+	pf_pitfallrescuing = false
+	
 	with get_leader() {player_platforming_movement_init_hook();}
 }
 
@@ -103,8 +105,7 @@ function player_platforming_execute(){
 	pf_collide = [];
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
-		if variable_instance_exists(inst, "collide") and inst.collide and inst.object_index!=o_pf_pulpit
-		//and (!variable_instance_exists(inst, "use_pulpit_collision") or (variable_instance_exists(inst, "use_pulpit_collision") and !inst.use_pulpit_collision))
+		if variable_instance_exists(inst, "collide") and inst.collide and !inst.use_pulpit_collision
             array_push(pf_collide, inst);
 	} 
 	for (var i = 0; i < instance_number(o_ow_plat_ground); ++i) {
@@ -116,7 +117,6 @@ function player_platforming_execute(){
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(pf_collide, inst)
-		//and (!variable_instance_exists(inst, "use_pulpit_collision") or (variable_instance_exists(inst, "use_pulpit_collision") and inst.use_pulpit_collision))
             array_push(pf_collide, inst);
 	}
 	for (var i = 0; i < instance_number(o_ow_plat_groundlining); ++i) {
@@ -148,6 +148,7 @@ function player_platforming_execute(){
 		cutscene_player_canmove(false);
 		cutscene_sleep(10);
 		cutscene_set_variable(o_camera, "target", noone);
+		cutscene_set_variable(get_leader(), "pf_pitfallrescuing", true)
 		
 		if party_length(true) > 1 { for (var i = 1; i < party_length(true); i ++) {
 			var inst = party_get_inst(global.party_names[i])
@@ -187,6 +188,7 @@ function player_platforming_execute(){
 			get_leader().y = get_leader().pf_savedsafeposition[1]
 		})
 		cutscene_set_variable(o_camera, "target", get_leader())
+		cutscene_set_variable(get_leader(), "pf_pitfallrescuing", false)
 		cutscene_player_canmove(true);
 		cutscene_play();
 		return

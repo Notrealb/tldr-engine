@@ -6,7 +6,7 @@
   "name":"o_pf_ex_slope",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_wall","path":"objects/o_pf_wall/o_pf_wall.yy",},"propertyId":{"name":"floor_drawer","path":"objects/o_pf_wall/o_pf_wall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"\"span\"",},
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_wall","path":"objects/o_pf_wall/o_pf_wall.yy",},"propertyId":{"name":"floor_use_next_image_instead","path":"objects/o_pf_wall/o_pf_wall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_wall","path":"objects/o_pf_wall/o_pf_wall.yy",},"propertyId":{"name":"floor_use_next_wall_image_instead","path":"objects/o_pf_wall/o_pf_wall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
   ],
   "parent":{
     "name":"platforming",
