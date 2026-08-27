@@ -19,14 +19,8 @@ function enc_background() constructor {
         if !surface_exists(bg_surf)
             bg_surf = bg_surf_create();
         
-        // clear color
-        draw_set_color(bg_clear_color);
-        draw_set_alpha(_alpha * bg_clear_alpha);
-        
-        draw_rectangle(guipos_x(), guipos_y(), 640, 480, false);
-        
-        draw_set_color(c_white);
-        draw_set_alpha(1);
+        // clear
+        draw_sprite_tiled_ext(spr_pixel, 0, 0, 0, 100, 100, bg_clear_color, _alpha * bg_clear_alpha)
         
         bg_draw_content();
 		draw_surface_stretched_ext(bg_surf, guipos_x(), guipos_y(), 320, 240, c_white, _alpha);
@@ -52,14 +46,8 @@ function enc_bulletdark() constructor {
         if !surface_exists(bulletdark_surf)
             bulletdark_surf = bulletdark_surf_create();
         
-        // clear color
-        draw_set_color(bulletdark_clear_color);
-        draw_set_alpha(_alpha * bulletdark_clear_alpha);
-        
-        draw_rectangle(guipos_x(), guipos_y(), 640, 480, false);
-        
-        draw_set_color(c_white);
-        draw_set_alpha(1);
+        // clear
+        draw_sprite_tiled_ext(spr_pixel, 0, 0, 0, 100, 100, bulletdark_clear_color, _alpha * bulletdark_clear_alpha)
         
         bulletdark_draw_content();
 		draw_surface_stretched_ext(bulletdark_surf, guipos_x(), guipos_y(), 320, 240, c_white, _alpha);

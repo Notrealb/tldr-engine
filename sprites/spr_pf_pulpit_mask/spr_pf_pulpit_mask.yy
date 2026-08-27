@@ -2,7 +2,7 @@
   "$GMSprite":"v2",
   "%Name":"spr_pf_pulpit_mask",
   "bboxMode":0,
-  "bbox_bottom":0,
+  "bbox_bottom":3,
   "bbox_left":0,
   "bbox_right":79,
   "bbox_top":0,

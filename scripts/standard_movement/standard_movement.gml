@@ -205,11 +205,11 @@ function player_standard_movement_execute(){
     
     // re-calculate collisions
     player_array_collisions = [];
-    for (var i = 0; i < instance_number(o_block); ++i) {
+	for (var i = 0; i < instance_number(o_block); ++i) {
 		var inst = instance_find(o_block, i);
-		if inst.collide
-			array_push(player_array_collisions, inst);
-	}
+		if variable_instance_exists(inst, "collide") and inst.collide
+            array_push(player_array_collisions, inst);
+	} 
     
 	var __c = noclip ? noone : player_array_collisions;
 	player_standard_movement_locomote(__c, player_array_exceptions, spd);

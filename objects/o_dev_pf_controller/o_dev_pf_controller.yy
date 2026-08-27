@@ -35,6 +35,7 @@
     {"$GMObjectProperty":"v2","%Name":"do_autodepthsort_decor","filters":[],"listItems":[],"multiselect":false,"name":"do_autodepthsort_decor","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"do_autodepthsort_actors","filters":[],"listItems":[],"multiselect":false,"name":"do_autodepthsort_actors","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"True","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"actors_depth_override","filters":[],"listItems":[],"multiselect":false,"name":"actors_depth_override","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"undefined","varType":4,},
+    {"$GMObjectProperty":"v2","%Name":"walls_origin_depth","filters":[],"listItems":[],"multiselect":false,"name":"walls_origin_depth","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"6000","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

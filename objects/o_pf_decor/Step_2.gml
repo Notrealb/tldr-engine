@@ -1,7 +1,7 @@
 event_inherited();
 
 // Collision
-if instance_exists(get_leader())
+if (collide_while_plat or collide_ow) and instance_exists(get_leader())
     collide = (get_leader().pf_enabled ? collide_while_plat : collide_ow);
 
 // Y

@@ -26,7 +26,7 @@ if use_pulpit_collision {
 	solid_while_pf = false
 	with instance_copy(false) {
 		solid_while_pf = true
-		sprite_index = spr_pf_pulpit_mask
+		if other.use_pulpit_mask_also sprite_index = spr_pf_pulpit_mask
 		image_xscale = (other.image_xscale * sprite_get_width(other.sprite_index)) / sprite_get_width(sprite_index)
 		floor_drawer = "nothing"
 		visible = false

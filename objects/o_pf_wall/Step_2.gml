@@ -39,12 +39,16 @@ __y_lerp = lerp(__y_while_not_pf, __y_while_pf, (1-perspectiveangle)*gpp)
 y = __y_lerp
 
 // Collision
-if gpp == 0 and solid_while_not_pf {collide = true} else {collide = false}
-if gpp == 1 and solid_while_pf and use_pulpit_collision {
-	var l = get_leader()
-	if l.y<l.yprevious or place_meeting(x,y,l) {collide = false} else {collide = true}
-} 
-else if gpp == 1 and solid_while_pf {collide = true} else {collide = false}
+if gpp == 0
+	collide = solid_while_not_pf ? true : false
+if gpp == 1 {
+	if solid_while_pf and use_pulpit_collision {
+		var l = get_leader()
+		collide = l.y<l.yprevious or place_meeting(x,y,l) ? false : true
+	}
+	else
+		collide = solid_while_pf ? true : false
+}
 
 
 // Alpha
@@ -53,9 +57,9 @@ else if !visible_while_pf {image_alpha = 1-gpp}
 else if !visible_while_not_pf {image_alpha = gpp}
 
 // Depth
-if o_dev_pf_controller.do_autodepthsort_walls
-	depth = 0 + (-wall_closeness_in_tiles * tilesize * 100) + (ystart * 10);
+if depth_override
+	depth = depth_override + depth_offset;
+else if o_dev_pf_controller.do_autodepthsort_walls
+	depth = o_dev_pf_controller.walls_origin_depth + depth_offset + (-wall_closeness_in_tiles * tilesize * 100) + (ystart * 10);
 else
-	depth = 0 + (-wall_closeness_in_tiles * tilesize * 100);
-if depth_override != undefined
-	depth = depth_override;
+	depth = o_dev_pf_controller.walls_origin_depth + depth_offset + (-wall_closeness_in_tiles * tilesize * 100);
