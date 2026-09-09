@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_default_alt_5",
-    "path":"sprites/spr_default_alt_5/spr_default_alt_5.yy",
+    "name":"spr_exception",
+    "path":"sprites/spr_exception/spr_exception.yy",
   },
   "spriteMaskId":null,
   "visible":false,

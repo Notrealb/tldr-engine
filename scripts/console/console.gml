@@ -197,6 +197,17 @@ function console_command_intro() : console_command() constructor {
 }
 console_command_register(console_command_intro);
 
+function console_command_noclip() : console_command() constructor {
+	hotkey = ord("V");
+	name = "Toggle Noclip";
+	desc = "Toggles overworld noclipping for the party leader.";
+	execute = function() {
+		if instance_exists(get_leader())
+			get_leader().noclip = !get_leader().noclip;
+	}
+}
+console_command_register(console_command_noclip);
+
 
 function console_log(_text, _drawer = method(self, function(_offx = 0, _offy = 0) {
     draw_set_alpha(alpha * .75);

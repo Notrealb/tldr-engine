@@ -6,7 +6,7 @@ else if global.platforming_perspective and instance_exists(o_dev_pf_controller) 
 	else if o_dev_pf_controller.do_autodepthsort_actors {
 		for (var i = 0; i < party_length(true); i ++) {
 			if id == party_get_inst(global.party_names[i]) {
-				var _c = get_leader().pf_collide
+				var _c = get_leader().player_array_collisions
 				//if !(place_meeting(x, y, o_pf_wall) and !place_meeting(x, y, _c))
 					depth = -party_length(true) + i;
 				var wt = instance_place(x, y+2, _c);

@@ -9,7 +9,7 @@ function player_platforming_movement_init(){
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
 
-	pf_collide = []
+	player_array_collisions = []
 	
 	pf_hmove = 0
 	pf_air_accel = 2
@@ -75,8 +75,6 @@ function player_platforming_movement_init(){
 	pf_hitstop = 0; //u
 	
 	pf_pitfallrescuing = false
-	
-	with get_leader() {player_platforming_movement_init_hook();}
 }
 
 function player_platforming_execute(){
@@ -102,30 +100,30 @@ function player_platforming_execute(){
 	}
 	
 	// Collision array
-	pf_collide = [];
+	player_array_collisions = [];
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !inst.use_pulpit_collision
-            array_push(pf_collide, inst);
+            array_push(player_array_collisions, inst);
 	} 
-	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, pf_collide, true, true)
+	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, player_array_collisions, true, true)
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
-		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(pf_collide, inst)
-            array_push(pf_collide, inst);
+		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(player_array_collisions, inst)
+            array_push(player_array_collisions, inst);
 	}
-	var grounded = place_meeting(x, bbox_bottom+1, pf_collide);
+	var grounded = place_meeting(x, bbox_bottom+1, player_array_collisions);
 	
 	//if InputPressed(INPUT_VERB.CANCEL)
-	//	show_debug_message(string(pf_collide))
+	//	show_debug_message(string(player_array_collisions))
 	
 	// Position saving
 	if grounded
 	and !place_meeting(x, y, o_pf_nosafespotsaving)
-	and place_meeting(x, bbox_bottom+1, pf_collide)
-	and place_meeting(x+14, bbox_bottom+4, pf_collide)
-	and place_meeting(x-14, bbox_bottom+4, pf_collide)
-	and !place_meeting(x, y, pf_collide)
+	and place_meeting(x, bbox_bottom+1, player_array_collisions)
+	and place_meeting(x+14, bbox_bottom+4, player_array_collisions)
+	and place_meeting(x-14, bbox_bottom+4, player_array_collisions)
+	and !place_meeting(x, y, player_array_collisions)
 	{
 		pf_savedsafeposition = [x, y]
 	}
@@ -209,8 +207,8 @@ function player_platforming_execute(){
         _haccel = pf_ground_accel;
 	
 	var _dont_accel = false;
-	if (pf_keyLeft and instance_place(x - 4 - abs(pf_hmove), y, pf_collide))
-	   or (pf_keyRight and instance_place(x + 4 + abs(pf_hmove), y, pf_collide))
+	if (pf_keyLeft and instance_place(x - 4 - abs(pf_hmove), y, player_array_collisions))
+	   or (pf_keyRight and instance_place(x + 4 + abs(pf_hmove), y, player_array_collisions))
 	   or pf_hurt
     {
         _dont_accel = true
@@ -273,7 +271,7 @@ function player_platforming_execute(){
 	var keyIsInvertJumpAndAttack = false
 	var verb_jump = keyIsInvertJumpAndAttack ? INPUT_VERB.SELECT : INPUT_VERB.CANCEL
 	var verb_attack = keyIsInvertJumpAndAttack ? INPUT_VERB.CANCEL : INPUT_VERB.SELECT
-	var keyJump = InputCheck(verb_jump) //or place_meeting(x, y, pf_collide)
+	var keyJump = InputCheck(verb_jump) //or place_meeting(x, y, player_array_collisions)
 	var keyJumpPressed = InputPressed(verb_jump)
 	var keyAttack = InputCheck(verb_attack)
 	var keyAttackPressed = InputPressed(verb_attack)
@@ -285,7 +283,7 @@ function player_platforming_execute(){
 		pf_airborn_jumps ++;
 	}
 	
-	if pf_final_ychange > 0 and (pf_jump_key_held_time < 5 or pf__allow_bhopping) and keyJump and collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom+15, pf_collide, true, true) {
+	if pf_final_ychange > 0 and (pf_jump_key_held_time < 5 or pf__allow_bhopping) and keyJump and collision_rectangle(bbox_left, bbox_top, bbox_right, bbox_bottom+15, player_array_collisions, true, true) {
 		pf_auto_jump_next_land = true;
 		//audio_play(snd_break1)
 	}
@@ -383,12 +381,12 @@ function player_platforming_execute(){
 	// Platforming Finish Movement -----
 	pf_final_xchange = pf_hmove
 	pf_final_ychange = pf_vspeed
-	move_and_collide_simpler(pf_final_xchange, pf_final_ychange, pf_collide)
+	move_and_collide_simpler(pf_final_xchange, pf_final_ychange, player_array_collisions)
 	
 	// Ground fix
-	var inst = instance_place(x, y + 1, pf_collide);
+	var inst = instance_place(x, y + 1, player_array_collisions);
 	if instance_exists(inst) and instance_position(inst.bbox_left+1, inst.bbox_top, inst) and instance_position(inst.bbox_right-1, inst.bbox_top, inst) {
-		y = instance_place(x, y + 1, pf_collide).bbox_top;
+		y = instance_place(x, y + 1, player_array_collisions).bbox_top;
 	}
 	
 	// ...

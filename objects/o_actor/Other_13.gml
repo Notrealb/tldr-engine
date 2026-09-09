@@ -1,21 +1,12 @@
 /// @description player input
+
 if pf_enabled > 0 { // Platforming mode
 	player_platforming_execute();
 	//player_secondeditionplatforming_execute();
+	//x_player_pf3_exec();
 }
 else { // Standard mode
 	player_standard_movement_execute();
 	player_standard_interaction_and_menutoggle_execute();
 }
 
-// make steps and call the `__step` method
-if !sliding && (track_footsteps || is_player) {
-	if floor((image_index % image_number)*2) % 2 != 0 {
-        if !made_step {
-            __step(floor(image_index % image_number));
-            made_step = true;
-        }
-	}
-	else 
-        made_step = false;
-}

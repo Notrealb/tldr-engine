@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"second_edition_pf",
+  "%Name":"player_locomote_and_collide_except",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"second_edition_pf",
+  "name":"player_locomote_and_collide_except",
   "parent":{
     "name":"player",
     "path":"folders/@Engine/scripts/player.yy",

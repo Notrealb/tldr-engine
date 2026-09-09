@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"x_player_pf2",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"x_player_pf2",
+  "parent":{
+    "name":"player",
+    "path":"folders/@Engine/scripts/player.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

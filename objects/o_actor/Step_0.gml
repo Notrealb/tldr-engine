@@ -34,30 +34,23 @@ else if follow && is_follower && instance_exists(follow_target) {
         get_leader().pf_caterrecordtime = 0;
     
     if plat 
-        actor_platforming_animate(pf_grounded, x - xprevious, y - yprevious, dir);
+        //x_player_pf3_actor_animate(pf_grounded, x - xprevious, y - yprevious, dir);
+		actor_platforming_animate(pf_grounded, x - xprevious, y - yprevious, dir);
 }
 else if sliding {
 	if instance_exists(slideinst) && !place_meeting(x, y, slideinst){
 		sliding = false
 		y -= global.slide_speed
 	}
-    
 	y += global.slide_speed
 }
 
-// just make it known that you are moving (if you are not the player)
-var __xdiff = abs(x - xprevious) > 0;
-var __ydiff = abs(y - yprevious) > 0;
-
-if !is_player and ((__xdiff || __ydiff) and !is_in_battle and !is_enemy) or sliding {
-    moving = true
-}
-else if moving and ((__xdiff || __ydiff) and !is_in_battle and !is_enemy) {}
-else {
-    moving = false
-}
-
 // sprites
+if !is_player {
+	moving = false;
+	if ((abs(x - xprevious) > 0 || abs(y - yprevious) > 0) and !is_in_battle and !is_enemy) or sliding
+		moving = true;
+}
 if moving && !is_in_battle && !is_enemy && s_dynamic && !s_override && !get_leader().pf_enabled {
 	if !startedmoving {
 		startedmoving = true

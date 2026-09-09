@@ -34,9 +34,12 @@ is_party = false
 	playermask = spr_mask_15x8
 	player_array_collisions = [];
 	player_array_exceptions = [o_exception];
-	player_platforming_movement_init() // set vars for platforming
-	player_platforming_movement_init_hook = function(){} // hook for custom init vars
-	player_secondeditionplatforming_init() // wip
+	
+	pf_init = function() {
+		//x_player_pf3_define()
+		player_platforming_movement_init()
+	}
+	pf_init()
 }
 { // enemy specific
 	chaser = false

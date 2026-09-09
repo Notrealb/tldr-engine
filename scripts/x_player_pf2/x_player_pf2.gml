@@ -54,8 +54,6 @@ function player_secondeditionplatforming_execute() {
 	else {plf_WinningSensor = "B"}
 	
 	//Jumping
-	
-	
 	if (plf_vspeed < 0 or plf_state == "falling") {//and release_jump /*and !pf_hurt*/{
 		plf_vspeed *= 0.5;
 	}
@@ -66,7 +64,7 @@ function player_secondeditionplatforming_execute() {
 	
 	//Temp
 	//player_standard_movement_execute();
-	player_standard_movement_locomote(plf_collide, [], 4, , true, false)
+	//player_standard_movement_locomote(plf_collide, [], 4, , true, false)
 	
 	
 }

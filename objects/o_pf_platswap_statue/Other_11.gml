@@ -16,7 +16,7 @@ if global.platforming_perspective == 0 {
     
     cutscene_func(function() {
 		with get_leader() {
-			player_platforming_movement_init()
+			pf_init()
 		}
         for (var i = 0; i < party_length(true); i ++) {
             with party_get_inst(global.party_names[i]) {

@@ -12,7 +12,7 @@ var wal_height = image_yscale * sprite_get_height(sprite_index);
 
 // Draw the floor
 var flr_spr = floor_use_next_wall_image_instead ? sprite_index : floor_sprite;
-if sprite_exists(flr_spr) and floor_drawer!="nothing" and floor_backlength_in_tiles != 0 {
+if sprite_exists(flr_spr) and !array_contains(["nothing", "dont", "null", 0, -1, undefined, noone], floor_drawer) and floor_backlength_in_tiles != 0 {
 	matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, 1, 1));
 	var flr_squish = (1-((1-perspectiveangle)*gpp))
 	var flr_height = bltts * flr_squish;

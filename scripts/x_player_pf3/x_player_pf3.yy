@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"standard_interaction_and_menutoggle",
+  "%Name":"x_player_pf3",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"standard_interaction_and_menutoggle",
+  "name":"x_player_pf3",
   "parent":{
     "name":"player",
     "path":"folders/@Engine/scripts/player.yy",

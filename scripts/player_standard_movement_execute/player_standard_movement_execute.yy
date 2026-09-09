@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"standard_movement",
+  "%Name":"player_standard_movement_execute",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"standard_movement",
+  "name":"player_standard_movement_execute",
   "parent":{
     "name":"player",
     "path":"folders/@Engine/scripts/player.yy",
