@@ -104,7 +104,7 @@ function x_player_pf3_exec(){
 	
 	// Position saving
 	if grounded
-	and !place_meeting(x, y, o_pf_nosafespotsaving)
+	and !place_meeting(x, y, o_pf_zone_nosafespotsaving)
 	and place_meeting(x, bbox_bottom+1, player_array_collisions)
 	and place_meeting(x+14, bbox_bottom+4, player_array_collisions)
 	and place_meeting(x-14, bbox_bottom+4, player_array_collisions)

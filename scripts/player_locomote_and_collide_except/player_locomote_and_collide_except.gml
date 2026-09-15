@@ -12,41 +12,44 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	AddAttemptX = 0, 
 	AddAttemptY = 0, 
 	StickIterations = {U : 0, D : 0, L : 0, R : 0},
-	DoCircularize = false, 
+	StickUseKeysToo = false,
+	DoCircularize = false,
+	SlowIntoWalls = true,
+	PositionRounding = 0.5,
 	SuppressHorizontalInput = false, 
 	SuppressVerticalInput = false,
 	Verbs = {U : INPUT_VERB.UP, D : INPUT_VERB.DOWN, L : INPUT_VERB.LEFT, R : INPUT_VERB.RIGHT}, 
 	ForcedKeys = []
 )
 {
-	// ..
+	// Get opposing keys
 	var KeysOpposingX = (array_contains(ForcedKeys, Verbs.L) ? -1 : -InputCheck(Verbs.L)) + (array_contains(ForcedKeys, Verbs.R) ? 1 : InputCheck(Verbs.R))
 	var KeysOpposingY = (array_contains(ForcedKeys, Verbs.U) ? -1 : -InputCheck(Verbs.U)) + (array_contains(ForcedKeys, Verbs.D) ? 1 : InputCheck(Verbs.D))
 	
+	//
 	var attemptX = 0;
 	var attemptY = 0;
+	StepSpeed = max(StepSpeed, PositionRounding);
 	
-	// If not suppressed, calculate attemptX and attemptY
-	if !SuppressHorizontalInput {
+	// Calculate attemptX and attemptY
+	if OverrideAttemptX != 0
+		attemptX = OverrideAttemptX;
+	else if !SuppressHorizontalInput {
 		attemptX = StepSpeed;
 		attemptX *= KeysOpposingX;
 		attemptX *= SpeedMultipliers.X;
 		attemptX *= (attemptX < 0 ? SpeedMultipliers.L : SpeedMultipliers.R);
 	}
-	if !SuppressVerticalInput {
+	if OverrideAttemptY != 0
+		attemptY = OverrideAttemptY;
+	else if !SuppressVerticalInput {
 		attemptY = StepSpeed;
 		attemptY *= KeysOpposingY;
 		attemptY *= SpeedMultipliers.Y;
 		attemptY *= (attemptY < 0 ? SpeedMultipliers.U : SpeedMultipliers.D);
 	}
 	
-	// Override attemptX and attemptY if should
-	if OverrideAttemptX
-		attemptX = OverrideAttemptX;
-	if OverrideAttemptY
-		attemptY = OverrideAttemptY;
-	
-	// Add to attemptX and attemptY if should
+	// Add to attemptX and attemptY, if should
 	if is_array(AddAttemptX)
 		for (var i = 0; i < array_length(AddAttemptX); i += 1) {
 			attemptX += AddAttemptX[i];
@@ -60,7 +63,7 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	else if AddAttemptY
 		attemptY += AddAttemptY
 	
-	// Circularize attemptX and attemptY if should
+	// Circularize attemptX and attemptY, if should
 	if DoCircularize {
 		var d = point_direction(0, 0, attemptX, attemptY)
 		if attemptX != 0
@@ -69,24 +72,24 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 			attemptY = lengthdir_y(attemptY, d);
 	}
 	
-	// Set locomotionX and locomotionY with Yaw applied
+	// Set locomotionX and locomotionY with Yaw applied, if should
 	locomotionX = (lengthdir_x(-attemptX, Yaw-90) + lengthdir_x(attemptY, Yaw));
 	locomotionY = (lengthdir_y(-attemptX, Yaw-90) + lengthdir_y(attemptY, Yaw));
     
-	// 
-	if place_meeting_except(x + sign(attemptX), y, _colo, _xcep)
-	or place_meeting_except(x, y+sign(attemptY), _colo, _xcep) 
+	// Slow down if walking diagonally into walls, if should
+	if SlowIntoWalls and (place_meeting_except(x + sign(attemptX), y, _colo, _xcep) or place_meeting_except(x, y+sign(attemptY), _colo, _xcep))
     {
 		locomotionX = clamp(abs(locomotionX), 0, basespd+1) * sign(locomotionX);
 		locomotionY = clamp(abs(locomotionY), 0, basespd+1) * sign(locomotionY);
 	}
     
-	//
-	var rv = 0.5
-	if !place_meeting_except(x + round_p(locomotionX, rv), y, _colo, _xcep) 
-        locomotionX = round_p(locomotionX, rv);
-	if !place_meeting_except(x, y + round_p(locomotionY, rv), _colo, _xcep) 
-        locomotionY = round_p(locomotionY, rv);
+	// Round positioning, if above zero
+	/*if PositionRounding > 0 {
+		if !place_meeting_except(x + round_p(locomotionX, PositionRounding), y, _colo, _xcep) 
+	        locomotionX = round_p(locomotionX, PositionRounding);
+		if !place_meeting_except(x, y + round_p(locomotionY, PositionRounding), _colo, _xcep) 
+	        locomotionY = round_p(locomotionY, PositionRounding);
+	}*/
     
 	//
 	am_trying_to_locomoteX = locomotionX ? true : false;
@@ -144,7 +147,7 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	
 	// Stick Iterations
 	if !place_meeting_except(x+locomotionX, y+locomotionY, _colo, _xcep) {
-		if locomotionX != 0 {
+		if locomotionX != 0 or (StickUseKeysToo and KeysOpposingX != 0) {
 			if StickIterations.U > 0 {
 				for (var i = 1; i <= StickIterations.U; i += 1) {
 					if place_meeting_except(x+locomotionX, y+locomotionY-(i*2), _colo, _xcep)
@@ -160,7 +163,7 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 				}
 			}
 		}
-		else if locomotionY != 0 {
+		else if locomotionY != 0 or (StickUseKeysToo and KeysOpposingY != 0) {
 			if StickIterations.L > 0 {
 				for (var i = 1; i <= StickIterations.L; i += 1) {
 					if place_meeting_except(x+locomotionX-(i*2), y+locomotionY, _colo, _xcep)
@@ -194,6 +197,14 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
         y += locomotionY; 
         am_locomoting = true
     }
+	
+	// Round positioning, if above zero
+	if PositionRounding > 0 {
+		if !place_meeting_except(round_p(x, PositionRounding), y, _colo, _xcep) 
+	        x = round_p(x, PositionRounding);
+		if !place_meeting_except(x, round_p(y, PositionRounding), _colo, _xcep) 
+	        y = round_p(y, PositionRounding);
+	}
 	
 	failed_locomote_X = am_trying_to_locomoteX and locomotionX == 0 ? true : false;
 	failed_locomote_Y = am_trying_to_locomoteY and locomotionY == 0 ? true : false;

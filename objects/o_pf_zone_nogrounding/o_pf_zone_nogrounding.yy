@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"o_pf_nosafespotsaving",
+  "%Name":"o_pf_zone_nogrounding",
   "eventList":[],
   "managed":true,
-  "name":"o_pf_nosafespotsaving",
+  "name":"o_pf_zone_nogrounding",
   "overriddenProperties":[],
   "parent":{
     "name":"platforming",
@@ -28,9 +28,9 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_default_alt_1",
-    "path":"sprites/spr_default_alt_1/spr_default_alt_1.yy",
+    "name":"spr_default_alt_2",
+    "path":"sprites/spr_default_alt_2/spr_default_alt_2.yy",
   },
   "spriteMaskId":null,
-  "visible":false,
+  "visible":true,
 }
