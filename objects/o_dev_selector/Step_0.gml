@@ -56,6 +56,31 @@ if !search_mode {
         }
     }
     
+    if keyboard_check_repeat(vk_left, 5) {
+        var save_category = category;
+        
+        category --;
+        selection = 0;
+        
+        while category > 0 && array_length(display_list[category].items) == 0
+            category --;
+        
+        if category < 0
+            category = save_category;
+    }
+    if keyboard_check_repeat(vk_right, 5) {
+        var save_category = category;
+        
+        category ++;
+        selection = 0;
+        
+        while category < array_length(display_list) && array_length(display_list[category].items) == 0
+            category ++;
+        
+        if category >= array_length(display_list)
+            category = save_category;
+    }
+    
     scroll = lerp(scroll, max(0, arrow_y - GAME_H_GUI/2 - 40), .3);
     
     if keyboard_check_pressed(vk_enter) {

@@ -48,4 +48,5 @@ _sort_items();
 
 hovered_item = undefined;
 selection_prev = selection;
+category_prev = category;
 hover_timer = 0;

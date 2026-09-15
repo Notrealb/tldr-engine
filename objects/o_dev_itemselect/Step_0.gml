@@ -1,6 +1,6 @@
 event_inherited();
 
-if selection_prev != selection {
+if selection_prev != selection || category != category_prev {
     hover_timer = 0;
     hovered_item = undefined;
 }
@@ -16,4 +16,5 @@ else if category >= 0
     }
 }
     
+category_prev = category;
 selection_prev = selection;

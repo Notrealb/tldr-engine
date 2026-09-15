@@ -34,7 +34,7 @@ else {
 }
 
 txt = loc_string("chapter_select_start_1", incomplete_ch)
-tselec = incomplete_ch
+tselec = incomplete_ch - 1
 
 var startch = 0
 for (var i = 0; i < array_length(global.registered_chapters); ++i) {

@@ -67,16 +67,15 @@ function item_s_rudebuster() : item_spell() constructor {
 }
 item_register(item_s_rudebuster);
 
-function item_s_susieheal(data = {
+function item_s_susieheal() : item_spell() constructor {
+    use_type = ITEM_USE.INDIVIDUAL
+    _data = {
         progress: 0,
         uses: 0,
-    }) : item_spell() constructor {
-    
-    use_type = ITEM_USE.INDIVIDUAL
-    _data = data
+    }
     
     __heal_calc = function(user) {
-        return 1
+        return 1;
     }
     __update_spell = method(self, function() {
         var __prog = _data.progress
@@ -135,6 +134,11 @@ function item_s_susieheal(data = {
         cutscene_func(instance_destroy, [o_ui_dialogue])
 		cutscene_enc_wait(false)
     })
+    
+    _const_init = method(self, function(data) {
+        _data = data;
+        __update_spell();
+    });
     
     __update_spell();
 }
