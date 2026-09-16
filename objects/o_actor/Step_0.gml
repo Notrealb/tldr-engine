@@ -33,11 +33,14 @@ else if sliding {
 	y += global.slide_speed
 }
 
-// set moving for non-players
+// set moving for non-players and players
 if !is_player {
 	moving = false;
 	if ((abs(x - xprevious) > 0 || abs(y - yprevious) > 0) and !is_in_battle and !is_enemy) or sliding
 		moving = true;
+}
+else if s_override or !s_dynamic or is_in_battle or !moveable{
+	moving = false;
 }
 
 // handle walk sprites

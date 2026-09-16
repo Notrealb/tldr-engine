@@ -7,7 +7,6 @@ or !instance_exists(o_pf_wall)
 if global.platforming_perspective == 1
 	player_movecode = "drplatforming";
 
-
 if player_movecode == "standard" {
 	player_movecode_standard_move();
 	player_movecode_standard_etc();
