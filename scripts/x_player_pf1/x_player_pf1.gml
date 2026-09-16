@@ -88,7 +88,7 @@ function player_platforming_movement_init(){
 	pf_forceX = 0
 	pf_forceY = 0
 	
-	pf_ExampleDoCheapSlopePartyTilting = true
+	pf_ExampleDoCheapSlopePartyTilting = false
 }
 
 function player_platforming_execute(){
@@ -403,10 +403,10 @@ function player_platforming_execute(){
 	);
 	
 	// Set force
-	if InputCheck(INPUT_VERB.OTHER) {
-		pf_forceX = 0;
-		pf_forceY = -10;
-	}
+	//if InputCheck(INPUT_VERB.OTHER) {
+	//	pf_forceX = 0;
+	//	pf_forceY = -10;
+	//}
 	pf_forceX = increment_towards(pf_forceX, 0, 1);
 	pf_forceY = increment_towards(pf_forceY, 0, 1);
 	
