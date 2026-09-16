@@ -84,6 +84,11 @@ function player_platforming_movement_init(){
 	pf_DoPitfallRescue = true
 	
 	spacing_plat = 6
+	
+	pf_forceX = 0
+	pf_forceY = 0
+	
+	pf_ExampleDoCheapSlopePartyTilting = true
 }
 
 function player_platforming_execute(){
@@ -137,10 +142,7 @@ function player_platforming_execute(){
 		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(player_array_collisions, inst)
             array_push(player_array_collisions, inst);
 	}
-	var grounded = (!place_meeting(x, y, o_pf_zone_nogrounding) and (
-		place_meeting(x, bbox_bottom+2, player_array_collisions)
-		//or point_distance(0, plf_SensorA_dist, 0, plf_SensorB_dist) > 2 and place_meeting(x, bbox_bottom+3, player_array_collisions)
-	))
+	var grounded = place_meeting(x, bbox_bottom+2, player_array_collisions)
 	
 	// Pitfall rescue
 	if pf_DoPitfallRescue {
@@ -218,8 +220,6 @@ function player_platforming_execute(){
 		var dacc = false;
 		if (grounded and pf_attacking)
 		//or (hurt || jumping == 3 || dashing_end)
-		or (inpcL and instance_place(bbox_left - abs(pf_final_xchange), y, player_array_collisions))
-		or (inpcR and instance_place(bbox_right + abs(pf_final_xchange), y, player_array_collisions))
 			dacc = true;
 	
 		var hdcl = grounded ? pf_ground_decel : pf_air_decel
@@ -247,19 +247,6 @@ function player_platforming_execute(){
 	
 		if fdcl or (!inpcL and !inpcR) or (inpcL and inpcR)
 			pf_hmove *= hdcl;
-	
-		//if point_distance(0, plf_SensorA_dist, 0, plf_SensorB_dist) > 2
-		//	pf_hmove = (pf_hmove > 2 or pf_hmove < -2) ? floor(pf_hmove) : ceil(pf_hmove); //?????
-		
-		//if dacc and (pf_final_xchange > -1 and pf_final_xchange < 1)
-		//	pf_hmove = 0;
-		
-		/*if (plf_SensorA_dist < 4 or plf_SensorB_dist < 4) and min(plf_SensorA_dist, plf_SensorB_dist) < 4 {
-			if point_direction(0, plf_SensorA_dist, 0, plf_SensorB_dist) > 40
-				pf_hmove = lerp(pf_hmove, pf_hmovemax, 0.5)
-			if point_direction(0, plf_SensorA_dist, 0, plf_SensorB_dist) < -40
-				pf_hmove = lerp(pf_hmove, -pf_hmovemax, 0.5)
-		}*/
 	}
 	else
 		pf_hmove = 0;
@@ -308,7 +295,6 @@ function player_platforming_execute(){
 	            if pf_hmove == 0 and pf_attacktime == 0 and pf_airborn_jumps == 0 {
 	                audio_play(snd_noise, , , 1.2);
 		            pf_land = 8;
-		            //pf_land_visual = 6;
 				}
 			}
 			pf_jumpstage = "grounded";
@@ -403,18 +389,26 @@ function player_platforming_execute(){
 		270 + 0, //yaw
 		pf_final_xchange, //override x
 		pf_final_ychange, //override y
-		undefined, //add x
-		undefined, //add y
+		[pf_forceX], //add x
+		[pf_forceY], //add y
 		{U : 0, D : sicheck ? sicheck.down_iterations : 0, L : 0, R : 0},
 		true, //StickUseKeysToo
 		false, //DoCircularize
 		false, //slowintowalls
 		undefined, //positionrounding
 		false, //SuppressHorizontalInput
-		true, //SuppressVerticalInput
-		true, //RestrictXBasedOnPreviousY - enabled to fix insta-sticking when jumping to higher ground
+		false, //SuppressVerticalInput
+		sicheck ? false : true, //RestrictXBasedOnPreviousY - enabled to fix insta-sticking when jumping to higher ground
 		false //RestrictYBasedOnPreviousX
 	);
+	
+	// Set force
+	if InputCheck(INPUT_VERB.OTHER) {
+		pf_forceX = 0;
+		pf_forceY = -10;
+	}
+	pf_forceX = increment_towards(pf_forceX, 0, 1);
+	pf_forceY = increment_towards(pf_forceY, 0, 1);
 	
 	// Direction
 	if pf_final_xchange == 0 {
@@ -442,13 +436,11 @@ function player_platforming_execute(){
         moving = true;
     }
 	
+	// Animate
     pf_grounded = grounded;
-    actor_platforming_animate(pf_grounded, pf_final_xchange, pf_final_ychange, pf_dir);
+    actor_platforming_animate(pf_final_xchange, pf_final_ychange, pf_dir);
 	
 	// Combat
-	if y != yprevious
-		pf_grounded = false;
-	
 	if pf_attack_airslash_buffer > 0
 		keyAttackPressed = false;
 	
@@ -493,9 +485,6 @@ function player_platforming_execute(){
 			pf_attacking = false;
 	}
 	
-	//if pf_attacktype != pf_attacktypeprev
-	//	InputVerbConsume(keyIsInvertJumpAndAttack ? INPUT_VERB.CANCEL : INPUT_VERB.SELECT);
-	
 	pf_attacktypeprev = pf_attacktype;
 	pf_attack_airslash_buffer = max(pf_attack_airslash_buffer-1, 0)
 	if pf_grounded
@@ -510,7 +499,7 @@ function player_platforming_execute(){
 	}
 }
 
-function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
+function actor_platforming_animate(_dx, _dy, _dir) {
 	if s_override exit
 	
     var turn_anim_len = 6;
@@ -525,7 +514,7 @@ function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
         sprite_index = s_plat_land;
         image_index = 0;
 	}
-    else if !_grounded {
+    else if !pf_grounded {
         if _dy < 0
             sprite_index = s_plat_jump_up;
         else if _dy >= 0 
@@ -555,6 +544,29 @@ function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
     pf_xscale_prev = image_xscale;
     if pf_turn_timer > 0
         pf_turn_timer --;
+	
+	// Angleoff
+	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded and instance_place(x, y, o_pf_zone_setstickiterations) {
+		if point_distance(0, plf_SensorA_dist, 0, plf_SensorB_dist) < 1 {
+			angleoff = increment_towards(angleoff, 0, 4)
+			yoff = increment_towards(yoff, 0, 1)
+			xoff = increment_towards(xoff, 0, 1)
+		}
+		else if plf_WinningSensor == "B" {
+			angleoff = increment_towards(angleoff, 25, 4)
+			yoff = increment_towards(yoff, 2, 1)
+			xoff = increment_towards(xoff, 4, 1)
+		}
+		else {
+			angleoff = increment_towards(angleoff, -25, 4)
+			yoff = increment_towards(yoff, 2, 1)
+			xoff = increment_towards(xoff, -4, 1)
+		}
+	} else {
+		angleoff = increment_towards(angleoff, 0, 4)
+		yoff = increment_towards(yoff, 0, 1)
+		xoff = increment_towards(xoff, 0, 1)
+	}
 }
 
 function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoints_array, _keyAttackBuffer, _keyAttackPressed, _keyJumpPressed) { // 

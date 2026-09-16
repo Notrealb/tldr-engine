@@ -1,6 +1,7 @@
 if instance_exists(target) {
     x = target.x + target.xoff + sine(.5, target.shake);
     y = target.y + target.yoff
+	image_angle = target.image_angle + target.angleoff
 	
     image_speed = target.image_speed
 	if array_contains([target.s_plat_slash_air, target.s_plat_slash_ground], target.sprite_index) {

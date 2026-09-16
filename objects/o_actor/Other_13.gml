@@ -23,10 +23,8 @@ else if !noclip and player_movecode == "drplatforming" {
 	player_followerhookcode_b = function(){ 
 		if y != get_leader().y
 			get_leader().pf_caterrecordtime = 14;
-		//if !get_leader().moving and pf_grounded and get_leader().pf_final_xchange != 0
-		//	x += get_leader().pf_final_xchange;
 		handle_walk_sprites = function(){
-			actor_platforming_animate(pf_grounded, x - xprevious, y - yprevious, dir);
+			actor_platforming_animate(x - xprevious, y - yprevious, dir);
 		}
 	};
 	handle_walk_sprites = function(){}

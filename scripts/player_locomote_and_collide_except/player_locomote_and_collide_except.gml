@@ -85,12 +85,9 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 		locomotionY = clamp(abs(locomotionY), 0, basespd+1) * sign(locomotionY);
 	}
     
-	//
+	// Set am_trying_to_locomote's
 	am_trying_to_locomoteX = locomotionX ? true : false;
 	am_trying_to_locomoteY = locomotionY ? true : false;
-	
-	
-	
 	
 	// Collision pardoning
 	var _slinv = [o_noslope];
@@ -196,8 +193,6 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
         locomotionY = 0;
     }
 	
-
-	
 	// Move the player
 	am_locomoting = false;
 	if locomotionX != 0 {
@@ -213,8 +208,16 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	if PositionRounding > 0 {
 		if !place_meeting_except(round_p(x, PositionRounding), y, _colo, _xcep) 
 	        x = round_p(x, PositionRounding);
+		else if !place_meeting_except(round_p(x, PositionRounding)-PositionRounding, y, _colo, _xcep) 
+	        x = round_p(x, PositionRounding)-PositionRounding;
+		else if !place_meeting_except(round_p(x, PositionRounding)+PositionRounding, y, _colo, _xcep) 
+	        x = round_p(x, PositionRounding)+PositionRounding;
 		if !place_meeting_except(x, round_p(y, PositionRounding), _colo, _xcep) 
 	        y = round_p(y, PositionRounding);
+		else if !place_meeting_except(x, round_p(y, PositionRounding)-PositionRounding, _colo, _xcep) 
+	        y = round_p(y, PositionRounding)-PositionRounding;
+		else if !place_meeting_except(x, round_p(y, PositionRounding)+PositionRounding, _colo, _xcep) 
+	        y = round_p(y, PositionRounding)+PositionRounding;
 	}
 	
 	failed_locomote_X = am_trying_to_locomoteX and locomotionX == 0 ? true : false;

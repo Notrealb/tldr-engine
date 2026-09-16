@@ -33,7 +33,7 @@ else if sliding {
 	y += global.slide_speed
 }
 
-// set moving for non-players and players
+// set moving for non-players, and then make sure the player isn't set as moving when they shouldn't be
 if !is_player {
 	moving = false;
 	if ((abs(x - xprevious) > 0 || abs(y - yprevious) > 0) and !is_in_battle and !is_enemy) or sliding

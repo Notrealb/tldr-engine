@@ -1,18 +1,15 @@
-/*
+
 if global.platforming_perspective!=1 exit
 if !instance_exists(get_leader()) exit
 var l = get_leader()
 if !variable_instance_exists(l, "plf_SensorA_dist") exit
+if !variable_instance_exists(l, "locomotionX") exit
 //if l.plf_SensorA_dist == undefined exit
 
 var bbl = l.bbox_left + 4
 var bbt = l.bbox_top
 var bbr = l.bbox_right - 4
 var bbb = l.bbox_bottom
-
-draw_rectangle_ext(l.bbox_left, bbt, l.bbox_right, bbb, c_lime, 1)
-
-//draw_line_colour(bbl, bbb, bbl, bbb-38, c_lime, c_red)
 
 draw_line_colour(bbl, bbb, bbl, bbb+l.plf_SensorA_dist, c_lime, c_teal)
 
@@ -34,4 +31,5 @@ draw_text_scale(
 +n+"pf_final_ychange: "+string(l.pf_final_ychange)
 +n+"locomotionX: "+string(l.locomotionX)
 +n+"locomotionY: "+string(l.locomotionY)
++n+"pf_grounded: "+string(l.pf_grounded)
 , camera_get_view_x(view_camera[0])+10, camera_get_view_y(view_camera[0])+10, 0.5)

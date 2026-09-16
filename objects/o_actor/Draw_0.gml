@@ -15,6 +15,7 @@ if (is_player || is_follower) && !party_isup(name)
 
 var xx = x + xoff + sine(.5, shake)
 var yy = y + yoff
+var __angle = image_angle + angleoff
 
 var isave = image_blend
 image_blend = merge_color(image_blend, c_black, clamp(darken + darken_plat, 0, 1));
@@ -36,7 +37,7 @@ if dodge_getalpha() > 0 && is_player { // outline and bg darkener
 		    s_drawer(spr, image_index, 
 				160 + xdelta, 120 + ydelta,
 				image_xscale, image_yscale,
-				image_angle, image_blend, image_alpha
+				__angle, image_blend, image_alpha
 			)
 		}
 		
@@ -51,7 +52,7 @@ if dodge_getalpha() > 0 && is_player { // outline and bg darkener
 s_drawer(spr, image_index, 
 	xx, yy, 
 	image_xscale, image_yscale, 
-	image_angle, image_blend, image_alpha * alpha_mod
+	__angle, image_blend, image_alpha * alpha_mod
 )
 
 if freeze > 0 {
@@ -86,7 +87,7 @@ if instance_exists(o_eff_lighting_controller) && o_eff_lighting_controller.light
             s_drawer(spr, image_index, 
                 (xx - guipos_x() + __l_off)*2, (yy - guipos_y() + __l_off)*2, 
                 image_xscale*2, image_yscale*2, 
-                image_angle, c_white, 1
+                __angle, c_white, 1
             )
             gpu_set_fog(false, 0, 0, 0)
         
@@ -94,7 +95,7 @@ if instance_exists(o_eff_lighting_controller) && o_eff_lighting_controller.light
             s_drawer(spr, image_index, 
                 (xx - guipos_x() + __l_off)*2, (yy+1 - guipos_y() + __l_off)*2, 
                 image_xscale*2, image_yscale*2, 
-                image_angle, c_black, 1
+                __angle, c_black, 1
             )
             gpu_set_blendmode(bm_normal)
         }
@@ -110,7 +111,7 @@ if instance_exists(o_eff_lighting_controller) && o_eff_lighting_controller.light
         s_drawer(spr, image_index, 
             xx, yy, 
             image_xscale, anime_curve_lerp(0, -2, __l_alpha, anime_curve.linear), 
-            image_angle, c_black, image_alpha * o_eff_lighting_controller.lighting_alpha * alpha_mod
+            __angle, c_black, image_alpha * o_eff_lighting_controller.lighting_alpha * alpha_mod
         )
 }
 
@@ -120,7 +121,7 @@ if sweat {
 		x-sprite_get_xoffset(spr)*image_xscale,
 		y-sprite_get_yoffset(spr)*image_yscale, 
 		.5, .5, 
-		image_angle, image_blend, image_alpha * alpha_mod
+		__angle, image_blend, image_alpha * alpha_mod
 	)
 }
 	
@@ -128,7 +129,7 @@ if sweat {
 if dodge_getalpha() > 0 { 
     if is_player {
         gpu_set_fog(true, merge_color(c_black, c_dkgray, .5), 0, 0)
-    	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, image_angle, image_blend, .8 * dodge_getalpha() * alpha_mod);
+    	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, __angle, image_blend, .8 * dodge_getalpha() * alpha_mod);
     	gpu_set_fog(false, c_white, 0, 0)
     }
     else
@@ -137,14 +138,14 @@ if dodge_getalpha() > 0 {
 
 if flashing { // battle select flash
 	gpu_set_fog(true, c_white, 0, 0)
-	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, image_angle, c_white, (-cos(fsiner / 5)*0.4 + 0.6) * alpha_mod);
+	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, __angle, c_white, (-cos(fsiner / 5)*0.4 + 0.6) * alpha_mod);
 	gpu_set_fog(false, c_white, 0, 0)
     
     lighting_darken_self()
 }
 if flash > 0 { // normal flash
 	gpu_set_fog(true, flash_color, 0, 0)
-	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, image_angle, c_white, flash * alpha_mod);
+	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, __angle, c_white, flash * alpha_mod);
 	gpu_set_fog(false, flash_color, 0, 0)
 }
 
@@ -154,7 +155,7 @@ if instance_exists(o_lb_dl_controller) {
         s_drawer(spr, image_index, 
             (xx - guipos_x())*2, (yy - guipos_y())*2, 
             image_xscale*2, image_yscale*2, 
-            image_angle, c_white, 1
+            __angle, c_white, 1
         )
         gpu_set_fog(false, 0, 0, 0)
         
@@ -162,7 +163,7 @@ if instance_exists(o_lb_dl_controller) {
         s_drawer(spr, image_index, 
             (xx - guipos_x())*2, (yy+1 - guipos_y())*2, 
             image_xscale*2, image_yscale*2, 
-            image_angle, c_black, 1
+            __angle, c_black, 1
         )
         gpu_set_blendmode(bm_normal)
     surface_reset_target()
