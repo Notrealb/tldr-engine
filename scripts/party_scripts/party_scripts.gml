@@ -96,7 +96,7 @@ function party_member_create(name, recordnow = true, xx = get_leader().x, yy = g
     inst.is_party = true
     inst.follow_target = get_leader();
 	inst.pos = get_leader().spacing * party_get_index(name)
-    inst.pos_max = get_leader().spacing_ow * party_get_index(name)
+    inst.pos_max = get_leader().spacing_default * party_get_index(name)
 	
 	with inst {
 		if recordnow 

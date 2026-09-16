@@ -26,17 +26,28 @@ is_party = false
 	made_step = 0;
 	stepgain = 1;
 	
-    spacing_ow = 12;
+    spacing_default = 12;
     spacing_plat = 6;
-    
-	spacing = (global.platforming_perspective > 0 ? spacing_plat : spacing_ow); // the spacing will automatically be bigger due to higher speed
+	spacing = spacing_default
     
 	playermask = spr_mask_15x8
 	player_array_collisions = [];
 	player_array_exceptions = [o_exception];
 	
+	player_movecode = "standard";
+	player_followerhookcode_reset = function(){
+		player_followerhookcode_a = function(){
+			if get_leader().moving
+				array_insert_cycle(record, 0, __new_record());
+		};
+		player_followerhookcode_b = function(){
+			handle_walk_sprites_reset();
+		};
+	}
+	player_followerhookcode_reset()
+
+	
 	pf_init = function() {
-		//x_player_pf3_define()
 		player_platforming_movement_init()
 	}
 	pf_init()
@@ -59,7 +70,7 @@ is_party = false
 	pos = 0
     pos_max = 0;
     
-    interaction_code = function() {}
+    interaction_code = function(){}
     interaction_args = []
     interactable_instances = []
 }
@@ -148,6 +159,60 @@ is_party = false
             return y;
         return (relative ? 0 : y) - myheight/2;
     }
+	
+	handle_walk_sprites = function(){}
+	handle_walk_sprites_standard = function(){
+		// walk sprite speeds
+		if moving && !is_in_battle && !is_enemy && s_dynamic && !s_override {
+			if !startedmoving {
+				startedmoving = true
+		        last_walk_frame = cap_wraparound(last_walk_frame + 1, image_number);
+		        last_walk_buffer = 12;
+				image_index = last_walk_frame
+			}
+			if !running
+				image_speed = s_walk_ispd
+		}
+		else if !is_in_battle && !is_enemy {
+			startedmoving = false
+			if floor(image_index) % 2 == 0 && !s_override && s_dynamic && s_current_animation != ACTOR_ANIMATIONS.IDLE
+				s_current_animation = ACTOR_ANIMATIONS.IDLE;
+		}
+
+		// walk sprites
+		if !is_in_battle && !is_enemy && s_dynamic && !s_override {
+			if running && moving 
+		        s_current_animation = ACTOR_ANIMATIONS.RUN;
+		    else if moving
+		        s_current_animation = ACTOR_ANIMATIONS.WALK;
+		    switch s_current_animation {
+		        default: // idle
+		            var possible_idle = s_idle[dir];
+		            if sprite_exists(possible_idle) { // switch to an idle sprite
+		                sprite_index = possible_idle;
+		                image_speed = s_idle_ispd;
+		                if s_previous_animation != s_current_animation 
+		                    image_index = 0;
+		            }
+		            else { // using only the walk sprites
+		                sprite_index = s_move[dir];
+		                image_speed = 0;
+		                image_index = 0;
+		            }
+		            break;
+		        case ACTOR_ANIMATIONS.WALK:
+		            sprite_index = s_move[dir];
+		            image_speed = s_walk_ispd;
+		            break;
+		        case ACTOR_ANIMATIONS.RUN:
+		            sprite_index = asset_get_index_state(sprite_get_name(s_move[dir]), s_run_postfix);
+		            image_speed = s_run_ispd;
+		            break;
+		    }
+		}
+	}
+	handle_walk_sprites_reset = function(){ handle_walk_sprites = function(){handle_walk_sprites_standard();}}
+	handle_walk_sprites_reset();
 	
 	snapping = 1 // 1 for none
 	

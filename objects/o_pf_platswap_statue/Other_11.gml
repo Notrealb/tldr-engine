@@ -2,7 +2,7 @@
 //event_inherited()
 
 var transtime_1 = 1
-var transtime_2 = 14
+var transtime_2 = 10
 var transtime_3 = 10
 
 audio_stop_sound(snd_grab); 
@@ -17,6 +17,7 @@ if global.platforming_perspective == 0 {
     cutscene_func(function() {
 		with get_leader() {
 			pf_init()
+			pf_grounded = false;
 		}
         for (var i = 0; i < party_length(true); i ++) {
             with party_get_inst(global.party_names[i]) {
@@ -56,21 +57,20 @@ if global.platforming_perspective == 0 {
 		if instance_exists(plat_parent) 
             cutscene_animate(inst.y, plat_parent.ystart - (-(plat_parent.tilesize * plat_parent.wall_closeness_in_tiles)), 14, "sine_in_out", inst, "y");
 		
-		cutscene_animate(0, offset_y, 8, "sine_out", inst, "yoff")
+		cutscene_animate(0, offset_y, 6, "sine_out", inst, "yoff")
 	}
-	cutscene_sleep(12)
+	cutscene_sleep(6)
     
 	for (var i = 0; i < party_length(true); ++i) {
         var offset_y = (i > 0 ? -16 : -8);
         
 		cutscene_sleep(4 - i);
 		var inst = party_get_inst(global.party_names[i]);
-		cutscene_animate(offset_y, 0, 8, "sine_in", inst, "yoff");
+		cutscene_animate(offset_y, 0, 6, "sine_in", inst, "yoff");
 	}
-	cutscene_sleep(7)
+	cutscene_sleep(5)
 	cutscene_audio_play(snd_dtrans_flip,,, 1.3)
     
-	cutscene_set_variable(get_leader(), "pf_enabled", true);
 	cutscene_func(function(){
 		with get_leader() 
             event_user(1)
@@ -103,6 +103,9 @@ else if global.platforming_perspective == 1 {
             with party_get_inst(global.party_names[i]) {
                 s_override = true;
                 sprite_index = s_plat_jump_down;
+				//pf_grounded = false;
+				//pf_final_ychange = 1;
+				//yprevious = y - 10;
             }
         }
     });
@@ -127,12 +130,12 @@ else if global.platforming_perspective == 1 {
 	cutscene_sleep((transtime_2/8) + (transtime_2/4));
     
     cutscene_audio_play(snd_impact);
-	cutscene_set_variable(get_leader(), "pf_enabled", false);
+	cutscene_set_variable(get_leader(), "player_movecode", exit_to_movecode);
 	cutscene_set_variable(get_leader(), "image_xscale", 1);
 	cutscene_player_canmove(true);
     
     cutscene_func(function() {
-        get_leader().spacing = get_leader().spacing_ow;
+        get_leader().spacing = get_leader().spacing_default;
         for (var i = 0; i < party_length(true); i ++) {
             with party_get_inst(global.party_names[i]) {
                 s_override = false;

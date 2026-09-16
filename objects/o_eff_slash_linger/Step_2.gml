@@ -1,6 +1,6 @@
 if instance_exists(target) {
     x = target.x + target.xoff + sine(.5, target.shake);
-    y = target.y + target.yoff + lerp(0, -2, global.platforming_perspective);
+    y = target.y + target.yoff
 	
     image_speed = target.image_speed
 	if array_contains([target.s_plat_slash_air, target.s_plat_slash_ground], target.sprite_index) {

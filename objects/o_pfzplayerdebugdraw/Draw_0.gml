@@ -1,3 +1,4 @@
+/*
 if global.platforming_perspective!=1 exit
 if !instance_exists(get_leader()) exit
 var l = get_leader()
@@ -9,7 +10,7 @@ var bbt = l.bbox_top
 var bbr = l.bbox_right - 4
 var bbb = l.bbox_bottom
 
-draw_rectangle_ext(bbl, bbt, bbr, bbb, c_lime, 1)
+draw_rectangle_ext(l.bbox_left, bbt, l.bbox_right, bbb, c_lime, 1)
 
 //draw_line_colour(bbl, bbb, bbl, bbb-38, c_lime, c_red)
 

@@ -1,4 +1,4 @@
-function player_standard_interaction_and_menutoggle_execute(_can_interact=true, _can_menutoggle=true, _sound_deny=snd_error){
+function player_movecode_standard_etc(_can_interact=true, _can_menutoggle=true, _sound_deny=snd_error){
 	// Interact
 	if InputPressed(INPUT_VERB.SELECT)
         and _can_interact

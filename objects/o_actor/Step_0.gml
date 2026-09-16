@@ -21,21 +21,9 @@ if is_player && check_canmove {
 
 // if i am a follower and i am following the leader
 else if follow && is_follower && instance_exists(follow_target) {
-	var plat = get_leader().pf_enabled;
-    
-	if get_leader().moving or get_leader().pf_caterrecordtime > 0 && global.platforming_perspective == 1 {
-		array_insert_cycle(record, 0, __new_record());
-	}
-    __refresh_follow(pos);
-    
-	if y != get_leader().y && plat
-        get_leader().pf_caterrecordtime = 14;
-    if !plat 
-        get_leader().pf_caterrecordtime = 0;
-    
-    if plat 
-        //x_player_pf3_actor_animate(pf_grounded, x - xprevious, y - yprevious, dir);
-		actor_platforming_animate(pf_grounded, x - xprevious, y - yprevious, dir);
+	script_execute_ext(get_leader().player_followerhookcode_a);
+	__refresh_follow(pos);
+	script_execute_ext(get_leader().player_followerhookcode_b);
 }
 else if sliding {
 	if instance_exists(slideinst) && !place_meeting(x, y, slideinst){
@@ -45,67 +33,15 @@ else if sliding {
 	y += global.slide_speed
 }
 
-// sprites
+// set moving for non-players
 if !is_player {
 	moving = false;
 	if ((abs(x - xprevious) > 0 || abs(y - yprevious) > 0) and !is_in_battle and !is_enemy) or sliding
 		moving = true;
 }
-if moving && !is_in_battle && !is_enemy && s_dynamic && !s_override && !get_leader().pf_enabled {
-	if !startedmoving {
-		startedmoving = true
-        
-        last_walk_frame = cap_wraparound(last_walk_frame + 1, image_number);
-        last_walk_buffer = 12;
-		image_index = last_walk_frame
-	}
-	if !running
-		image_speed = s_walk_ispd
-}
-else if !is_in_battle && !is_enemy && !get_leader().pf_enabled {
-	startedmoving = false
-	
-	if floor(image_index) % 2 == 0 && !s_override && s_dynamic && s_current_animation != ACTOR_ANIMATIONS.IDLE
-		s_current_animation = ACTOR_ANIMATIONS.IDLE;
-}
 
-// running sprites, walking sprites
-if !is_in_battle && !is_enemy && s_dynamic && !s_override && !get_leader().pf_enabled {
-	if running && moving 
-        s_current_animation = ACTOR_ANIMATIONS.RUN;
-    else if moving
-        s_current_animation = ACTOR_ANIMATIONS.WALK;
-    
-    switch s_current_animation {
-        default: // idle
-            var possible_idle = s_idle[dir];
-            
-            if sprite_exists(possible_idle) { // switch to an idle sprite
-                sprite_index = possible_idle;
-                image_speed = s_idle_ispd;
-                
-                if s_previous_animation != s_current_animation 
-                    image_index = 0;
-            }
-            else { // using only the walk sprites
-                sprite_index = s_move[dir];
-                image_speed = 0;
-                image_index = 0;
-            }
-            
-            break;
-        case ACTOR_ANIMATIONS.WALK:
-            sprite_index = s_move[dir];
-            image_speed = s_walk_ispd;
-            
-            break;
-        case ACTOR_ANIMATIONS.RUN:
-            sprite_index = asset_get_index_state(sprite_get_name(s_move[dir]), s_run_postfix);
-            image_speed = s_run_ispd;
-            
-            break;
-    }
-}
+// handle walk sprites
+handle_walk_sprites();
 
 // darken in certain conditions
 if is_follower {

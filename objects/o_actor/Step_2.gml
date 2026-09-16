@@ -1,3 +1,4 @@
+// depth
 if is_in_battle and instance_exists(o_enc_bg) and o_enc_bg.alphain == true
     depth = DEPTH_ENCOUNTER.ACTORS - (y - guipos_y());
 else if global.platforming_perspective and instance_exists(o_dev_pf_controller) {
@@ -7,8 +8,7 @@ else if global.platforming_perspective and instance_exists(o_dev_pf_controller) 
 		for (var i = 0; i < party_length(true); i ++) {
 			if id == party_get_inst(global.party_names[i]) {
 				var _c = get_leader().player_array_collisions
-				//if !(place_meeting(x, y, o_pf_wall) and !place_meeting(x, y, _c))
-					depth = -party_length(true) + i;
+				depth = -party_length(true) + i;
 				var wt = instance_place(x, y+2, _c);
 				if wt {
 					var bltts = (wt.floor_backlength_in_tiles * wt.tilesize);

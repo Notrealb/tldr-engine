@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"player_standard_interaction_and_menutoggle_execute",
+  "%Name":"player_movecode_standard_etc",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"player_standard_interaction_and_menutoggle_execute",
+  "name":"player_movecode_standard_etc",
   "parent":{
     "name":"player",
     "path":"folders/@Engine/scripts/player.yy",

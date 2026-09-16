@@ -4,8 +4,6 @@ global.plataction_fade = 0
 global.allow_open_plataction = true
 
 function player_platforming_movement_init(){
-	if !instance_exists(o_pf_platswap_statue) or !instance_exists(o_pf_wall) {global.platforming_perspective=0}
-	
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
 
@@ -84,6 +82,8 @@ function player_platforming_movement_init(){
 	pf_AllowJumping = true
 	pf_AllowWalking = true
 	pf_DoPitfallRescue = true
+	
+	spacing_plat = 6
 }
 
 function player_platforming_execute(){
@@ -100,10 +100,13 @@ function player_platforming_execute(){
 	// Mask
 	mask_index = playermask;
 	
-	// Caterpillar spacing
+	// Party caterpillar spacing and depth
+	spacing = spacing_plat
 	pf_caterrecordtime = max(pf_caterrecordtime - 1, 0);
 	for (var i = 0; i < party_length(true); ++i) {
 		var pinst = party_get_inst(global.party_names[i]);
+		var targpos = get_leader().spacing_plat * party_get_index(global.party_names[i]);
+		pinst.pos = increment_towards(pinst.pos, targpos, 2);
 		pinst.depth = depth + party_get_index(global.party_names[i]);
 	}
 	
@@ -206,11 +209,10 @@ function player_platforming_execute(){
 	}
 	
 	// Horizontal walking
+	var Verbs = {U : INPUT_VERB.UP, D : INPUT_VERB.DOWN, L : INPUT_VERB.LEFT, R : INPUT_VERB.RIGHT}
+	var inpcL = InputCheck(Verbs.L)
+	var inpcR = InputCheck(Verbs.R)
 	if pf_AllowWalking {
-		var Verbs = {U : INPUT_VERB.UP, D : INPUT_VERB.DOWN, L : INPUT_VERB.LEFT, R : INPUT_VERB.RIGHT}
-		var inpcL = InputCheck(Verbs.L)
-		var inpcR = InputCheck(Verbs.R)
-	
 		var hacl = grounded ? pf_ground_accel : pf_air_accel
 	
 		var dacc = false;
@@ -404,21 +406,15 @@ function player_platforming_execute(){
 		undefined, //add x
 		undefined, //add y
 		{U : 0, D : sicheck ? sicheck.down_iterations : 0, L : 0, R : 0},
-		true,
-		false, //circ
+		true, //StickUseKeysToo
+		false, //DoCircularize
 		false, //slowintowalls
 		undefined, //positionrounding
-		false,
-		true
+		false, //SuppressHorizontalInput
+		true, //SuppressVerticalInput
+		true, //RestrictXBasedOnPreviousY - enabled to fix insta-sticking when jumping to higher ground
+		false //RestrictYBasedOnPreviousX
 	);
-	
-	// Ground alignment fix
-	/*
-	var inst = instance_place(x, y + 1, player_array_collisions);
-	if instance_exists(inst)
-	and instance_position(inst.bbox_left+1, inst.bbox_top, inst)
-	and instance_position(inst.bbox_right-1, inst.bbox_top, inst)
-		y = instance_place(x, y + 1, player_array_collisions).bbox_top;*/
 	
 	// Direction
 	if pf_final_xchange == 0 {
@@ -440,10 +436,12 @@ function player_platforming_execute(){
         pf_land --;
 	
 	// Set moving
-	if pf_final_xchange != 0 or pf_final_ychange != 0 or !grounded {
+	moving = false;
+	var _dv = 1.902
+	if /*inpcL or inpcR or*/ !(pf_final_xchange < _dv and pf_final_xchange > -_dv) or pf_final_ychange != 0 or !grounded {
         moving = true;
-    }	
-    
+    }
+	
     pf_grounded = grounded;
     actor_platforming_animate(pf_grounded, pf_final_xchange, pf_final_ychange, pf_dir);
 	
@@ -513,6 +511,8 @@ function player_platforming_execute(){
 }
 
 function actor_platforming_animate(_grounded, _dx, _dy, _dir) {
+	if s_override exit
+	
     var turn_anim_len = 6;
     
     image_xscale = (_dir == DIR.RIGHT ? 1 : -1);
@@ -595,7 +595,7 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
 					audio_play(pf_impact_sfx);
 				}
 				
-                var inst_linger = instance_create(o_eff_slash_linger, x, y, DEPTH_PLATFORMER.SLASH);
+				var inst_linger = instance_create(o_eff_slash_linger, -999, -999, DEPTH_PLATFORMER.SLASH);
                 inst_linger.target = id;
                 inst_linger.sprite_index = _fgsprite;
                 inst_linger.image_xscale = image_xscale;

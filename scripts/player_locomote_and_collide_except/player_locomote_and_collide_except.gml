@@ -18,6 +18,8 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	PositionRounding = 0.5,
 	SuppressHorizontalInput = false, 
 	SuppressVerticalInput = false,
+	RestrictXBasedOnPreviousY = false,
+	RestrictYBasedOnPreviousX = false,
 	Verbs = {U : INPUT_VERB.UP, D : INPUT_VERB.DOWN, L : INPUT_VERB.LEFT, R : INPUT_VERB.RIGHT}, 
 	ForcedKeys = []
 )
@@ -83,20 +85,19 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 		locomotionY = clamp(abs(locomotionY), 0, basespd+1) * sign(locomotionY);
 	}
     
-	// Round positioning, if above zero
-	/*if PositionRounding > 0 {
-		if !place_meeting_except(x + round_p(locomotionX, PositionRounding), y, _colo, _xcep) 
-	        locomotionX = round_p(locomotionX, PositionRounding);
-		if !place_meeting_except(x, y + round_p(locomotionY, PositionRounding), _colo, _xcep) 
-	        locomotionY = round_p(locomotionY, PositionRounding);
-	}*/
-    
 	//
 	am_trying_to_locomoteX = locomotionX ? true : false;
 	am_trying_to_locomoteY = locomotionY ? true : false;
 	
+	
+	
+	
 	// Collision pardoning
-	var _slinv = array_concat(_xcep, [o_noslope])
+	var _slinv = [o_noslope];
+	if is_array(_xcep)
+		array_concat(_xcep, _slinv);
+	else if _xcep
+		array_push(_slinv, _xcep);
 	if locomotionY == 0 and place_meeting_except(x+locomotionX, y, _colo, _slinv){
 		var t = locomotionX;
 		if !place_meeting_except(x+t, y+t, _colo, _xcep) 
@@ -181,11 +182,21 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 		}
 	}
 	
+	// Restrict movement based on previous position, if can and should
+	if RestrictXBasedOnPreviousY and StickIterations.D == 0 and StickIterations.U == 0 and place_meeting_except(x+locomotionX, y, _colo, _xcep) {
+        locomotionX = 0; 
+    }
+	if RestrictYBasedOnPreviousX and StickIterations.L == 0 and StickIterations.R == 0 and place_meeting_except(x, y+locomotionY, _colo, _xcep) {
+        locomotionY = 0; 
+    }
+	
 	// Final collision check
 	if place_meeting_except(x+locomotionX, y+locomotionY, _colo, _xcep) {
         locomotionX = 0; 
         locomotionY = 0;
     }
+	
+
 	
 	// Move the player
 	am_locomoting = false;

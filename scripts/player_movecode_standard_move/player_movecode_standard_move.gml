@@ -1,7 +1,8 @@
-function player_standard_movement_execute(){
+function player_movecode_standard_move(){
 	mask_index = playermask
-
-	// caterpillar spacing
+	
+	// Party caterpillar spacing
+	spacing = spacing_default
 	for (var i = 0; i < party_length(true); ++i) {
 		var pinst = party_get_inst(global.party_names[i]);
 		var targpos = get_leader().spacing * party_get_index(global.party_names[i]);

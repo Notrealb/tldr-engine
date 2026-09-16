@@ -10,6 +10,7 @@ function __InputConfigVerbs()
         SELECT,
         CANCEL,
         SPECIAL,
+		OTHER,
     }
     
     enum INPUT_CLUSTER
@@ -28,6 +29,7 @@ function __InputConfigVerbs()
         InputDefineVerb(INPUT_VERB.SELECT,  "CONFIRM",     ["Z", vk_enter],        gp_face1);
         InputDefineVerb(INPUT_VERB.CANCEL,  "CANCEL",     ["X", vk_shift],        gp_face2);
         InputDefineVerb(INPUT_VERB.SPECIAL, "MENU",    ["C", vk_control],      gp_face4);
+		InputDefineVerb(INPUT_VERB.OTHER,  "OTHER",    ["V", vk_alt],      gp_face3);
     }
     else //Flip A/B over on Switch
     {
@@ -38,6 +40,7 @@ function __InputConfigVerbs()
         InputDefineVerb(INPUT_VERB.SELECT,  "CONFIRM",  undefined,   gp_face2); // !!
         InputDefineVerb(INPUT_VERB.CANCEL,  "CANCEL",  undefined,   gp_face1); // !!
         InputDefineVerb(INPUT_VERB.SPECIAL, "MENU", undefined,   gp_face4);
+		InputDefineVerb(INPUT_VERB.OTHER,  "OTHER",    undefined,   gp_face3);
     }
     
     //Define a cluster of verbs for moving around
