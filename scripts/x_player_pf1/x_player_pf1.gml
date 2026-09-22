@@ -116,9 +116,9 @@ function player_platforming_execute(){
 	}
 	
 	// Distance sensing
-	var bbl = bbox_left + 4
+	var bbl = bbox_left + 1
 	var bbt = bbox_top
-	var bbr = bbox_right - 4
+	var bbr = bbox_right - 1
 	var bbb = bbox_bottom
 	var s
 	s = collision_line_point(bbl, bbb, bbl, bbb + 1000, player_array_collisions, true, true)
@@ -129,7 +129,7 @@ function player_platforming_execute(){
 	else if plf_SensorA_dist < plf_SensorB_dist {plf_WinningSensor = "A"}
 	else {plf_WinningSensor = "B"}
 	
-	// Collision array
+	// Collision array, ceilded check, grounded check.
 	player_array_collisions = [];
 	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
 		var inst = instance_find(o_pf_wall, i);
@@ -142,23 +142,30 @@ function player_platforming_execute(){
 		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(player_array_collisions, inst)
             array_push(player_array_collisions, inst);
 	}
-	var grounded = place_meeting(x, bbox_bottom+2, player_array_collisions)
+	var grounded = place_meeting(x, bbox_bottom + 2, player_array_collisions)
+	if !grounded
+	and place_meeting(x, bbox_bottom + 2 + 2, player_array_collisions)
+	and ((place_meeting(x - 2, bbox_bottom + 2, player_array_collisions) and !place_meeting(x + 2, bbox_bottom + 2, player_array_collisions))
+		or (place_meeting(x + 2, bbox_bottom + 2, player_array_collisions) and !place_meeting(x - 2, bbox_bottom + 2, player_array_collisions)))
+		grounded = place_meeting(x, bbox_bottom + 2 + 2, player_array_collisions);
 	
 	// Pitfall rescue
 	if pf_DoPitfallRescue {
 		if grounded
-		and !place_meeting(x, y, o_pf_zone_nosafespotsaving)
+		and !place_meeting(x, y, o_pf_do_nosafespotsaving)
 		and place_meeting(x, bbox_bottom+1, player_array_collisions)
 		and place_meeting(x+14, bbox_bottom+4, player_array_collisions)
 		and place_meeting(x-14, bbox_bottom+4, player_array_collisions)
 		and !place_meeting(x, y, player_array_collisions)
-		{
-			pf_savedsafeposition = [x, y]
-		}
+		and plf_WinningSensor == "both"
+			pf_savedsafeposition = [x, y];
 		
 		if y > room_height + 100
 		and !collision_rectangle(bbox_left-10, y-pf_ceil_clearance, bbox_right+10, bbox_bottom+100, o_trigger_warp, true, true)
 		{
+			var pfyrise = instance_exists(o_dev_pf_controller) ? o_dev_pf_controller.camera_y_rise : 18
+			pfyrise = lerp(0, pfyrise, global.platforming_perspective);
+			
 			cutscene_create();
 			cutscene_player_canmove(false);
 			cutscene_sleep(10);
@@ -170,7 +177,7 @@ function player_platforming_execute(){
 				cutscene_animate(inst.image_alpha, 0, 10, "linear", inst, "image_alpha")
 			}}
 		
-			cutscene_camera_pan(pf_savedsafeposition[0], pf_savedsafeposition[1], 16, true, "cubic_in_out");
+			cutscene_camera_pan(pf_savedsafeposition[0], pf_savedsafeposition[1]-pfyrise, 16, true, "cubic_in_out");
 		
 			cutscene_func(function(){
 				get_leader().x = pf_savedsafeposition[0];
@@ -346,6 +353,13 @@ function player_platforming_execute(){
 		                pf_jumpstage = "jumping";
 						pf_auto_jump_next_land = false;
 		                audio_play(snd_ui_cancel_small, , , 1.5);
+						if place_meeting(x, y, o_pf_do_slopejumppush)
+						if plf_WinningSensor == "A" {
+							pf_forceX += pf__jumpheight
+						}
+						else if plf_WinningSensor == "B" {
+							pf_forceX -= pf__jumpheight
+						}
 		            }
 				}
 			}
@@ -382,8 +396,9 @@ function player_platforming_execute(){
 	pf_final_ychange = pf_vspeed
 	if pf_final_ychange > min(plf_SensorA_dist, plf_SensorB_dist)
 		pf_final_ychange = min(plf_SensorA_dist, plf_SensorB_dist);
-	var sicheck = instance_place(x, y, o_pf_zone_setstickiterations)
-	player_locomote_and_collide_except(noclip ? noone : player_array_collisions, player_array_exceptions, 4,
+	var can_slopeandstick = grounded and place_meeting(xprevious, y+4, player_array_collisions)
+	var highstep = place_meeting(x, y, o_pf_do_highstep)
+	player_locomote_and_collide_except(player_array_collisions, player_array_exceptions, 4,
 		undefined, //speedmult
 		false, //actordir
 		270 + 0, //yaw
@@ -391,22 +406,19 @@ function player_platforming_execute(){
 		pf_final_ychange, //override y
 		[pf_forceX], //add x
 		[pf_forceY], //add y
-		{U : 0, D : sicheck ? sicheck.down_iterations : 0, L : 0, R : 0},
-		true, //StickUseKeysToo
+		can_slopeandstick ? (highstep ? 64 : 18) : 0, //SlopeIterationsX
+		undefined, //SlopeIterationsY
+		{U : 0, D : can_slopeandstick ? (highstep ? 64 : 18) : 0, L : 0, R : 0},
 		false, //DoCircularize
 		false, //slowintowalls
 		undefined, //positionrounding
 		false, //SuppressHorizontalInput
-		false, //SuppressVerticalInput
-		sicheck ? false : true, //RestrictXBasedOnPreviousY - enabled to fix insta-sticking when jumping to higher ground
+		true, //SuppressVerticalInput
+		true, //RestrictXBasedOnPreviousY
 		false //RestrictYBasedOnPreviousX
 	);
 	
-	// Set force
-	//if InputCheck(INPUT_VERB.OTHER) {
-	//	pf_forceX = 0;
-	//	pf_forceY = -10;
-	//}
+	// Force-momentum slowing
 	pf_forceX = increment_towards(pf_forceX, 0, 1);
 	pf_forceY = increment_towards(pf_forceY, 0, 1);
 	
@@ -546,7 +558,7 @@ function actor_platforming_animate(_dx, _dy, _dir) {
         pf_turn_timer --;
 	
 	// Angleoff
-	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded and instance_place(x, y, o_pf_zone_setstickiterations) {
+	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded and instance_place(x, y, o_pf_do_highstep) {
 		if point_distance(0, plf_SensorA_dist, 0, plf_SensorB_dist) < 1 {
 			angleoff = increment_towards(angleoff, 0, 4)
 			yoff = increment_towards(yoff, 0, 1)

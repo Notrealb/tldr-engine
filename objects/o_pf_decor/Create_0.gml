@@ -1,7 +1,7 @@
 event_inherited()
 
 // Automatically set wall parent
-if !instance_exists(wall_parent) {
+if auto_get_wall_parent and !instance_exists(wall_parent) {
 	var t = noone
 	for (var i=0; i<=200 and t==noone; i+=1) {
 		var c = collision_point(x, y+i, o_pf_wall, true, true); if c {t = c}

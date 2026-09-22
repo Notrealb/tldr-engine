@@ -42,12 +42,15 @@ if sprite_exists(flr_spr) and !array_contains(["nothing", "dont", "null", 0, -1,
 }
 
 // Draw the wall
-matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, 1, 1));
-_pf_paletteswap_set(wall_palette, wall_palette_index_array)
-draw_sprite_ext(sprite_index, image_index, 0, 0, image_xscale, image_yscale, 0, testblend, image_alpha);
+if do_draw_wall {
+	matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, 1, 1));
+	_pf_paletteswap_set(wall_palette, wall_palette_index_array)
+	draw_sprite_ext(sprite_index, image_index, 0, 0, image_xscale, image_yscale, 0, testblend, image_alpha);
+}
 
 // Reset anything that needs to be reset
 matrix_reset();
 pal_swap_reset();
 
-draw_text_scale(string(depth), x, __y_after_offset, 0.5, c_white, 0.4)
+
+//draw_text_scale(string(depth), x, __y_after_offset, 0.5, c_white, 0.4)

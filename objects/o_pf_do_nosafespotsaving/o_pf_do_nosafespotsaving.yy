@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"o_pf_zone_nosafespotsaving",
+  "%Name":"o_pf_do_nosafespotsaving",
   "eventList":[],
   "managed":true,
-  "name":"o_pf_zone_nosafespotsaving",
+  "name":"o_pf_do_nosafespotsaving",
   "overriddenProperties":[],
   "parent":{
     "name":"platforming",
@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_default_alt_1",
-    "path":"sprites/spr_default_alt_1/spr_default_alt_1.yy",
+    "name":"spr_pf_do_nosafespotsaving",
+    "path":"sprites/spr_pf_do_nosafespotsaving/spr_pf_do_nosafespotsaving.yy",
   },
   "spriteMaskId":null,
   "visible":false,

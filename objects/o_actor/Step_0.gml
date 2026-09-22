@@ -21,9 +21,17 @@ if is_player && check_canmove {
 
 // if i am a follower and i am following the leader
 else if follow && is_follower && instance_exists(follow_target) {
-	script_execute_ext(get_leader().player_followerhookcode_a);
-	__refresh_follow(pos);
-	script_execute_ext(get_leader().player_followerhookcode_b);
+	if is_in_battle {
+		get_leader().player_followerhookcode_reset();
+		script_execute_ext(get_leader().player_followerhookcode_a);
+		__refresh_follow(pos);
+		script_execute_ext(get_leader().player_followerhookcode_b);
+	}
+	else {
+		script_execute_ext(get_leader().player_followerhookcode_a);
+		__refresh_follow(pos);
+		script_execute_ext(get_leader().player_followerhookcode_b);
+	}
 }
 else if sliding {
 	if instance_exists(slideinst) && !place_meeting(x, y, slideinst){

@@ -11,8 +11,9 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	OverrideAttemptY = 0, 
 	AddAttemptX = 0, 
 	AddAttemptY = 0, 
+	SlopeIterationsX = -1,
+	SlopeIterationsY = -1,
 	StickIterations = {U : 0, D : 0, L : 0, R : 0},
-	StickUseKeysToo = false,
 	DoCircularize = false,
 	SlowIntoWalls = true,
 	PositionRounding = 0.5,
@@ -89,42 +90,32 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	am_trying_to_locomoteX = locomotionX ? true : false;
 	am_trying_to_locomoteY = locomotionY ? true : false;
 	
-	// Collision pardoning
-	var _slinv = [o_noslope];
-	if is_array(_xcep)
-		array_concat(_xcep, _slinv);
-	else if _xcep
-		array_push(_slinv, _xcep);
-	if locomotionY == 0 and place_meeting_except(x+locomotionX, y, _colo, _slinv){
-		var t = locomotionX;
-		if !place_meeting_except(x+t, y+t, _colo, _xcep) 
-            locomotionY = t;
-		else if !place_meeting_except(x+t, y-t, _colo, _xcep) 
-            locomotionY = -t;
+	// Slope iterations
+	var canSlope = !place_meeting(x, y, o_noslope)
+	if locomotionY == 0 and place_meeting_except(x+locomotionX, y, _colo, _xcep) and canSlope {
+		for (var i = 1; i <= ((SlopeIterationsX > 0) ? SlopeIterationsX : abs(locomotionX)+abs(1*sign(locomotionX))); i += 1) {
+			var t = sign(locomotionX) * i;
+			if !place_meeting_except(x+locomotionX, y+t, _colo, _xcep) 
+			    locomotionY = t;
+			else if !place_meeting_except(x+locomotionX, y-t, _colo, _xcep) 
+			    locomotionY = -t;
+			if locomotionY == t or locomotionY == -t
+				i = 99999;
+		}
 	}
-	else if locomotionY == 0 and place_meeting_except(x+sign(locomotionX), y, _colo, _slinv){
-		var t = sign(locomotionX)
-		if !place_meeting_except(x+t, y+t, _colo, _xcep) 
-            locomotionY = t;
-		else if !place_meeting_except(x+t, y-t, _colo, _xcep) 
-            locomotionY = -t;
-	}
-    
-	if locomotionX == 0 and place_meeting_except(x, y+locomotionY, _colo, _slinv){
-		var t = locomotionY;
-		if !place_meeting_except(x+t, y+t, _colo, _xcep) 
-            locomotionX = t;
-		else if !place_meeting_except(x-t, y+t, _colo, _xcep) 
-            locomotionX = -t;
-	}
-	else if locomotionX == 0 and place_meeting_except(x, y+sign(locomotionY), _colo, _slinv){
-		var t = sign(locomotionY);
-		if !place_meeting_except(x+t, y+t, _colo, _xcep) 
-            locomotionX = t;
-		else if !place_meeting_except(x-t, y+t, _colo, _xcep) 
-            locomotionX = -t;
+	if locomotionX == 0 and place_meeting_except(x, y+locomotionY, _colo, _xcep) and canSlope {
+		for (var i = 1; i <= ((SlopeIterationsY > 0) ? SlopeIterationsY : abs(locomotionY)+abs(1*sign(locomotionY))); i += 1) {
+			var t = sign(locomotionY) * i;
+			if !place_meeting_except(x+t, y+locomotionY, _colo, _xcep) 
+			    locomotionX = t;
+			else if !place_meeting_except(x-t, y+locomotionY, _colo, _xcep) 
+			    locomotionX = -t;
+			if locomotionX == t or locomotionX == -t
+				i = 99999;
+		}
 	}
 	
+	// Collision pardoning
 	if place_meeting_except(x+locomotionX, y+locomotionY, _colo, _xcep){
 		var six = sign(locomotionX)
 		var siy = sign(locomotionY)
@@ -143,38 +134,48 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 		else if !place_meeting_except(x, y+locomotionY, _colo, _xcep) locomotionX = 0
 	}
 	
-	// Stick Iterations
-	if !place_meeting_except(x+locomotionX, y+locomotionY, _colo, _xcep) {
-		if locomotionX != 0 or (StickUseKeysToo and KeysOpposingX != 0) {
-			if StickIterations.U > 0 {
-				for (var i = 1; i <= StickIterations.U; i += 1) {
-					if place_meeting_except(x+locomotionX, y+locomotionY-(i*2), _colo, _xcep)
-					and !place_meeting_except(x+locomotionX, y+locomotionY-i, _colo, _xcep)
-						locomotionY-=i;
-				}
-			}
-			if StickIterations.D > 0 {
-				for (var i = 1; i <= StickIterations.D; i += 1) {
-					if place_meeting_except(x+locomotionX, y+locomotionY+(i*2), _colo, _xcep)
-					and !place_meeting_except(x+locomotionX, y+locomotionY+i, _colo, _xcep)
-						locomotionY+=i;
-				}
+	// Stick iterations
+	if StickIterations.D > 0 and locomotionY == 0 and place_meeting_except(x, y+1, _colo, _xcep) and !place_meeting_except(x+locomotionX, y+1, _colo, _xcep)
+	{
+		for (var i = 0.5; i <= StickIterations.D; i += 0.5) {
+			if place_meeting_except(x+locomotionX, y+i+0.5, _colo, _xcep)
+			and !place_meeting_except(x+locomotionX, y+i, _colo, _xcep)
+			{
+				locomotionY = i;
+				i = 99999;
 			}
 		}
-		else if locomotionY != 0 or (StickUseKeysToo and KeysOpposingY != 0) {
-			if StickIterations.L > 0 {
-				for (var i = 1; i <= StickIterations.L; i += 1) {
-					if place_meeting_except(x+locomotionX-(i*2), y+locomotionY, _colo, _xcep)
-					and !place_meeting_except(x+locomotionX-i, y+locomotionY, _colo, _xcep)
-						locomotionX-=i;
-				}
+	}
+	if StickIterations.U > 0 and locomotionY == 0 and place_meeting_except(x, y-1, _colo, _xcep) and !place_meeting_except(x+locomotionX, y-1, _colo, _xcep)
+	{
+		for (var i = 0.5; i <= StickIterations.U; i += 0.5) {
+			if place_meeting_except(x+locomotionX, y-i-0.5, _colo, _xcep)
+			and !place_meeting_except(x+locomotionX, y-i, _colo, _xcep)
+			{
+				locomotionY = -i;
+				i = 99999;
 			}
-			if StickIterations.R > 0 {
-				for (var i = 1; i <= StickIterations.R; i += 1) {
-					if place_meeting_except(x+locomotionX+(i*2), y+locomotionY, _colo, _xcep)
-					and !place_meeting_except(x+locomotionX+i, y+locomotionY, _colo, _xcep)
-						locomotionY-=i;
-				}
+		}
+	}
+	if StickIterations.R > 0 and locomotionX == 0 and place_meeting_except(x+1, y, _colo, _xcep) and !place_meeting_except(x+1, y+locomotionY, _colo, _xcep)
+	{
+		for (var i = 0.5; i <= StickIterations.R; i += 0.5) {
+			if place_meeting_except(x+i+0.5, y+locomotionY, _colo, _xcep)
+			and !place_meeting_except(x+i, y+locomotionY, _colo, _xcep)
+			{
+				locomotionX = i;
+				i = 99999;
+			}
+		}
+	}
+	if StickIterations.L > 0 and locomotionX == 0 and place_meeting_except(x-1, y, _colo, _xcep) and !place_meeting_except(x-1, y+locomotionY, _colo, _xcep)
+	{
+		for (var i = 0.5; i <= StickIterations.L; i += 0.5) {
+			if place_meeting_except(x-i-0.5, y+locomotionY, _colo, _xcep)
+			and !place_meeting_except(x-i, y+locomotionY, _colo, _xcep)
+			{
+				locomotionX = -i;
+				i = 99999;
 			}
 		}
 	}

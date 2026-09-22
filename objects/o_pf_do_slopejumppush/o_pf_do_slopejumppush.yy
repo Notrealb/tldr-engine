@@ -1,9 +1,9 @@
 {
   "$GMObject":"",
-  "%Name":"o_pf_zone_setstickiterations",
+  "%Name":"o_pf_do_slopejumppush",
   "eventList":[],
   "managed":true,
-  "name":"o_pf_zone_setstickiterations",
+  "name":"o_pf_do_slopejumppush",
   "overriddenProperties":[],
   "parent":{
     "name":"platforming",
@@ -23,16 +23,14 @@
   "physicsShape":1,
   "physicsShapePoints":[],
   "physicsStartAwake":true,
-  "properties":[
-    {"$GMObjectProperty":"v2","%Name":"down_iterations","filters":[],"listItems":[],"multiselect":false,"name":"down_iterations","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"3","varType":1,},
-  ],
+  "properties":[],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_trigger_slide",
-    "path":"sprites/spr_trigger_slide/spr_trigger_slide.yy",
+    "name":"spr_pf_do_slopejumppush",
+    "path":"sprites/spr_pf_do_slopejumppush/spr_pf_do_slopejumppush.yy",
   },
   "spriteMaskId":null,
-  "visible":true,
+  "visible":false,
 }
