@@ -6,7 +6,7 @@ global.allow_open_plataction = true
 function player_platforming_movement_init(){
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
-
+	
 	player_array_collisions = []
 	
 	pf_hmove = 0
@@ -89,9 +89,31 @@ function player_platforming_movement_init(){
 	pf_forceY = 0
 	
 	pf_ExampleDoCheapSlopePartyTilting = false
+	
+	pf_invulnframe = 0;
+	
+	pf_hurt = 0;
 }
 
 function player_platforming_execute(){
+	// Hurt
+	pf_hurt = (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
+	
+	// Dodge
+	if !instance_exists(o_dodge_controller)
+		instance_create(o_dodge_controller, -90, -90);
+	if instance_exists(o_dodge_controller) {
+		if global.platforming_perspective == 1 {
+			//o_dodge_controller.dodge_mode = true;
+			//o_dodge_controller.dodge_override = true;
+			o_dodge_controller.dodge_base_alpha = 0;
+			o_dodge_controller.dodge_darken = 0.00001;
+		}
+		else {
+			//o_dodge_controller.dodge_mode = false;
+		}
+	}
+	
 	// Run hit event in slashable objects if any were hit last frame.
 	if ds_exists(pf_slashed_objects, ds_type_list) {
         for (var i = 0; i < ds_list_size(pf_slashed_objects); i ++) {
@@ -226,7 +248,7 @@ function player_platforming_execute(){
 	
 		var dacc = false;
 		if (grounded and pf_attacking)
-		//or (hurt || jumping == 3 || dashing_end)
+		or pf_hurt
 			dacc = true;
 	
 		var hdcl = grounded ? pf_ground_decel : pf_air_decel
@@ -377,7 +399,7 @@ function player_platforming_execute(){
     
 		if (pf_vspeed < 0 or pf_hitstop > 0)
 		and release_jump
-		/*and !pf_hurt*/
+		and !pf_hurt
 			pf_vspeed *= 0.5;
 	
 		if array_contains(["jumping", "falling"], pf_jumpstage)
@@ -454,6 +476,7 @@ function player_platforming_execute(){
 	
 	// Combat
 	if pf_attack_airslash_buffer > 0
+	or pf_hurt
 		keyAttackPressed = false;
 	
 	if pf_grounded == false {
@@ -504,7 +527,7 @@ function player_platforming_execute(){
 	else
 		pf_grounded_time = -1;
 		
-	// -------- plataction opening ---------
+	// Plataction
 	if global.allow_open_plataction and InputPressed(INPUT_VERB.SPECIAL) {
 		audio_play(snd_spearrise)
 		instance_create(o_ui_plataction)
@@ -522,7 +545,10 @@ function actor_platforming_animate(_dx, _dy, _dir) {
     if pf_xscale_prev != image_xscale && pf_turn_timer == 0
         pf_turn_timer = turn_anim_len;
     
-	if pf_airtime <= 1 and pf_jumpstage == "jumping" {
+	if is_player and pf_hurt {
+		sprite_index = pf_grounded ? s_plat_hurt_ground : s_plat_hurt_air;
+	}
+	else if pf_airtime <= 1 and pf_jumpstage == "jumping" {
         sprite_index = s_plat_land;
         image_index = 0;
 	}
@@ -615,8 +641,17 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
                 
 				if ds_list_size(potential_slashables) > 0 {
 					pf_slashed_objects = potential_slashables;
-					audio_stop_sound(pf_impact_sfx);
-					audio_play(pf_impact_sfx);
+					var do_slash_sound = false
+					for (var l = 0; l < ds_list_size(potential_slashables); l++) {
+						if potential_slashables[|l].play_slash_sound {
+							do_slash_sound = true;
+							l = 99999
+						}
+					}
+					if do_slash_sound {
+						audio_stop_sound(pf_impact_sfx);
+						audio_play(pf_impact_sfx);
+					}
 				}
 				
 				var inst_linger = instance_create(o_eff_slash_linger, -999, -999, DEPTH_PLATFORMER.SLASH);

@@ -331,7 +331,7 @@ is_party = false
         && moveable_shop
 		&& (array_length(moveable_array) == 0 ? true : false)
 		
-		&& hurt == 0
+		&& (hurt == 0 or global.platforming_perspective == 1)
         && spawn_buffer <= 0
 		
 		&& !global.console
