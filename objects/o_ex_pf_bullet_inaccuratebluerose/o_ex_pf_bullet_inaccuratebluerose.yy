@@ -1,6 +1,6 @@
 {
   "$GMObject":"",
-  "%Name":"o_ex_pf_bulletblue_rose",
+  "%Name":"o_ex_pf_bullet_inaccuratebluerose",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
@@ -8,7 +8,7 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"o_ex_pf_bulletblue_rose",
+  "name":"o_ex_pf_bullet_inaccuratebluerose",
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_slashable","path":"objects/o_pf_slashable/o_pf_slashable.yy",},"propertyId":{"name":"play_slash_sound","path":"objects/o_pf_slashable/o_pf_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
   ],

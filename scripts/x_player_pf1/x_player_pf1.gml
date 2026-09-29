@@ -30,6 +30,7 @@ function player_platforming_movement_init(){
 	pf__airborn_jump_max = 99;
 	pf__airborn_jump_ylimit = 100;
 	pf__jumpheight = 7;
+	pf__fallmax = 10
 	pf__airmintime = 4;
 	pf__coyotetimemax = 4;
 	pf__squattimemax = 2;
@@ -97,7 +98,7 @@ function player_platforming_movement_init(){
 
 function player_platforming_execute(){
 	// Hurt
-	pf_hurt = (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
+	pf_hurt = hurt or (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
 	
 	// Dodge
 	if !instance_exists(o_dodge_controller)
@@ -167,8 +168,8 @@ function player_platforming_execute(){
 	var grounded = place_meeting(x, bbox_bottom + 2, player_array_collisions)
 	if !grounded
 	and place_meeting(x, bbox_bottom + 2 + 2, player_array_collisions)
-	and ((place_meeting(x - 2, bbox_bottom + 2, player_array_collisions) and !place_meeting(x + 2, bbox_bottom + 2, player_array_collisions))
-		or (place_meeting(x + 2, bbox_bottom + 2, player_array_collisions) and !place_meeting(x - 2, bbox_bottom + 2, player_array_collisions)))
+	and ((place_meeting(x - 4, bbox_bottom + 2, player_array_collisions) and !place_meeting(x + 4, bbox_bottom + 2, player_array_collisions))
+		or (place_meeting(x + 4, bbox_bottom + 2, player_array_collisions) and !place_meeting(x - 4, bbox_bottom + 2, player_array_collisions)))
 		grounded = place_meeting(x, bbox_bottom + 2 + 2, player_array_collisions);
 	
 	// Pitfall rescue
@@ -243,6 +244,10 @@ function player_platforming_execute(){
 	var Verbs = {U : INPUT_VERB.UP, D : INPUT_VERB.DOWN, L : INPUT_VERB.LEFT, R : INPUT_VERB.RIGHT}
 	var inpcL = InputCheck(Verbs.L)
 	var inpcR = InputCheck(Verbs.R)
+	//if (inpcL or inpcR) and !pf_grounded and x == xprevious and y == yprevious and pf_airtime > pf__airmintime and pf_jumpstage == "falling" {
+	//	inpcL = false;
+	//	inpcR = false;
+	//}
 	if pf_AllowWalking {
 		var hacl = grounded ? pf_ground_accel : pf_air_accel
 	
@@ -275,6 +280,15 @@ function player_platforming_execute(){
 		}
 	
 		if fdcl or (!inpcL and !inpcR) or (inpcL and inpcR)
+			pf_hmove *= hdcl;
+		
+		if pf_hmove != 0 // slope stuck-while-holding-direction fix
+		and !grounded
+		and x == xprevious
+		and y == yprevious
+		and place_meeting(x + pf_hmove, y + pf_final_ychange, player_array_collisions)
+		and !place_meeting(x + pf_hmove, y - pf_final_ychange, player_array_collisions)
+		and !place_meeting(x - pf_hmove, y + pf_final_ychange, player_array_collisions)
 			pf_hmove *= hdcl;
 	}
 	else
@@ -408,7 +422,7 @@ function player_platforming_execute(){
 			pf_vspeed += pf_currentgravity;
 		}
 	
-		pf_vspeed = clamp(pf_vspeed, -pf__jumpheight, 10);
+		pf_vspeed = clamp(pf_vspeed, -pf__jumpheight, pf__fallmax);
 	}
 	else
 		pf_vspeed = 0
@@ -424,7 +438,7 @@ function player_platforming_execute(){
 		undefined, //speedmult
 		false, //actordir
 		270 + 0, //yaw
-		pf_final_xchange, //override x
+		pf_hurt ? 0 : pf_final_xchange, //override x
 		pf_final_ychange, //override y
 		[pf_forceX], //add x
 		[pf_forceY], //add y
@@ -434,15 +448,15 @@ function player_platforming_execute(){
 		false, //DoCircularize
 		false, //slowintowalls
 		undefined, //positionrounding
-		false, //SuppressHorizontalInput
+		true, //SuppressHorizontalInput
 		true, //SuppressVerticalInput
 		true, //RestrictXBasedOnPreviousY
 		false //RestrictYBasedOnPreviousX
 	);
 	
 	// Force-momentum slowing
-	pf_forceX = increment_towards(pf_forceX, 0, 1);
-	pf_forceY = increment_towards(pf_forceY, 0, 1);
+	pf_forceX = increment_towards(pf_forceX, 0, pf_currentgravity);
+	pf_forceY = increment_towards(pf_forceY, 0, pf_currentgravity);
 	
 	// Direction
 	if pf_final_xchange == 0 {
