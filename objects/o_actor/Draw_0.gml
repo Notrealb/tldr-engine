@@ -13,11 +13,15 @@ if (hurt > 0 && is_in_battle || run_away && is_in_battle && is_enemy) && !(insta
 if (is_player || is_follower) && !party_isup(name)
 	spr = party_getdata(name, "battle_sprites").defeat
 
+var pf_hurt_alpha = (is_player and global.platforming_perspective == 1 and (instance_exists(o_dodge_soul) and (o_dodge_soul.i_frames <= 30) and (o_dodge_soul.i_frames % 2 == 1))) ? 0 : 1
+
 var xx = x + xoff + sine(.5, shake)
 var yy = y + yoff
+var __angle = image_angle + angleoff
+var __alpha = image_alpha * pf_hurt_alpha
 
 var isave = image_blend
-image_blend = merge_color(image_blend, c_black, darken);
+image_blend = merge_color(image_blend, c_black, clamp(darken + darken_plat, 0, 1));
 if !is_undefined(override_blend)
     image_blend = override_blend;
 
@@ -36,7 +40,7 @@ if dodge_getalpha() > 0 && is_player { // outline and bg darkener
 		    s_drawer(spr, image_index, 
 				160 + xdelta, 120 + ydelta,
 				image_xscale, image_yscale,
-				image_angle, image_blend, image_alpha
+				__angle, image_blend, __alpha
 			)
 		}
 		
@@ -51,7 +55,7 @@ if dodge_getalpha() > 0 && is_player { // outline and bg darkener
 s_drawer(spr, image_index, 
 	xx, yy, 
 	image_xscale, image_yscale, 
-	image_angle, image_blend, image_alpha * alpha_mod
+	__angle, image_blend, __alpha * alpha_mod
 )
 
 if freeze > 0 {
@@ -63,14 +67,14 @@ if freeze > 0 {
     var yoffset = -(sprite_get_yoffset(sprite_index) * image_yscale);
     var xoffset = -(sprite_get_xoffset(sprite_index) * image_xscale);
     
-    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, (x - 1) + xoffset, (y - 1) + t + yoffset, image_xscale, image_yscale, c_blue, image_alpha * 0.8);
-    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, x + 1 + xoffset, (y - 1) + t + yoffset, image_xscale, image_yscale, c_blue, image_alpha * 0.4);
-    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, (x - 1) + xoffset, y + 1 + t + yoffset, image_xscale, image_yscale, c_blue, image_alpha * 0.4);
-    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, x + 1 + xoffset, y + 1 + t + yoffset, image_xscale, image_yscale, c_blue, image_alpha * 0.8);
+    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, (x - 1) + xoffset, (y - 1) + t + yoffset, image_xscale, image_yscale, c_blue, __alpha * 0.8);
+    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, x + 1 + xoffset, (y - 1) + t + yoffset, image_xscale, image_yscale, c_blue, __alpha * 0.4);
+    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, (x - 1) + xoffset, y + 1 + t + yoffset, image_xscale, image_yscale, c_blue, __alpha * 0.4);
+    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, x + 1 + xoffset, y + 1 + t + yoffset, image_xscale, image_yscale, c_blue, __alpha * 0.8);
     gpu_set_fog(false, c_white, 0, 0);
     
     gpu_set_blendmode(bm_add);
-    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, x + xoffset, y + t + yoffset, image_xscale, image_yscale, __freezecol, image_alpha * 0.4);
+    draw_sprite_part_ext(sprite_index, image_index, 0, t, sprite_width, sprite_height - t, x + xoffset, y + t + yoffset, image_xscale, image_yscale, __freezecol, __alpha * 0.4);
     gpu_set_blendmode(bm_normal);
 }
 
@@ -86,7 +90,7 @@ if instance_exists(o_eff_lighting_controller) && o_eff_lighting_controller.light
             s_drawer(spr, image_index, 
                 (xx - guipos_x() + __l_off)*2, (yy - guipos_y() + __l_off)*2, 
                 image_xscale*2, image_yscale*2, 
-                image_angle, c_white, 1
+                __angle, c_white, 1
             )
             gpu_set_fog(false, 0, 0, 0)
         
@@ -94,7 +98,7 @@ if instance_exists(o_eff_lighting_controller) && o_eff_lighting_controller.light
             s_drawer(spr, image_index, 
                 (xx - guipos_x() + __l_off)*2, (yy+1 - guipos_y() + __l_off)*2, 
                 image_xscale*2, image_yscale*2, 
-                image_angle, c_black, 1
+                __angle, c_black, 1
             )
             gpu_set_blendmode(bm_normal)
         }
@@ -110,7 +114,7 @@ if instance_exists(o_eff_lighting_controller) && o_eff_lighting_controller.light
         s_drawer(spr, image_index, 
             xx, yy, 
             image_xscale, anime_curve_lerp(0, -2, __l_alpha, anime_curve.linear), 
-            image_angle, c_black, image_alpha * o_eff_lighting_controller.lighting_alpha * alpha_mod
+            __angle, c_black, __alpha * o_eff_lighting_controller.lighting_alpha * alpha_mod
         )
 }
 
@@ -120,16 +124,53 @@ if sweat {
 		x-sprite_get_xoffset(spr)*image_xscale,
 		y-sprite_get_yoffset(spr)*image_yscale, 
 		.5, .5, 
-		image_angle, image_blend, image_alpha * alpha_mod
+		__angle, image_blend, __alpha * alpha_mod
 	)
 }
 	
 // dim the leader while dodging
 if dodge_getalpha() > 0 { 
     if is_player {
-        gpu_set_fog(true, merge_color(c_black, c_dkgray, .5), 0, 0)
-    	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, image_angle, image_blend, .8 * dodge_getalpha() * alpha_mod);
-    	gpu_set_fog(false, c_white, 0, 0)
+		if global.platforming_perspective == 1 {
+			if !variable_instance_exists(self, "surf_scroll")
+				surf_scroll = 0;
+			if !variable_instance_exists(self, "lightning_alpha")
+				lightning_alpha = 0;
+			if !variable_instance_exists(self, "surf_frame")
+				surf_frame = 0;
+			if !variable_instance_exists(self, "surf_pftexture")
+				surf_pftexture = noone;
+			surf_scroll += 0.5;
+			//var _static = hurt ? true : false;
+			//var _alph_change = 0.5;
+			//lightning_alpha = clamp(lightning_alpha + _static ? _alph_change : -_alph_change, 0, 1);
+			//if _static surf_scroll += 0.5;
+			if surf_scroll >= 64
+				surf_scroll -= 64;
+			surf_frame = surf_frame > 3 ? 0 : surf_frame + 1;
+			if !surface_exists(surf_pftexture)
+				surf_pftexture = surface_create(320, 240);
+			surface_set_target(surf_pftexture);
+				draw_clear_alpha(c_black, 0);
+			    s_drawer(spr, image_index, 
+					160, 120,
+					image_xscale, image_yscale,
+					__angle, image_blend, __alpha
+				)
+				gpu_set_colorwriteenable(1, 1, 1, 0);
+				if dodge_getalpha() > 0
+					draw_sprite_tiled_ext(spr_plat_heartmode_texture_0, 0, 52 - surf_scroll, 52 - surf_scroll, 1, 1, c_white, dodge_getalpha());
+				if (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
+					draw_sprite_tiled_ext(spr_plat_heartmode_texture_red_0, surf_frame, 52 - surf_scroll, 52 - surf_scroll, 1, 1, c_white, dodge_getalpha());
+				gpu_set_colorwriteenable(1, 1, 1, 1);
+			surface_reset_target();
+			draw_surface_ext(surf_pftexture, xx - 160, yy - 120, 1, 1, 0, c_white, dodge_getalpha());
+		}
+		else {
+	        gpu_set_fog(true, merge_color(c_black, c_dkgray, .5), 0, 0)
+	    	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, __angle, image_blend, .8 * dodge_getalpha() * alpha_mod);
+	    	gpu_set_fog(false, c_white, 0, 0)
+		}
     }
     else
         dodge_darken_self(s_drawer)
@@ -137,14 +178,14 @@ if dodge_getalpha() > 0 {
 
 if flashing { // battle select flash
 	gpu_set_fog(true, c_white, 0, 0)
-	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, image_angle, c_white, (-cos(fsiner / 5)*0.4 + 0.6) * alpha_mod);
+	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, __angle, c_white, (-cos(fsiner / 5)*0.4 + 0.6) * alpha_mod);
 	gpu_set_fog(false, c_white, 0, 0)
     
     lighting_darken_self()
 }
 if flash > 0 { // normal flash
 	gpu_set_fog(true, flash_color, 0, 0)
-	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, image_angle, c_white, flash * alpha_mod);
+	s_drawer(spr, image_index, xx, yy, image_xscale, image_yscale, __angle, c_white, flash * alpha_mod);
 	gpu_set_fog(false, flash_color, 0, 0)
 }
 
@@ -154,7 +195,7 @@ if instance_exists(o_lb_dl_controller) {
         s_drawer(spr, image_index, 
             (xx - guipos_x())*2, (yy - guipos_y())*2, 
             image_xscale*2, image_yscale*2, 
-            image_angle, c_white, 1
+            __angle, c_white, 1
         )
         gpu_set_fog(false, 0, 0, 0)
         
@@ -162,7 +203,7 @@ if instance_exists(o_lb_dl_controller) {
         s_drawer(spr, image_index, 
             (xx - guipos_x())*2, (yy+1 - guipos_y())*2, 
             image_xscale*2, image_yscale*2, 
-            image_angle, c_black, 1
+            __angle, c_black, 1
         )
         gpu_set_blendmode(bm_normal)
     surface_reset_target()

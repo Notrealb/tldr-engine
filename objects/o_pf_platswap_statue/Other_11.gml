@@ -1,0 +1,153 @@
+/// @desc slashed
+//event_inherited()
+
+var transtime_1 = 1
+var transtime_2 = 10
+var transtime_3 = 10
+
+audio_stop_sound(snd_grab); 
+audio_play_sound(snd_grab, 0, false, 1, 0, 1.25)
+
+if global.platforming_perspective == 0 {
+	cutscene_create();
+    
+    cutscene_player_canmove(false);
+    cutscene_party_follow(false);
+    
+    cutscene_func(function() {
+		with get_leader() {
+			pf_init()
+			pf_grounded = false;
+		}
+        for (var i = 0; i < party_length(true); i ++) {
+            with party_get_inst(global.party_names[i]) {
+                s_override = true;
+                sprite_index = s_plat_jump_down;
+            }
+        }
+    });
+    
+	cutscene_sleep(transtime_1);
+    
+	cutscene_audio_play(snd_platswap_2);
+	cutscene_animate(0, 1, 14, "sine_in_out", global, "platforming_perspective");
+    
+	for (var i = 0; i < party_length(true); ++i) {
+		var inst = party_get_inst(global.party_names[i]);
+        var offset_x = ((i + 1) div 2) * cos(i * pi) * 20;
+        var offset_y = (i > 0 ? -16 : -8);
+        
+		cutscene_animate(inst.x, x + offset_x, 14, "sine_in_out", inst, "x");
+        
+		var plat_parent = noone; //temp
+        var ground_find_range = 240;
+        
+        with inst {
+            for (var j = 0; j < ground_find_range; j += 2) {
+                with instance_place(x, y + j, o_pf_wall) {
+                    plat_parent = id;
+                }
+                if instance_exists(plat_parent)
+                    break;
+            }
+            if !instance_exists(plat_parent)
+                plat_parent = instance_nearest(x, y, o_pf_wall);
+        };
+        
+		if instance_exists(plat_parent) 
+            cutscene_animate(inst.y, plat_parent.ystart - (-(plat_parent.tilesize * plat_parent.wall_closeness_in_tiles)), 14, "sine_in_out", inst, "y");
+		
+		cutscene_animate(0, offset_y, 6, "sine_out", inst, "yoff")
+	}
+	cutscene_sleep(6)
+    
+	for (var i = 0; i < party_length(true); ++i) {
+        var offset_y = (i > 0 ? -16 : -8);
+        
+		cutscene_sleep(4 - i);
+		var inst = party_get_inst(global.party_names[i]);
+		cutscene_animate(offset_y, 0, 6, "sine_in", inst, "yoff");
+	}
+	cutscene_sleep(5)
+	cutscene_audio_play(snd_dtrans_flip,,, 1.3)
+    
+	cutscene_func(function(){
+		with get_leader() 
+            event_user(1)
+	})
+    
+    cutscene_func(function() {
+        get_leader().spacing = get_leader().spacing_plat;
+        for (var i = 0; i < party_length(true); i ++) {
+            with party_get_inst(global.party_names[i]) {
+                s_override = false;
+                pos = get_leader().spacing * i;
+            }
+        }
+    })
+    
+	cutscene_player_canmove(true)
+    cutscene_party_interpolate();
+    cutscene_party_follow(true);
+    
+	cutscene_play()
+}
+else if global.platforming_perspective == 1 {
+	cutscene_create();
+    
+    cutscene_player_canmove(false);
+    cutscene_party_follow(false);
+    
+    cutscene_func(function() {
+        for (var i = 1; i < party_length(true); i ++) {
+            with party_get_inst(global.party_names[i]) {
+                s_override = true;
+                sprite_index = s_plat_jump_down;
+				//pf_grounded = false;
+				//pf_final_ychange = 1;
+				//yprevious = y - 10;
+            }
+        }
+    });
+    
+	cutscene_audio_play(snd_platswap_1);
+	cutscene_animate(1, 0, transtime_2, "sine_in_out", global, "platforming_perspective");
+    
+	for (var i = 0; i < party_length(true); ++i) {
+		var inst = party_get_inst(global.party_names[i]);
+        var offset_x = ((i + 1) div 2) * cos(i * pi) * 20;
+        
+		cutscene_animate(inst.x, x + offset_x, transtime_2, "sine_in_out", inst, "x");
+		cutscene_animate(inst.y, ystart + 15, transtime_2, "sine_in_out", inst, "y");
+		cutscene_animate(inst.yoff, 0, transtime_2, "linear", inst, "yoff");
+	}
+	cutscene_sleep(transtime_2/8);
+	cutscene_func(function() {get_leader().image_index++})
+	cutscene_sleep(transtime_2/8);
+	cutscene_func(function() {get_leader().image_index++})
+	cutscene_sleep(transtime_2/8);
+	cutscene_func(function() {get_leader().image_index++})
+	cutscene_sleep((transtime_2/8) + (transtime_2/4));
+    
+    cutscene_audio_play(snd_impact);
+	cutscene_set_variable(get_leader(), "player_movecode", exit_to_movecode);
+	cutscene_set_variable(get_leader(), "image_xscale", 1);
+	cutscene_player_canmove(true);
+    
+    cutscene_func(function() {
+        get_leader().spacing = get_leader().spacing_default;
+        for (var i = 0; i < party_length(true); i ++) {
+            with party_get_inst(global.party_names[i]) {
+                s_override = false;
+                
+                dir = DIR.DOWN;
+                image_xscale = 1;
+                pos = get_leader().spacing * i;
+            }
+        }
+    })
+    cutscene_party_interpolate();
+    cutscene_party_follow(true);
+    
+	cutscene_play();
+}

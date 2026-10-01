@@ -64,23 +64,24 @@ function party_leader_create(name, xx, yy, ddepth) {
 /// @arg {string,any} target_marker_type
 /// @arg {string,any} target_marker_id
 /// @arg {enum.DIR} warp_dir the direction the leader and party will be facing after being warped
-function party_leader_warp(target_marker_type, target_marker_id, warp_dir = DIR.DOWN) {
+function party_leader_warp(target_marker_type, target_marker_id, warp_dir = DIR.DOWN, override_x = -1, override_y = -1) {
     if !instance_exists(get_leader()) 
         return false
     
     var marker = marker_get(target_marker_type, target_marker_id)
     
     if instance_exists(marker) {
-        get_leader().x = marker.x
-        get_leader().y = marker.y
+        get_leader().x = override_x == -1 ? marker.x : override_x
+        get_leader().y = override_y == -1 ? marker.y : override_y
         
-        get_leader().dir = warp_dir
+		get_leader().dir = warp_dir
     }
     for (var i = 0; i < party_length(true); ++i) {
         with party_get_inst(global.party_names[i]) {
             x = get_leader().x
             y = get_leader().y
-            dir = get_leader().dir
+            
+			dir = get_leader().dir
             
             event_user(1)
         }
@@ -90,10 +91,12 @@ function party_leader_warp(target_marker_type, target_marker_id, warp_dir = DIR.
 ///@desc creates an actor standing in for the party member
 function party_member_create(name, recordnow = true, xx = get_leader().x, yy = get_leader().y) {
 	var inst = actor_create(party_get_obj(name), xx, yy, get_leader().depth)
+    
 	inst.is_follower = true
     inst.is_party = true
     inst.follow_target = get_leader();
 	inst.pos = get_leader().spacing * party_get_index(name)
+    inst.pos_max = get_leader().spacing_default * party_get_index(name)
 	
 	with inst {
 		if recordnow 
@@ -107,7 +110,7 @@ function party_member_create(name, recordnow = true, xx = get_leader().x, yy = g
 }
 
 ///@desc interpolates the party position to attach them back to the "caterpillar"
-function party_member_interpolate(name){
+function party_member_interpolate(name) {
 	if !instance_exists(party_get_inst(name)) 
 		exit
     
@@ -119,12 +122,14 @@ function party_member_interpolate(name){
 		record[0].x = follow_target.x
 		record[0].y = follow_target.y
 		record[0].dir = follow_target.dir
-        
+        record[0].pf_grounded = true;
+		
 		for (var i = pos; i > 0; i -= 1) {
 			record[i].x = lerp(follow_target.x, x, (i / pos));
 			record[i].y = lerp(follow_target.y, y, (i / pos));
 			record[i].dir = ddir;
 			record[i].running = false;
+			record[i].pf_grounded = true;
 		}
 	}
 }

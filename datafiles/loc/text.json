@@ -77,5 +77,16 @@
     "txt_climb_noclaws": {
         "en": "* (It looks like you'd be able to climb this if you had the right tools.)",
         "ja": "＊ (適切な道具があれば\nここを登れそうだ)"
-    }
+    },
+	
+	"txt_platswapstatue_nofeather": {
+        "en": [
+			"* (A mysterious structure.)",
+			"* (It seems to be sealed with some sort of power...)"
+		],
+        "ja": [
+			"＊ (なんらかの力で　封印されている\n　 ようだ…)",
+			"＊ (ジョウロが　頭に乗った状態では\n　 ジャンプできない)"
+		]
+	}
 }
