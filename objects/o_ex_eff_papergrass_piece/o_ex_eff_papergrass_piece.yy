@@ -35,8 +35,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_papergrass_pieces",
-    "path":"sprites/spr_papergrass_pieces/spr_papergrass_pieces.yy",
+    "name":"spr_ex_plat_papergrass_pieces",
+    "path":"sprites/spr_ex_plat_papergrass_pieces/spr_ex_plat_papergrass_pieces.yy",
   },
   "spriteMaskId":null,
   "visible":true,

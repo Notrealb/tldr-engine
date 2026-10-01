@@ -34,8 +34,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_papergrass",
-    "path":"sprites/spr_papergrass/spr_papergrass.yy",
+    "name":"spr_ex_plat_papergrass",
+    "path":"sprites/spr_ex_plat_papergrass/spr_ex_plat_papergrass.yy",
   },
   "spriteMaskId":null,
   "visible":true,

@@ -95,9 +95,6 @@ Visual -------
 		Default true. Allows the use of 9-slicing, among various other things.
 		If false, the sprite will be directly scaled instead.
 	
-	lining_sprite_or_drawer
-		Lining sprite or drawing method. Sprite or function. If undefined, no lining will exist.
-		
 	lining_at_back_also
 		Draw lining at the back of the floor also? Default true.
 	
@@ -107,7 +104,7 @@ Visual -------
 	wall_palette
 	floor_palette
 	lining_palette
-		Palletes for the wall (sprite_index), floor (floor_sprite), and lining (lining_sprite_or_drawer).
+		Palletes for the wall (sprite_index), floor (floor_sprite), and lining.
 	
 	wall_palette_index_array
 	floor_palette_index_array
