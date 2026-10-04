@@ -6,8 +6,8 @@
   "name":"o_pfnode",
   "overriddenProperties":[],
   "parent":{
-    "name":"pfnode",
-    "path":"folders/@Engine/objects/ow/platforming/pfnode.yy",
+    "name":"plat",
+    "path":"folders/@Engine/objects/ow/plat.yy",
   },
   "parentObjectId":null,
   "persistent":false,
@@ -28,8 +28,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_dev_pfnode",
-    "path":"sprites/spr_dev_pfnode/spr_dev_pfnode.yy",
+    "name":"spr_dev_node",
+    "path":"sprites/spr_dev_node/spr_dev_node.yy",
   },
   "spriteMaskId":null,
   "visible":true,

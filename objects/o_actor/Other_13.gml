@@ -1,19 +1,19 @@
 /// @description player input
 
-if !instance_exists(o_pf_platswap_statue)
-or !instance_exists(o_pf_wall)
+if !instance_exists(o_plat_swap_statue)
+or !instance_exists(o_plat_wall)
 	global.platforming_perspective=0;
 
 if global.platforming_perspective == 1
 	player_movecode = "drplatforming";
 
-if player_movecode == "standard" {
+if player_movecode == "standard" { // Deltarune Standard
 	player_movecode_standard_move();
 	player_movecode_standard_etc();
 	player_followerhookcode_reset();
 	handle_walk_sprites_reset();
 }
-else if !noclip and player_movecode == "drplatforming" {
+else if !noclip and player_movecode == "drplatforming" { // Deltarune Platforming
 	player_platforming_execute();
 	player_followerhookcode_a = function(){
 		if get_leader().moving
@@ -29,7 +29,7 @@ else if !noclip and player_movecode == "drplatforming" {
 	};
 	handle_walk_sprites = function(){}
 }
-else {
+else { // Noclipping
 	player_locomote_and_collide_except(noone, noone, 4 * (1+InputCheck(INPUT_VERB.CANCEL)));
 	player_movecode_standard_etc();
 	player_followerhookcode_reset();

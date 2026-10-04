@@ -45,8 +45,9 @@ if instance_exists(target) {
             y = target.y;
         
         y += offset_y;
-		var pfyrise = instance_exists(o_dev_pf_controller) ? o_dev_pf_controller.camera_y_rise : 18
-		y -= lerp(0, pfyrise, global.platforming_perspective);
+		//var pfyrise = instance_exists(o_dev_plat_controller) ? o_dev_plat_controller.camera_y_rise : 18
+		//y -= lerp(0, pfyrise, global.platforming_perspective);
+		// ^ This was probably done with camera offset zones.
         
         y_real = y; // save the real value before confining it
         if confined_on_y

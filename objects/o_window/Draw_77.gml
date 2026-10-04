@@ -27,6 +27,6 @@ draw_surface_ext(application_surface,
     xx - GAME_W_GUI/2*scale, 
     yy - GAME_H_GUI/2*scale, 
     scale, scale, 
-    0, c_white, 1
+    0, image_blend, 1
 )
 gpu_set_blendenable(true)

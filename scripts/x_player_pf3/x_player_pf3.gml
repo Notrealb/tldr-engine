@@ -1,5 +1,5 @@
 function x_player_pf3_define(){
-	if !instance_exists(o_pf_platswap_statue) or !instance_exists(o_pf_wall) {global.platforming_perspective=0}
+	if !instance_exists(o_plat_swap_statue) or !instance_exists(o_plat_wall) {global.platforming_perspective=0}
 	
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
@@ -67,7 +67,7 @@ function x_player_pf3_define(){
 	pf_attack_airslash_buffer = 0;
 	
 	pf_slashed_objects = -1;
-    pf_slashable_objects = [o_pf_slashable];
+    pf_slashable_objects = [o_plat_slashable];
 	
 	pf_impact_sfx = snd_punchmed;
 	
@@ -89,14 +89,14 @@ function x_player_pf3_exec(){
 	
 	// re-appraise the collision array
 	player_array_collisions = [];
-	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
-		var inst = instance_find(o_pf_wall, i);
+	for (var i = 0; i < instance_number(o_plat_wall); ++i) {
+		var inst = instance_find(o_plat_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !inst.use_pulpit_collision
             array_push(player_array_collisions, inst);
 	} 
 	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, player_array_collisions, true, true)
-	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
-		var inst = instance_find(o_pf_wall, i);
+	for (var i = 0; i < instance_number(o_plat_wall); ++i) {
+		var inst = instance_find(o_plat_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(player_array_collisions, inst)
             array_push(player_array_collisions, inst);
 	}
@@ -104,7 +104,7 @@ function x_player_pf3_exec(){
 	
 	// Position saving
 	if grounded
-	and !place_meeting(x, y, o_pf_do_nosafespotsaving)
+	and !place_meeting(x, y, o_dev_plat_zone_nosafespotsaving)
 	and place_meeting(x, bbox_bottom+1, player_array_collisions)
 	and place_meeting(x+14, bbox_bottom+4, player_array_collisions)
 	and place_meeting(x-14, bbox_bottom+4, player_array_collisions)

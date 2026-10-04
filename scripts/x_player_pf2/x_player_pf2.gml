@@ -33,8 +33,8 @@ function player_secondeditionplatforming_execute() {
 	
 	// Collision array
 	plf_collide = [];
-	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
-		var inst = instance_find(o_pf_wall, i);
+	for (var i = 0; i < instance_number(o_plat_wall); ++i) {
+		var inst = instance_find(o_plat_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide
             array_push(plf_collide, inst);
 	}														  //temporary

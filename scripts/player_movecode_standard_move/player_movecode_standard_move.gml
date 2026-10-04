@@ -13,7 +13,7 @@ function player_movecode_standard_move(){
     player_array_collisions = [];
 	for (var i = 0; i < instance_number(o_block); ++i) {
 		var inst = instance_find(o_block, i);
-		if variable_instance_exists(inst, "collide") and inst.collide
+		if variable_instance_exists(inst, "collide") and inst.collide == true
             array_push(player_array_collisions, inst);
 	}
 	

@@ -25,8 +25,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"dev",
-    "path":"folders/@Engine/sprites/dev.yy",
+    "name":"block",
+    "path":"folders/@Engine/sprites/dev/block.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

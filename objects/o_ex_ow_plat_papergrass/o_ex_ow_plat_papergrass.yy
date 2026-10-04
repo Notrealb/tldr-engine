@@ -13,8 +13,8 @@
     "path":"tldr-engine.yyp",
   },
   "parentObjectId":{
-    "name":"o_pf_slashable",
-    "path":"objects/o_pf_slashable/o_pf_slashable.yy",
+    "name":"o_plat_slashable",
+    "path":"objects/o_plat_slashable/o_plat_slashable.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

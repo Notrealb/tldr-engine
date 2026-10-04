@@ -3,6 +3,9 @@ collide = false
 
 name = ""
 
+hitstop = 0
+hitstop_saved_image_speed = image_speed
+
 // actor type
 is_enemy = false
 is_follower = false

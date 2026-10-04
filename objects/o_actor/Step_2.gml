@@ -1,10 +1,10 @@
 // depth
 if is_in_battle and instance_exists(o_enc_bg) and o_enc_bg.alphain == true
     depth = DEPTH_ENCOUNTER.ACTORS - (y - guipos_y());
-else if global.platforming_perspective and instance_exists(o_dev_pf_controller) {
-	if o_dev_pf_controller.actors_depth_override
+else if global.platforming_perspective and instance_exists(o_dev_plat_controller) {
+	if o_dev_plat_controller.actors_depth_override
 		depth = actors_depth_override
-	else if o_dev_pf_controller.do_autodepthsort_actors {
+	else if o_dev_plat_controller.do_autodepthsort_actors {
 		for (var i = 0; i < party_length(true); i ++) {
 			if id == party_get_inst(global.party_names[i]) {
 				var _c = get_leader().player_array_collisions
@@ -45,4 +45,19 @@ if x != xprevious {
         last_dir_left_right = DIR.RIGHT;
 	if dirM > 185 and dirM < 355 
         last_dir_left_right = DIR.LEFT;
+}
+
+// hitstop decay
+if hitstop > 0
+	hitstop = max(0, hitstop-1);
+// hitstop image speed
+if s_dynamic and !s_override {
+	if hitstop == 1 {
+		image_speed = hitstop_saved_image_speed;
+		image_index = floor(image_index);
+	}
+	else if hitstop > 0
+		image_speed = 0;
+	else
+		hitstop_saved_image_speed = image_speed;
 }

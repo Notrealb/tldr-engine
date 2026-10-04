@@ -44,8 +44,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"platforming",
-    "path":"folders/@Engine/sprites/ow/platforming.yy",
+    "name":"wall",
+    "path":"folders/@Engine/sprites/ow/plat/wall.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

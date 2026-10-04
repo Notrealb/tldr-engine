@@ -10,15 +10,16 @@
   "managed":true,
   "name":"o_ex_bullet_inaccuratebluerose",
   "overriddenProperties":[
-    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_pf_slashable","path":"objects/o_pf_slashable/o_pf_slashable.yy",},"propertyId":{"name":"play_slash_sound","path":"objects/o_pf_slashable/o_pf_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_slashable","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"propertyId":{"name":"play_slash_sound","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_slashable","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"propertyId":{"name":"hit_stop_frames","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"4",},
   ],
   "parent":{
     "name":"tldr-engine",
     "path":"tldr-engine.yyp",
   },
   "parentObjectId":{
-    "name":"o_pf_bullet",
-    "path":"objects/o_pf_bullet/o_pf_bullet.yy",
+    "name":"o_plat_bullet",
+    "path":"objects/o_plat_bullet/o_plat_bullet.yy",
   },
   "persistent":false,
   "physicsAngularDamping":0.1,

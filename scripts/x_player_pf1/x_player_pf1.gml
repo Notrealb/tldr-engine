@@ -66,12 +66,9 @@ function player_platforming_movement_init(){
 	pf_attack_airslash_buffer = 0;
 	
 	pf_slashed_objects = -1;
-    pf_slashable_objects = [o_pf_slashable];
+    pf_slashable_objects = [o_plat_slashable];
 	
 	pf_impact_sfx = snd_punchmed;
-	
-	pf_hurt = false; //u
-	pf_hitstop = 0; //u
 	
 	pf_pitfallrescuing = false
 	
@@ -154,14 +151,14 @@ function player_platforming_execute(){
 	
 	// Collision array, ceilded check, grounded check.
 	player_array_collisions = [];
-	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
-		var inst = instance_find(o_pf_wall, i);
+	for (var i = 0; i < instance_number(o_plat_wall); ++i) {
+		var inst = instance_find(o_plat_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !inst.use_pulpit_collision
             array_push(player_array_collisions, inst);
 	} 
 	var ceilded = collision_rectangle(bbox_left, y-pf_ceil_clearance, bbox_right, bbox_bottom-2, player_array_collisions, true, true)
-	for (var i = 0; i < instance_number(o_pf_wall); ++i) {
-		var inst = instance_find(o_pf_wall, i);
+	for (var i = 0; i < instance_number(o_plat_wall); ++i) {
+		var inst = instance_find(o_plat_wall, i);
 		if variable_instance_exists(inst, "collide") and inst.collide and !array_contains(player_array_collisions, inst)
             array_push(player_array_collisions, inst);
 	}
@@ -175,7 +172,7 @@ function player_platforming_execute(){
 	// Pitfall rescue
 	if pf_DoPitfallRescue {
 		if grounded
-		and !place_meeting(x, y, o_pf_do_nosafespotsaving)
+		and !place_meeting(x, y, o_dev_plat_zone_nosafespotsaving)
 		and place_meeting(x, bbox_bottom+1, player_array_collisions)
 		and place_meeting(x+14, bbox_bottom+4, player_array_collisions)
 		and place_meeting(x-14, bbox_bottom+4, player_array_collisions)
@@ -186,7 +183,7 @@ function player_platforming_execute(){
 		if y > room_height + 100
 		and !collision_rectangle(bbox_left-10, y-pf_ceil_clearance, bbox_right+10, bbox_bottom+100, o_trigger_warp, true, true)
 		{
-			var pfyrise = instance_exists(o_dev_pf_controller) ? o_dev_pf_controller.camera_y_rise : 18
+			var pfyrise = instance_exists(o_dev_plat_controller) ? o_dev_plat_controller.camera_y_rise : 18
 			pfyrise = lerp(0, pfyrise, global.platforming_perspective);
 			
 			cutscene_create();
@@ -389,7 +386,7 @@ function player_platforming_execute(){
 		                pf_jumpstage = "jumping";
 						pf_auto_jump_next_land = false;
 		                audio_play(snd_ui_cancel_small, , , 1.5);
-						if place_meeting(x, y, o_pf_do_slopejumppush)
+						if place_meeting(x, y, o_dev_plat_zone_slopejumppush)
 						if plf_WinningSensor == "A" {
 							pf_forceX += pf__jumpheight
 						}
@@ -411,7 +408,7 @@ function player_platforming_execute(){
 			}
 		}
     
-		if (pf_vspeed < 0 or pf_hitstop > 0)
+		if (pf_vspeed < 0 or hitstop > 0)
 		and release_jump
 		and !pf_hurt
 			pf_vspeed *= 0.5;
@@ -433,7 +430,7 @@ function player_platforming_execute(){
 	if pf_final_ychange > min(plf_SensorA_dist, plf_SensorB_dist)
 		pf_final_ychange = min(plf_SensorA_dist, plf_SensorB_dist);
 	var can_slopeandstick = grounded and place_meeting(xprevious, y+4, player_array_collisions)
-	var highstep = place_meeting(x, y, o_pf_do_highstep)
+	var highstep = place_meeting(x, y, o_dev_plat_zone_highstep)
 	player_locomote_and_collide_except(player_array_collisions, player_array_exceptions, 4,
 		undefined, //speedmult
 		false, //actordir
@@ -598,7 +595,7 @@ function actor_platforming_animate(_dx, _dy, _dir) {
         pf_turn_timer --;
 	
 	// Angleoff
-	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded and instance_place(x, y, o_pf_do_highstep) {
+	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded and instance_place(x, y, o_dev_plat_zone_highstep) {
 		if point_distance(0, plf_SensorA_dist, 0, plf_SensorB_dist) < 1 {
 			angleoff = increment_towards(angleoff, 0, 4)
 			yoff = increment_towards(yoff, 0, 1)
@@ -656,15 +653,27 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
 				if ds_list_size(potential_slashables) > 0 {
 					pf_slashed_objects = potential_slashables;
 					var do_slash_sound = false
+					var try_hit_stop = 0
 					for (var l = 0; l < ds_list_size(potential_slashables); l++) {
-						if potential_slashables[|l].play_slash_sound {
+						var m = potential_slashables[|l]
+						if variable_instance_exists(m, "play_slash_sound")
+						and m.play_slash_sound {
 							do_slash_sound = true;
 							l = 99999
 						}
+						if variable_instance_exists(m, "hit_stop_frames") {
+						if m.hit_stop_frames {
+						if m.hit_stop_frames > 0 {
+							try_hit_stop = max(try_hit_stop, m.hit_stop_frames)
+						}}}
 					}
 					if do_slash_sound {
 						audio_stop_sound(pf_impact_sfx);
 						audio_play(pf_impact_sfx);
+					}
+					if try_hit_stop > 0 {
+						o_actor.hitstop = try_hit_stop;
+						o_plat_decor.hitstop = try_hit_stop;
 					}
 				}
 				

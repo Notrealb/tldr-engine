@@ -1,4 +1,5 @@
-var check_canmove = _checkmove() && !climb_check();
+var hitstopped = hitstop > 0
+var check_canmove = _checkmove() && !climb_check() && !hitstopped;
 var x_move = 0
 var y_move = 0
 
@@ -20,7 +21,7 @@ if is_player && check_canmove {
 }
 
 // if i am a follower and i am following the leader
-else if follow && is_follower && instance_exists(follow_target) {
+else if follow && is_follower && instance_exists(follow_target) and !hitstopped{
 	if is_in_battle {
 		get_leader().player_followerhookcode_reset();
 		script_execute_ext(get_leader().player_followerhookcode_a);
@@ -33,7 +34,7 @@ else if follow && is_follower && instance_exists(follow_target) {
 		script_execute_ext(get_leader().player_followerhookcode_b);
 	}
 }
-else if sliding {
+else if sliding and !hitstopped{
 	if instance_exists(slideinst) && !place_meeting(x, y, slideinst){
 		sliding = false
 		y -= global.slide_speed
@@ -42,17 +43,18 @@ else if sliding {
 }
 
 // set moving for non-players, and then make sure the player isn't set as moving when they shouldn't be
-if !is_player {
+if !is_player and !hitstopped{
 	moving = false;
 	if ((abs(x - xprevious) > 0 || abs(y - yprevious) > 0) and !is_in_battle and !is_enemy) or sliding
 		moving = true;
 }
-else if s_override or !s_dynamic or is_in_battle or !moveable{
+else if s_override or hitstopped or !s_dynamic or is_in_battle or !moveable{
 	moving = false;
 }
 
 // handle walk sprites
-handle_walk_sprites();
+if !hitstopped
+	handle_walk_sprites();
 
 // darken in certain conditions
 if is_follower {
@@ -60,7 +62,8 @@ if is_follower {
     darken_plat = increment_towards(darken_plat, (plat_should_darken ? .5 : 0), .05);
 }
 
-{ // timers and siners
+// timers and siners
+if !hitstopped {
 	if hurt > 0
 		hurt --
 	

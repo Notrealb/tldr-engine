@@ -11,7 +11,7 @@ if bulletcheck && i_frames == 0 && (get_leader()._checkmove() || climb_check()) 
 		event_user(1)
 }
 if global.platforming_perspective == 1 {
-	bulletcheck = instance_place(x, y, o_pf_bullet)
+	bulletcheck = instance_place(x, y, o_plat_bullet)
 	if bulletcheck && i_frames == 0 && (get_leader()._checkmove() || climb_check()) {
 		with bulletcheck
 			event_user(2)
