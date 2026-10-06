@@ -1,20 +1,19 @@
 {
   "$GMObject":"",
-  "%Name":"o_trigger_dodge",
+  "%Name":"o_eff_bg",
   "eventList":[
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":8,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":0,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
+    {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"o_trigger_dodge",
+  "name":"o_eff_bg",
   "overriddenProperties":[],
   "parent":{
-    "name":"triggers",
-    "path":"folders/@Engine/objects/dev/triggers.yy",
+    "name":"effects",
+    "path":"folders/@Engine/objects/effects.yy",
   },
-  "parentObjectId":{
-    "name":"o_trigger",
-    "path":"objects/o_trigger/o_trigger.yy",
-  },
+  "parentObjectId":null,
   "persistent":false,
   "physicsAngularDamping":0.1,
   "physicsDensity":0.5,
@@ -32,10 +31,7 @@
   "resourceType":"GMObject",
   "resourceVersion":"2.0",
   "solid":false,
-  "spriteId":{
-    "name":"spr_trigger_dodge",
-    "path":"sprites/spr_trigger_dodge/spr_trigger_dodge.yy",
-  },
+  "spriteId":null,
   "spriteMaskId":null,
-  "visible":false,
+  "visible":true,
 }

@@ -1,6 +1,6 @@
 function ex_enc_set_shadowguys() : enc_set() constructor {
 	debug_name	=	"shadowguys"
-	
+    
 	enemies = [
 		new ex_enemy_shadowguy(),
 		new ex_enemy_shadowguy(),
@@ -16,10 +16,7 @@ function ex_enc_set_shadowguys() : enc_set() constructor {
             "* Shadowguy's got the moves and the groove."
         )
     }
-	
-    background = new ex_enc_background_colorable_grid(#1F006D, spr_ex_ow_city_traffic_switch_walk, -1, 2, 2);
-    bulletdark = new ex_enc_bulletdark_drawtiled(c_maroon, spr_ex_ow_city_traffic_switch_stop, -1, 2, 2);
-	
+    
 	enemies_pos = [
 		[-4, -6, true],
 		[-14, 6, true]
@@ -28,15 +25,12 @@ function ex_enc_set_shadowguys() : enc_set() constructor {
 
 function ex_enc_set_spawn() : enc_set() constructor {
 	debug_name	=	"spawnlings"
-	
+    
 	enemies = [
 		new ex_enemy_spawnling(),
 		new ex_enemy_dentos(),
 	]
 	flavor = "* Darkness constricts you...{br}{resetx}* {col(y)}TP{col(w)} Gain reduced outside of {col(g)}COURAGE{col(w)}!"
-    
-    background = new ex_enc_background_spawnlings();
-    bulletdark = new enc_bulletdark_fullalpha();
     
     bgm = mus_ex_spawn
     bgm_pitch = 1

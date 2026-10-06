@@ -1,11 +1,3 @@
-if span_vertical {
-	y = -1000;
-	image_yscale = 3000;
-}
-if span_horizontal {
-	x = -1000;
-	image_xscale = 3000;
-}
 if place_meeting(x, y, get_leader()) {
 	if !triggered && !controlled_activation && can_trigger
 		event_user(0)

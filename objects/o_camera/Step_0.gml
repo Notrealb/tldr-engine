@@ -6,14 +6,17 @@ if instance_exists(target) {
         if climb_check() {
             var dist = target.x - x_real;
             
-            var d = abs(dist / 40);
-            d = clamp(d, 0, 1);
+            var d = abs(dist / 20);
+            d = clamp(d, 0, (d >= 2 ? 5 : 2));
             
-            var spd = lerp(.5, 8, d) * sign(dist);
-            var diff_dist = abs(dist) - abs(spd);
+            var spd = lerp(1, 4, d) * sign(dist);
             
-            if diff_dist < abs(spd)
-                x = target.x;
+            if abs(dist) < abs(spd*2){
+                if abs(dist) < abs(spd)
+                    x = target.x;
+                else
+                    x = x_real + (spd/2);
+            }
             else 
                 x = x_real + spd;
         }
@@ -29,24 +32,21 @@ if instance_exists(target) {
     if follow_y {
         if climb_check() {
             var dist = target.y - y_real;
+            var spd = lerp(1, 4, clamp(abs(dist / 20), 0, 1)) * sign(dist);
             
-            var d = abs(dist / 40);
-            d = clamp(d, 0, 1);
-            
-            var spd = lerp(.5, 8, d) * sign(dist);
-            var diff_dist = abs(dist) - abs(spd);
-            
-            if diff_dist < abs(spd)
-                y = target.y;
-            else 
+            if abs(dist) < abs(spd*2){
+                if abs(dist) < abs(spd)
+                    y = target.y;
+                else
+                    y = y_real + (spd/2);
+            }
+				else 
                 y = y_real + spd;
         }
         else
             y = target.y;
         
         y += offset_y;
-		var pfyrise = instance_exists(o_dev_pf_controller) ? o_dev_pf_controller.camera_y_rise : 18
-		y -= lerp(0, pfyrise, global.platforming_perspective);
         
         y_real = y; // save the real value before confining it
         if confined_on_y

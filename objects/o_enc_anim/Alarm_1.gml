@@ -1,10 +1,10 @@
-save_follow = array_create(party_length(true));
+save_follow = array_create(party_length(true))
 
 for (var i = 0; i < party_length(true); i ++) {
-    var inst = party_get_inst(global.party_names[i]);
-    save_follow[i] = inst.follow;
+    var inst = party_get_inst(global.party_names[i])
+    save_follow[i] = inst.follow
 }
-party_setfollow(false);
+party_setfollow(false)
 
 // animate the party in
 for (var i = 0; i < party_length(); ++i) {
@@ -21,7 +21,6 @@ for (var i = 0; i < party_length(); ++i) {
 		obj.sprite_index = enc_getparty_sprite(global.party_names[i], "introb")
 	
 	obj.image_speed = 1
-	obj.image_xscale = 1
 	obj.trail = true
 	obj.is_in_battle = true
 }
@@ -70,9 +69,7 @@ for (var i = 0; i < array_length(encounter_data.enemies); ++i) {
 	enemy_struct.slot = i
 }
 
-alarm[2] = 10;
+var inst = instance_create(o_eff_bg,,,DEPTH_ENCOUNTER.BACKGROUND)
+inst.bgtype = encounter_data.bg_type
 
-instance_create(o_enc_bg, 0, 0, DEPTH_ENCOUNTER.BACKGROUND);
-o_enc_bg.alphain = true;
-o_enc_bg.background = encounter_data.background;
-o_enc_bg.bulletdark = encounter_data.bulletdark;
+alarm[2] = 10

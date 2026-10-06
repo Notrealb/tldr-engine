@@ -1,13 +1,8 @@
 dodge_mode = false
 dodge_override = false // do this if you want to control the lighting amount manually
 
-dodge_ow_darken = .5
-dodge_pf_darken = .00001
-dodge_base_pf_alpha = 0
-dodge_base_ow_alpha = .5
-dodge_darken = dodge_ow_darken
+dodge_darken = .5
 dodge_alpha = 0
-dodge_base_alpha = dodge_base_ow_alpha
 
 target_layers = []
 

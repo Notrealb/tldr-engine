@@ -9,7 +9,5 @@ if audio_exists(enter_sound)
 
 fader_fade(0, 1, 7);
 
-if !(global.platforming_perspective > 0)
-	get_leader().moveable = false;
-
 alarm[0] = 8;
+get_leader().moveable = false;
