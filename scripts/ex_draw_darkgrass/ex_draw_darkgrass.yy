@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"ex_draw_darkgrass",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"ex_draw_darkgrass",
+  "parent":{
+    "name":"tldr-engine",
+    "path":"tldr-engine.yyp",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

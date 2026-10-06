@@ -3,6 +3,9 @@ collide = false
 
 name = ""
 
+hitstop = 0
+hitstop_saved_image_speed = image_speed
+
 // actor type
 is_enemy = false
 is_follower = false
@@ -24,8 +27,33 @@ is_party = false
 	stepsounds = false
 	stepsoundprefix = "snd_step"
 	made_step = 0;
+	stepgain = 1;
 	
-	spacing = 12; // the spacing will automatically be bigger due to higher speed
+    spacing_default = 12;
+    spacing_plat = 6;
+	spacing = spacing_default
+    
+	playermask = spr_mask_15x8
+	player_array_collisions = [];
+	player_array_exceptions = [o_exception];
+	
+	player_movecode = "standard";
+	player_followerhookcode_reset = function(){
+		player_followerhookcode_a = function(){
+			if get_leader().moving
+				array_insert_cycle(record, 0, __new_record());
+		};
+		player_followerhookcode_b = function(){
+			handle_walk_sprites_reset();
+		};
+	}
+	player_followerhookcode_reset()
+
+	
+	pf_init = function() {
+		player_platforming_movement_init()
+	}
+	pf_init()
 }
 { // enemy specific
 	chaser = false
@@ -43,8 +71,9 @@ is_party = false
 	
 	depth_override = undefined
 	pos = 0
+    pos_max = 0;
     
-    interaction_code = function() {}
+    interaction_code = function(){}
     interaction_args = []
     interactable_instances = []
 }
@@ -84,6 +113,29 @@ is_party = false
         s_climb_land_left = spr_kris_climb_land_left;
         s_climb_land_right = spr_kris_climb_land_right;
         s_climb_slip_fall = spr_kris_climb_slip_fall;
+        
+        // platforming sprites
+        s_plat_idle = spr_plat_kris_idle;
+        s_plat_jump_up = spr_plat_kris_jump_up;
+        s_plat_jump_down = spr_plat_kris_jump_down;
+        s_plat_land = spr_plat_kris_land;
+        s_plat_run = spr_plat_kris_run;
+        s_plat_run_stop = spr_plat_kris_run_stop;
+        s_plat_turn = spr_plat_kris_turn;
+        
+        s_plat_hurt_ground = spr_plat_kris_hurt_ground;
+        s_plat_hurt_air = spr_plat_kris_hurt_air;
+        
+        s_plat_slash_ground = spr_plat_kris_slash_ground;
+        s_plat_slash_ground_fg = spr_plat_kris_slash_ground_fg;
+        s_plat_slash_ground_hbx = spr_plat_kris_slash_ground_hbx;
+		s_plat_slash_npoints_ground = [[snd_ui_cancel_small, 1], [snd_heavyswing, 5], [snd_ultraswing, 9]]
+        
+        s_plat_slash_air = spr_plat_kris_slash_air;
+        s_plat_slash_air_fg = spr_plat_kris_slash_air_fg;
+        s_plat_slash_air_hbx = spr_plat_kris_slash_air_hbx;
+        s_plat_slash_air_land = spr_plat_kris_slash_air_land;
+		s_plat_slash_npoints_air = [[snd_ui_cancel_small, 1], [snd_heavyswing, 5], [snd_ultraswing, 9], ["nul", 10]]
 	
 		s_idle_ispd = 1;
 		s_walk_ispd = 1;
@@ -111,17 +163,73 @@ is_party = false
         return (relative ? 0 : y) - myheight/2;
     }
 	
+	handle_walk_sprites = function(){}
+	handle_walk_sprites_standard = function(){
+		// walk sprite speeds
+		if moving && !is_in_battle && !is_enemy && s_dynamic && !s_override {
+			if !startedmoving {
+				startedmoving = true
+		        last_walk_frame = cap_wraparound(last_walk_frame + 1, image_number);
+		        last_walk_buffer = 12;
+				image_index = last_walk_frame
+			}
+			if !running
+				image_speed = s_walk_ispd
+		}
+		else if !is_in_battle && !is_enemy {
+			startedmoving = false
+			if floor(image_index) % 2 == 0 && !s_override && s_dynamic && s_current_animation != ACTOR_ANIMATIONS.IDLE
+				s_current_animation = ACTOR_ANIMATIONS.IDLE;
+		}
+
+		// walk sprites
+		if !is_in_battle && !is_enemy && s_dynamic && !s_override {
+			if running && moving 
+		        s_current_animation = ACTOR_ANIMATIONS.RUN;
+		    else if moving
+		        s_current_animation = ACTOR_ANIMATIONS.WALK;
+		    switch s_current_animation {
+		        default: // idle
+		            var possible_idle = s_idle[dir];
+		            if sprite_exists(possible_idle) { // switch to an idle sprite
+		                sprite_index = possible_idle;
+		                image_speed = s_idle_ispd;
+		                if s_previous_animation != s_current_animation 
+		                    image_index = 0;
+		            }
+		            else { // using only the walk sprites
+		                sprite_index = s_move[dir];
+		                image_speed = 0;
+		                image_index = 0;
+		            }
+		            break;
+		        case ACTOR_ANIMATIONS.WALK:
+		            sprite_index = s_move[dir];
+		            image_speed = s_walk_ispd;
+		            break;
+		        case ACTOR_ANIMATIONS.RUN:
+		            sprite_index = asset_get_index_state(sprite_get_name(s_move[dir]), s_run_postfix);
+		            image_speed = s_run_ispd;
+		            break;
+		    }
+		}
+	}
+	handle_walk_sprites_reset = function(){ handle_walk_sprites = function(){handle_walk_sprites_standard();}}
+	handle_walk_sprites_reset();
+	
 	snapping = 1 // 1 for none
 	
 	trail = false // afterimage
 	flashing = false
 	darken = 0
+    darken_plat = 0;
 	dim = 0
 	sweat = false
 	
 	yoff = 0
 	xoff = 0
 	shake = 0
+	angleoff = 0
 	
     flash_color = c_white
 	fsiner = 0 // flash siner
@@ -196,6 +304,9 @@ is_party = false
     
     delta_x = 0;
     delta_y = 0;
+	
+	last_dir_left_right = dir
+	last_dir_up_down = dir
 }
 { // moveables
 	moveable = true // the user-defined one, used in cutscenes and such. not touched by any of the systems in the engine by default
@@ -223,11 +334,13 @@ is_party = false
         && moveable_shop
 		&& (array_length(moveable_array) == 0 ? true : false)
 		
-		&& hurt == 0
+		&& (hurt == 0 or global.platforming_perspective == 1)
         && spawn_buffer <= 0
 		
 		&& !global.console
         && global.player_moveable_global
+		
+		&& !instance_exists(o_ui_plataction)
 	}
 }
 
@@ -259,12 +372,12 @@ __step = function(index) {
             var yy = y + random_range(-4, 4);
             
             var inst = lb_ripple_create(xx, yy, 3, party_getdata(name, "iconcolor"),,,,,,,,, 1/40);
-            inst.hspeed = delta_x;
-            inst.vspeed = delta_y;
+            inst.hspeed = locomotionX;
+            inst.vspeed = locomotionY;
             
             inst = lb_ripple_create(xx, yy, 2, party_getdata(name, "iconcolor"),,,,,,,,, 1/40);
-            inst.hspeed = delta_x;
-            inst.vspeed = delta_y;
+            inst.hspeed = locomotionX;
+            inst.vspeed = locomotionY;
         }
     }
 }
