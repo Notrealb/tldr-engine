@@ -1,4 +1,4 @@
-function player_movecode_standard_move(){
+function player_standard_move(){
 	mask_index = playermask
 	
 	// Party caterpillar spacing

@@ -5,7 +5,7 @@ for (var i = 0; i < party_length(true); i ++) {
 	var inst = party_get_inst(global.party_names[i])
 	cutscene_set_variable(inst, "image_speed", 0)
 }
-cutscene_wait_until(function(){return !instance_exists(o_ui_plataction)})
+cutscene_wait_until(function(){return !instance_exists(o_ui_plat_action)})
 cutscene_player_canmove(true)
 cutscene_party_follow(true)
 cutscene_play()

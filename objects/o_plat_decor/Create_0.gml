@@ -3,14 +3,16 @@ image_blend_start = image_blend
 hitstop = 0
 
 // Automatically set wall parent
-if auto_get_wall_parent and !instance_exists(wall_parent) {
-	var t = noone
-	for (var i=0; i<=200 and t==noone; i+=1) {
-		var c = collision_point(x, y+i, o_plat_wall, true, true); if c {t = c}
+call_later(1, time_source_units_frames, function(){
+	if auto_get_wall_parent and !instance_exists(wall_parent) {
+		var t = noone
+		for (var i=0; i<=200 and t==noone; i+=1) {
+			var c = collision_point(x, y+i, o_plat_wall, true, true); if c and !c.decor_should_not_pick_me {t = c}
+		}
+		if !instance_exists(t) {
+			show_debug_message("No wall_parent could be found for "+string(id)+".")
+		}else{
+			wall_parent = t
+		}
 	}
-	if !instance_exists(t) {
-		show_debug_message("No wall_parent could be found for "+string(id)+".")
-	}else{
-		wall_parent = t
-	}
-}
+})

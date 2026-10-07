@@ -39,23 +39,8 @@ if global.platforming_perspective == 0 {
         
 		cutscene_animate(inst.x, x + offset_x, 14, "sine_in_out", inst, "x");
         
-		var plat_parent = noone; //temp
-        var ground_find_range = 240;
-        
-        with inst {
-            for (var j = 0; j < ground_find_range; j += 2) {
-                with instance_place(x, y + j, o_plat_wall) {
-                    plat_parent = id;
-                }
-                if instance_exists(plat_parent)
-                    break;
-            }
-            if !instance_exists(plat_parent)
-                plat_parent = instance_nearest(x, y, o_plat_wall);
-        };
-        
-		if instance_exists(plat_parent) 
-            cutscene_animate(inst.y, plat_parent.ystart - (-(plat_parent.tilesize * plat_parent.wall_closeness_in_tiles)), 14, "sine_in_out", inst, "y");
+		if instance_exists(wall_parent) 
+            cutscene_animate(inst.y, wall_parent.ystart - (-(wall_parent.tilesize * wall_parent.wall_closeness_in_tiles)), 14, "sine_in_out", inst, "y");
 		
 		cutscene_animate(0, offset_y, 6, "sine_out", inst, "yoff")
 	}

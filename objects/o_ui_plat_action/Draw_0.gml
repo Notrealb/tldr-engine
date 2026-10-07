@@ -11,7 +11,7 @@ for (var i = party_length(true)-1; i > -1; i --) {
 		    spr = spr_default
 		
 		var xx = inst.x + inst.xoff + sine(.5, inst.shake)
-		var yy = inst.y + inst.yoff + lerp(0, -2, global.platforming_perspective)
+		var yy = inst.y + inst.yoff
 		if global.plataction_fade > 0 && inst.is_player { // outline and bg darkener
 			if !surface_exists(plataction_outline_surf) // create outline surface
 				plataction_outline_surf = surface_create(320, 240)

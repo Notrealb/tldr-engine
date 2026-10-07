@@ -51,7 +51,7 @@ is_party = false
 
 	
 	pf_init = function() {
-		player_platforming_movement_init()
+		player_platforming_init()
 	}
 	pf_init()
 }
@@ -340,7 +340,7 @@ is_party = false
 		&& !global.console
         && global.player_moveable_global
 		
-		&& !instance_exists(o_ui_plataction)
+		&& !instance_exists(o_ui_plat_action)
 	}
 }
 

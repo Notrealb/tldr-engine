@@ -1,1 +1,0 @@
-if !InputCheck(INPUT_VERB.SPECIAL) instance_destroy()

@@ -7,6 +7,7 @@
   "overriddenProperties":[
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_wall","path":"objects/o_plat_wall/o_plat_wall.yy",},"propertyId":{"name":"visible_while_pf","path":"objects/o_plat_wall/o_plat_wall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_wall","path":"objects/o_plat_wall/o_plat_wall.yy",},"propertyId":{"name":"visible_while_not_pf","path":"objects/o_plat_wall/o_plat_wall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_wall","path":"objects/o_plat_wall/o_plat_wall.yy",},"propertyId":{"name":"decor_should_not_pick_me","path":"objects/o_plat_wall/o_plat_wall.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
   ],
   "parent":{
     "name":"wall",

@@ -3,7 +3,13 @@ global.allow_use_platswap_statue = true
 global.plataction_fade = 0
 global.allow_open_plataction = true
 
-function player_platforming_movement_init(){
+global.HITSTOP_OBJECTS = [o_actor, o_plat_decor]
+// You can add to this array with:
+//			if !array_contains(global.HITSTOP_OBJECTS, self)
+//				array_push(global.HITSTOP_OBJECTS, object_index);
+// -in your object's create event.
+
+function player_platforming_init(){
 	pf_enabled = global.platforming_perspective ? 1 : 0
 	pf_caterrecordtime = 0
 	
@@ -541,7 +547,7 @@ function player_platforming_execute(){
 	// Plataction
 	if global.allow_open_plataction and InputPressed(INPUT_VERB.SPECIAL) {
 		audio_play(snd_spearrise)
-		instance_create(o_ui_plataction)
+		instance_create(o_ui_plat_action)
 	}
 }
 
@@ -672,8 +678,10 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
 						audio_play(pf_impact_sfx);
 					}
 					if try_hit_stop > 0 {
-						o_actor.hitstop = try_hit_stop;
-						o_plat_decor.hitstop = try_hit_stop;
+						for (var h = 0; h < array_length(global.HITSTOP_OBJECTS); h ++) {
+							if instance_exists(global.HITSTOP_OBJECTS[h]) and variable_instance_exists(global.HITSTOP_OBJECTS[h], "hitstop")
+								global.HITSTOP_OBJECTS[h].hitstop = try_hit_stop;
+						}
 					}
 				}
 				

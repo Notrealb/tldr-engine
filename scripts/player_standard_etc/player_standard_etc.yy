@@ -1,9 +1,9 @@
 {
   "$GMScript":"v1",
-  "%Name":"x_player_pf3",
+  "%Name":"player_standard_etc",
   "isCompatibility":false,
   "isDnD":false,
-  "name":"x_player_pf3",
+  "name":"player_standard_etc",
   "parent":{
     "name":"player",
     "path":"folders/@Engine/scripts/player.yy",
