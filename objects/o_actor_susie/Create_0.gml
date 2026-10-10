@@ -4,6 +4,7 @@ is_party = true
 
 // platforming sprites
 s_plat_idle = spr_plat_susie_idle;
+s_plat_crouch = s_plat_idle;
 s_plat_jump_up = spr_plat_susie_jump_up;
 s_plat_jump_down = spr_plat_susie_jump_down;
 s_plat_land = spr_plat_susie_land;

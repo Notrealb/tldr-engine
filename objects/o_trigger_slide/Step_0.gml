@@ -1,7 +1,7 @@
 event_inherited()
 if triggered {
 	with target 
-		y += global.slide_speed
+		y += global.platforming_perspective ? global.slide_speed_plat : global.slide_speed
 	if timer % 4 == 0 && target.y < y + sprite_height && target.y > y + 20
 		instance_create(o_eff_generic_animation, target.x, target.y - 30, target.depth, {sprite_index: spr_eff_slidedust})
 	

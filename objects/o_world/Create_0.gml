@@ -35,6 +35,7 @@ global.climbing_enabled = function() {
 
 global.party_limit = 3 // set to undefined for unlimited party members
 global.slide_speed = 5
+global.slide_speed_plat = 7
 global.ow_dodge_inv = 40;
 
 { // emmiters

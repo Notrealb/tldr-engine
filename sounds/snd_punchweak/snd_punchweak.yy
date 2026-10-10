@@ -14,8 +14,8 @@
   "exportDir":"",
   "name":"snd_punchweak",
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"sounds",
+    "path":"folders/@Engine/sounds.yy",
   },
   "preload":false,
   "resourceType":"GMSound",

@@ -35,6 +35,7 @@
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"play_slash_sound","filters":[],"listItems":[],"multiselect":false,"name":"play_slash_sound","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"true","varType":3,},
     {"$GMObjectProperty":"v2","%Name":"hit_stop_frames","filters":[],"listItems":[],"multiselect":false,"name":"hit_stop_frames","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
+    {"$GMObjectProperty":"v2","%Name":"slash_event_cooldown","filters":[],"listItems":[],"multiselect":false,"name":"slash_event_cooldown","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"0","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

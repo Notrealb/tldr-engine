@@ -14,8 +14,8 @@
     {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_slashable","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"propertyId":{"name":"hit_stop_frames","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"4",},
   ],
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"plat",
+    "path":"folders/zzz Examples/Objects/ow/plat.yy",
   },
   "parentObjectId":{
     "name":"o_plat_bullet",

@@ -28,8 +28,8 @@
   "nineSlice":null,
   "origin":0,
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"plat",
+    "path":"folders/@Engine/sprites/ow/plat.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

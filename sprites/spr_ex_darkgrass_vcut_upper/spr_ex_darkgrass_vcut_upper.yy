@@ -47,8 +47,8 @@
   },
   "origin":0,
   "parent":{
-    "name":"garden",
-    "path":"folders/zzz Examples/Sprites/ow/garden.yy",
+    "name":"darkgrass",
+    "path":"folders/zzz Examples/Sprites/ow/darkgrass.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

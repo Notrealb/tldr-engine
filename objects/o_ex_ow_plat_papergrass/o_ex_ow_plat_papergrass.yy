@@ -9,8 +9,8 @@
   "name":"o_ex_ow_plat_papergrass",
   "overriddenProperties":[],
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"plat",
+    "path":"folders/zzz Examples/Objects/ow/plat.yy",
   },
   "parentObjectId":{
     "name":"o_plat_slashable",

@@ -7,3 +7,8 @@ if dodgeaura_radius > 0 {
 	dodgeaura_inst.can_while_platforming = dodgeaura_use_while_platforming;
 	dodgeaura_inst.can_while_not_platforming = dodgeaura_use_while_not_platforming;
 }
+if hide_while_platforming and global.platforming_perspective > 0 {
+	image_alpha = clamp(image_alpha - 0.1, 0, 1);
+}else{
+	image_alpha = clamp(image_alpha + 0.1, 0, 1);
+}

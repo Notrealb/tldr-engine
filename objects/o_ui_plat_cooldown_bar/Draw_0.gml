@@ -1,5 +1,5 @@
 if target == noone exit
-depth = target.depth - 1
+depth = DEPTH_UI.MENU_UI - 2
 
 draw_set_color(image_blend)
 draw_set_alpha(image_alpha)

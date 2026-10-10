@@ -159,9 +159,9 @@ if dodge_getalpha() > 0 {
 				)
 				gpu_set_colorwriteenable(1, 1, 1, 0);
 				if dodge_getalpha() > 0
-					draw_sprite_tiled_ext(spr_plat_heartmode_texture_0, 0, 52 - surf_scroll, 52 - surf_scroll, 1, 1, c_white, dodge_getalpha());
+					draw_sprite_tiled_ext(s_plat_heartmode_texture, 0, 52 - surf_scroll, 52 - surf_scroll, 1, 1, c_white, dodge_getalpha());
 				if (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
-					draw_sprite_tiled_ext(spr_plat_heartmode_texture_red_0, surf_frame, 52 - surf_scroll, 52 - surf_scroll, 1, 1, c_white, dodge_getalpha());
+					draw_sprite_tiled_ext(s_plat_heartmode_texture_red, surf_frame, 52 - surf_scroll, 52 - surf_scroll, 1, 1, c_white, dodge_getalpha());
 				gpu_set_colorwriteenable(1, 1, 1, 1);
 			surface_reset_target();
 			draw_surface_ext(surf_pftexture, xx - 160, yy - 120, 1, 1, 0, c_white, dodge_getalpha());

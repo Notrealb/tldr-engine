@@ -116,6 +116,7 @@ is_party = false
         
         // platforming sprites
         s_plat_idle = spr_plat_kris_idle;
+		s_plat_crouch = spr_plat_kris_crouch;
         s_plat_jump_up = spr_plat_kris_jump_up;
         s_plat_jump_down = spr_plat_kris_jump_down;
         s_plat_land = spr_plat_kris_land;
@@ -136,7 +137,10 @@ is_party = false
         s_plat_slash_air_hbx = spr_plat_kris_slash_air_hbx;
         s_plat_slash_air_land = spr_plat_kris_slash_air_land;
 		s_plat_slash_npoints_air = [[snd_ui_cancel_small, 1], [snd_heavyswing, 5], [snd_ultraswing, 9], ["nul", 10]]
-	
+		
+		s_plat_heartmode_texture = spr_plat_heartmode_texture_0;
+		s_plat_heartmode_texture_red = spr_plat_heartmode_texture_red_0;
+		
 		s_idle_ispd = 1;
 		s_walk_ispd = 1;
 		s_run_ispd = 2;

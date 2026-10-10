@@ -5,8 +5,8 @@
   "isDnD":false,
   "name":"ex_draw_darkgrass",
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"draw",
+    "path":"folders/zzz Examples/Scripts/draw.yy",
   },
   "resourceType":"GMScript",
   "resourceVersion":"2.0",

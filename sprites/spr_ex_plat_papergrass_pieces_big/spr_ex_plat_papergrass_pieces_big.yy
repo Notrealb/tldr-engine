@@ -27,8 +27,8 @@
   "nineSlice":null,
   "origin":4,
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"plat",
+    "path":"folders/zzz Examples/Sprites/ow/plat.yy",
   },
   "preMultiplyAlpha":false,
   "resourceType":"GMSprite",

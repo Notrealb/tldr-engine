@@ -1,6 +1,6 @@
 {
   "$GMObject":"",
-  "%Name":"o_trigger_plat_fling",
+  "%Name":"o_ex_trigger_plat_fling",
   "eventList":[
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":10,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":0,"eventType":3,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
@@ -8,11 +8,11 @@
     {"$GMEvent":"v1","%Name":"","collisionObjectId":null,"eventNum":11,"eventType":7,"isDnD":false,"name":"","resourceType":"GMEvent","resourceVersion":"2.0",},
   ],
   "managed":true,
-  "name":"o_trigger_plat_fling",
+  "name":"o_ex_trigger_plat_fling",
   "overriddenProperties":[],
   "parent":{
-    "name":"triggers",
-    "path":"folders/@Engine/objects/dev/triggers.yy",
+    "name":"plat",
+    "path":"folders/zzz Examples/Objects/ow/plat.yy",
   },
   "parentObjectId":{
     "name":"o_trigger",
@@ -43,8 +43,8 @@
   "resourceVersion":"2.0",
   "solid":false,
   "spriteId":{
-    "name":"spr_trigger_plat_fling",
-    "path":"sprites/spr_trigger_plat_fling/spr_trigger_plat_fling.yy",
+    "name":"spr_ex_trigger_plat_fling",
+    "path":"sprites/spr_ex_trigger_plat_fling/spr_ex_trigger_plat_fling.yy",
   },
   "spriteMaskId":null,
   "visible":true,

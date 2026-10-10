@@ -10,8 +10,8 @@
   "name":"o_ex_eff_papergrass_piece",
   "overriddenProperties":[],
   "parent":{
-    "name":"tldr-engine",
-    "path":"tldr-engine.yyp",
+    "name":"plat",
+    "path":"folders/zzz Examples/Objects/ow/plat.yy",
   },
   "parentObjectId":{
     "name":"o_eff_generic",

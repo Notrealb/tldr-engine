@@ -16,6 +16,7 @@ s_climb_slip_fall = spr_kris_climb_slip_fall;
 
 // platforming sprites
 s_plat_idle = spr_plat_kris_idle;
+s_plat_crouch = spr_plat_kris_crouch;
 s_plat_jump_up = spr_plat_kris_jump_up;
 s_plat_jump_down = spr_plat_kris_jump_down;
 s_plat_land = spr_plat_kris_land;

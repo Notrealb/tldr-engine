@@ -97,26 +97,13 @@ function player_platforming_init(){
 	pf_invulnframe = 0;
 	
 	pf_hurt = 0;
+	
+	pf_getonslidecooldown = 0;
 }
 
 function player_platforming_execute(){
 	// Hurt
 	pf_hurt = hurt or (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
-	
-	// Dodge
-	if !instance_exists(o_dodge_controller)
-		instance_create(o_dodge_controller, -90, -90);
-	if instance_exists(o_dodge_controller) {
-		if global.platforming_perspective == 1 {
-			//o_dodge_controller.dodge_mode = true;
-			//o_dodge_controller.dodge_override = true;
-			o_dodge_controller.dodge_base_alpha = 0;
-			o_dodge_controller.dodge_darken = 0.00001;
-		}
-		else {
-			//o_dodge_controller.dodge_mode = false;
-		}
-	}
 	
 	// Run hit event in slashable objects if any were hit last frame.
 	if ds_exists(pf_slashed_objects, ds_type_list) {
@@ -247,6 +234,12 @@ function player_platforming_execute(){
 	var Verbs = {U : INPUT_VERB.UP, D : INPUT_VERB.DOWN, L : INPUT_VERB.LEFT, R : INPUT_VERB.RIGHT}
 	var inpcL = InputCheck(Verbs.L)
 	var inpcR = InputCheck(Verbs.R)
+	if inpcL and inpcR {
+		if InputLast([Verbs.L, Verbs.R]) == Verbs.R
+			inpcR = 0;
+		else
+			inpcL = 0;
+	}
 	//if (inpcL or inpcR) and !pf_grounded and x == xprevious and y == yprevious and pf_airtime > pf__airmintime and pf_jumpstage == "falling" {
 	//	inpcL = false;
 	//	inpcR = false;
@@ -457,6 +450,20 @@ function player_platforming_execute(){
 		false //RestrictYBasedOnPreviousX
 	);
 	
+	// Down-Nudger
+	if InputPressed(INPUT_VERB.DOWN)
+	and grounded
+	and (
+		place_meeting(x, y + 2, o_trigger_slide)
+		or
+		(place_meeting(x, y + 2, o_dev_climb_auto) and climb_get_enabled())
+	)
+	{
+		y += 2;
+		pf_getonslidecooldown = 8;
+	}
+	pf_getonslidecooldown = max(pf_getonslidecooldown-1, 0);
+	
 	// Force-momentum slowing
 	pf_forceX = increment_towards(pf_forceX, 0, pf_currentgravity);
 	pf_forceY = increment_towards(pf_forceY, 0, pf_currentgravity);
@@ -622,6 +629,9 @@ function actor_platforming_animate(_dx, _dy, _dir) {
 		yoff = increment_towards(yoff, 0, 1)
 		xoff = increment_towards(xoff, 0, 1)
 	}
+	
+	if sprite_index == s_plat_idle and InputCheck(INPUT_VERB.DOWN)
+		sprite_index = s_plat_crouch;
 }
 
 function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoints_array, _keyAttackBuffer, _keyAttackPressed, _keyJumpPressed) { // 
