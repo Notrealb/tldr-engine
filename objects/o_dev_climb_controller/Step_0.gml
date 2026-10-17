@@ -13,8 +13,8 @@ if climbing {
     else if !leader_in_trans {
         if leader_attached {
             if move_buffer <= 0 && jump_buffer <= 0 && bump_timer <= 0 && get_leader()._checkmove() {
-                var x_move = InputX(INPUT_CLUSTER.NAVIGATION);
-                var y_move = InputY(INPUT_CLUSTER.NAVIGATION);
+                var x_move = InputX(INPUT_CLUSTER.DIRECTION);
+                var y_move = InputY(INPUT_CLUSTER.DIRECTION);
                 
                 if x_move == 0 && y_move == 0 {
                     speed_boost_timer = 0;
@@ -43,7 +43,7 @@ if climbing {
                     	else if __find_tile(___reach, 180, ___jm) and !__find_tile(___reach, 270, ___jm) current_direction = 180;
                     	else if last_direction == 180 current_direction = 270 else current_direction = 180;
                     }
-                    else current_direction = snap(InputDirection(90, INPUT_CLUSTER.NAVIGATION), 90);
+                    else current_direction = snap(InputDirection(90, INPUT_CLUSTER.DIRECTION), 90);
                 }
                 
                 // charge
@@ -294,10 +294,10 @@ if climbing {
             
             // account for inputs during bump buffer
             if bump_timer > 0 {
-                var x_move = InputX(INPUT_CLUSTER.NAVIGATION);
-                var y_move = InputY(INPUT_CLUSTER.NAVIGATION);
+                var x_move = InputX(INPUT_CLUSTER.DIRECTION);
+                var y_move = InputY(INPUT_CLUSTER.DIRECTION);
                 if x_move != 0 || y_move != 0
-                    bump_buffered_movement = snap(InputDirection(90, INPUT_CLUSTER.NAVIGATION), 90);
+                    bump_buffered_movement = snap(InputDirection(90, INPUT_CLUSTER.DIRECTION), 90);
                 
                 // don't buffer same direction
                 if bump_buffered_movement == current_direction

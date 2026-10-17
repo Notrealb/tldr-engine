@@ -15,9 +15,10 @@ function __InputConfigVerbs()
     
     enum INPUT_CLUSTER
     {
-        //Add your own clusters here!
-        //Clusters are used for two-dimensional checkers (InputDirection() etc.)
-        NAVIGATION,
+        NAVIGATION, //The angles used by TLDR according to macro_dir
+		NAVIGATIONINVERSE, //Same but inverted
+		DIRECTION, //The standard angles used in GML
+		DIRECTIONINVERSE, //Same but inverted
     }
     
     if (not INPUT_ON_SWITCH)
@@ -44,5 +45,8 @@ function __InputConfigVerbs()
     }
     
     //Define a cluster of verbs for moving around
-    InputDefineCluster(INPUT_CLUSTER.NAVIGATION, INPUT_VERB.UP, INPUT_VERB.RIGHT, INPUT_VERB.DOWN, INPUT_VERB.LEFT);
+    InputDefineCluster(INPUT_CLUSTER.NAVIGATION, INPUT_VERB.RIGHT, INPUT_VERB.UP, INPUT_VERB.LEFT, INPUT_VERB.DOWN);
+	InputDefineCluster(INPUT_CLUSTER.NAVIGATIONINVERSE, INPUT_VERB.LEFT, INPUT_VERB.DOWN, INPUT_VERB.RIGHT, INPUT_VERB.UP);
+	InputDefineCluster(INPUT_CLUSTER.DIRECTION, INPUT_VERB.UP, INPUT_VERB.RIGHT, INPUT_VERB.DOWN, INPUT_VERB.LEFT, true, true);
+	InputDefineCluster(INPUT_CLUSTER.DIRECTIONINVERSE, INPUT_VERB.DOWN, INPUT_VERB.LEFT, INPUT_VERB.UP, INPUT_VERB.RIGHT, true, true);
 }

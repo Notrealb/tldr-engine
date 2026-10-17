@@ -12,3 +12,8 @@ v_offset = random_range(0, 1);
 
 
 dmg = 35;
+
+th.inst = instance_create(o_eff_plataction_target)
+th.inst.target = self
+th.char = choose("susie", "ralsei", "kris", "noelle")
+th.active = true

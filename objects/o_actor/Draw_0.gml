@@ -25,7 +25,7 @@ image_blend = merge_color(image_blend, c_black, clamp(darken + darken_plat, 0, 1
 if !is_undefined(override_blend)
     image_blend = override_blend;
 
-if dodge_getalpha() > 0 && is_player { // outline and bg darkener
+if dodge_getalpha() > 0 && is_player && !instance_exists(o_ui_plat_action){ // outline and bg darkener
 	if !surface_exists(dodge_outline_surf) // create outline surface
 		dodge_outline_surf = surface_create(320, 240)
 	

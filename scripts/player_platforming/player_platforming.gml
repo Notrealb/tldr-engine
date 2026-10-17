@@ -98,7 +98,7 @@ function player_platforming_init(){
 	
 	pf_hurt = 0;
 	
-	pf_getonslidecooldown = 0;
+	pf_downcrouch_cooldown = 0;
 }
 
 function player_platforming_execute(){
@@ -450,19 +450,25 @@ function player_platforming_execute(){
 		false //RestrictYBasedOnPreviousX
 	);
 	
-	// Down-Nudger
-	if InputPressed(INPUT_VERB.DOWN)
+	// downcrouch-activating
+	if pf_downcrouch_cooldown == 0
 	and grounded
-	and (
-		place_meeting(x, y + 2, o_trigger_slide)
-		or
-		(place_meeting(x, y + 2, o_dev_climb_auto) and climb_get_enabled())
-	)
-	{
-		y += 2;
-		pf_getonslidecooldown = 8;
+	and InputCheck(INPUT_VERB.DOWN) {
+		var checkarray = [o_trigger_slide];
+		if climb_get_enabled()
+			array_push(checkarray, o_dev_climb_auto);
+		var check = instance_place(x, y + 2, checkarray)
+		if check
+		{
+			y += 2;
+			pf_downcrouch_cooldown = 8;
+			if bbox_left < check.bbox_left
+				animate(x, x - bbox_left + check.bbox_left, 4, "linear", self, "x");
+			else if bbox_right > check.bbox_right
+				animate(x, check.bbox_right - (bbox_right - x), 4, "linear", self, "x");
+		}
 	}
-	pf_getonslidecooldown = max(pf_getonslidecooldown-1, 0);
+	pf_downcrouch_cooldown = max(pf_downcrouch_cooldown-1, 0);
 	
 	// Force-momentum slowing
 	pf_forceX = increment_towards(pf_forceX, 0, pf_currentgravity);
@@ -607,25 +613,34 @@ function actor_platforming_animate(_dx, _dy, _dir) {
     if pf_turn_timer > 0
         pf_turn_timer --;
 	
-	// Angleoff
-	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded and instance_place(x, y, o_dev_plat_zone_highstep) {
+	// ExampleDoCheapSlopePartyTilting
+	if pf_ExampleDoCheapSlopePartyTilting and pf_grounded /*and instance_place(x, y, o_dev_plat_zone_highstep)*/ {
+		var pd = round_p(point_direction(bbox_left, plf_SensorA_dist, bbox_right, plf_SensorB_dist), 2)
+		var ainc = 10
+		var pinc = 5
 		if point_distance(0, plf_SensorA_dist, 0, plf_SensorB_dist) < 1 {
-			angleoff = increment_towards(angleoff, 0, 4)
-			yoff = increment_towards(yoff, 0, 1)
-			xoff = increment_towards(xoff, 0, 1)
-		}
-		else if plf_WinningSensor == "B" {
-			angleoff = increment_towards(angleoff, 25, 4)
-			yoff = increment_towards(yoff, 2, 1)
-			xoff = increment_towards(xoff, 4, 1)
+			angleoff = angle_step_towards(angleoff, 0, ainc)
+			yoff = increment_towards(yoff, 0, pinc)
+			xoff = increment_towards(xoff, 0, pinc)
 		}
 		else {
-			angleoff = increment_towards(angleoff, -25, 4)
-			yoff = increment_towards(yoff, 2, 1)
-			xoff = increment_towards(xoff, -4, 1)
+			
+			var _r = angle_is_between(angleoff, 90, -90, -1)
+			var amt = angle_difference(angleoff, _r ? 0 : 180)/90
+			angleoff = angle_step_towards(angleoff, pd, ainc)
+			yoff = increment_towards(yoff, 14 * abs(amt), pinc)
+			xoff = increment_towards(xoff, 0, pinc)
+			//yoff = increment_towards(yoff, lerp(0, 10, abs(amt)), pspd)
+			//xoff = increment_towards(xoff, lerp(0, _r ? 14 : -14, abs(amt)), pspd)
+			//var tw = point_distance(bbox_left, 0, bbox_right, 0) / 2
+			//var tl = point_distance(x, 0, lengthdir_x(tw, 180), 0)
+			//var tr = point_distance(x, 0, lengthdir_x(tw, 0), 0)
+			//yoff = increment_towards(yoff, _r ? tr : tl, pspd)
 		}
-	} else {
-		angleoff = increment_towards(angleoff, 0, 4)
+	
+
+	} else {//
+		angleoff = angle_step_towards(angleoff, 0, 4)
 		yoff = increment_towards(yoff, 0, 1)
 		xoff = increment_towards(xoff, 0, 1)
 	}

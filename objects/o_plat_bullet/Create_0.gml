@@ -4,7 +4,7 @@ call_later(1, time_source_units_frames, function(){
 		image_alpha = 0;
 })
 
-dodgeaura_radius = 0
+dodgeaura_radius = 60
 dodgeaura_inst = noone
 dodgeaura_use_while_platforming = true
 dodgeaura_use_while_not_platforming = false

@@ -13,6 +13,23 @@ cutscene_play()
 depth = DEPTH_UI.MENU_UI
 _pcolor = c_white
 
-selection_x = get_leader().x
-selection_y = get_leader().y-17-clamp(get_leader().pf_final_ychange, 0, 7)
-//if get_leader()
+act_targets_array = []
+act_target_index = noone
+soul_origin_x = 0
+soul_origin_y = 0
+selection_x = 0
+selection_y = 0
+selection_inst = id
+pressdir = 0
+best = noone
+secondbest = noone
+
+if instance_exists(o_eff_plataction_darken)
+	instance_destroy(o_eff_plataction_darken)
+overdraw_inst = instance_create(o_eff_plataction_darken)
+
+il = function(st, en, va){
+	if (va == st)
+		return 0;
+	return (va - st) / (en - st);	
+}

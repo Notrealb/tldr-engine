@@ -394,3 +394,24 @@ function draw_pixel_center(x, y, w, h, col = draw_get_color(), alp = draw_get_al
 function input_verb_get_name(_verb) {
     return loc("menu_controls_" + string_lower(InputVerbGetExportName(_verb)))
 }
+
+/// @desc   Returns the id of the nth nearest instance of an object to a given point or noone if none is found.
+/// @param  {real}      _x           test point x-coordinate
+/// @param  {real}      _y           test point y-coordinate
+/// @param  {object}    object      object index (or all)
+/// @param  {real}      n           proximity
+/// @return {instance}  object instance id
+/// GMLscripts.com/license
+function instance_nth_nearest(_x, _y, objects_array, n)
+{
+	if objects_array == [] return noone
+    n = clamp(array_length(objects_array) - 1, 1, n);
+    var list = ds_priority_create();
+    var nearest = noone;
+	for (var i = 0; i < array_length(objects_array); ++i) {
+		with objects_array[i] ds_priority_add(list, id, distance_to_point(_x, _y));
+	}
+    repeat (n) nearest = ds_priority_delete_min(list);
+    ds_priority_destroy(list);
+    return nearest;
+}

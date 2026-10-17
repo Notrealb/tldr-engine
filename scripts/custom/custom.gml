@@ -7,23 +7,32 @@ function guipos_y() {
 }
 
 ///@desc Used to check if an instance is on the screen.
-///@arg {Id.Instance|Asset.GMObject} [instance]
-///@arg {Real} [tolerance]
+///@arg {Id.Instance|Asset.GMObject} [instance] instance to check
+///@arg {Real} [tolerance] tolerance for being onscreen. higher value means more tolerance. negative value means less. measured at gui scale!
 /// @arg {bool} [percise_collisions] whether the collision calculation should use a percise bounding box. false by default
+///@arg {Real} [just_the_origin] if to check instance origin instead of whole collision. false by default
 /// @return {Bool}
-function onscreen(instance = id, tolerance = 0, percise_collisions = false) {	
+function onscreen(instance = id, tolerance = 0, percise_collisions = false, just_the_origin = false) {	
     if !instance_exists(instance)
-        exit
+        exit;
     
-    if collision_rectangle(guipos_x() - tolerance, 
+	if just_the_origin and point_in_rectangle(instance.x, instance.y,
+        guipos_x() - tolerance, 
+        guipos_y() - tolerance, 
+        guipos_x() + o_camera.width + tolerance, 
+        guipos_y() + o_camera.height + tolerance
+    )
+		return true;
+    else if collision_rectangle(
+        guipos_x() - tolerance, 
         guipos_y() - tolerance, 
         guipos_x() + o_camera.width + tolerance, 
         guipos_y() + o_camera.height + tolerance, 
         instance, percise_collisions, false
     )
-        return true
+        return true;
     else
-        return false
+        return false;
 }
 
 ///@desc shakes the screen (with the gui layer) and returns the animation used
