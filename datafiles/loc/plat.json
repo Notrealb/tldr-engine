@@ -1,0 +1,100 @@
+{
+	"txt_platswapstatue_nofeather": {
+        "en": [
+			"* (A mysterious structure.)",
+			"* (It seems to be sealed with some sort of power...)"
+		],
+        "ja": [
+			"＊ (なんらかの力で　封印されている\n　 ようだ…)",
+			"＊ (ジョウロが　頭に乗った状態では\n　 ジャンプできない)"
+		]
+	},
+	
+	"txt_platact_headers_basic": {
+        "en": [
+			"No ACT",
+			"Check",
+			"ACT"
+		],
+        "ja": [
+			"こうどうなし",
+			"ぶんせき",
+			"こうどう"
+		]
+	},
+	
+	"txt_platact_descriptions_basic": {
+        "en": [
+			"* No ACTs are available.",
+			"* Press a direction to select an ACT.",
+			"* The enemy is guarding against ACTS!",
+			"* {0} is recharging.",
+			"* {0} is recharging. {1} is\n  ready.",
+			"* {0} and {1} are\n  recharging.",
+		],
+        "ja": [
+			"＊ できる「こうどう」がない。",
+			"＊ 方向入力をして　こうどうを選択。",
+			"＊ 敵は　こうどうを　ブロックしている！",
+			"＊ {0}　リチャージ中。",
+			"＊ {0}　リチャージ中。\n　 {1}　準備OK。",
+			"＊ スージィとラルセイは　リチャージ中。",
+		]
+	},
+	
+	"txt_platact_descriptions_extended": {
+        "en": [
+			"* {0} and {1} and\n  {2} are recharging.",
+			"* {0} and {1} are recharging.\n  {2} is ready.",
+			"* {0} is recharging. {1} and\n  {2} are ready.",
+			
+			"* {0}, {1}, {2} and\n  {3} are recharging.",
+		]
+	},
+	
+	
+	"txt_platact_d_susie_is_recharging": {
+        "en": [
+			"* Susie is recharging."
+		],
+        "ja": [
+			"＊ スージィは　リチャージ中。"
+		]
+	},
+	
+	"txt_platact_d_ralsei_is_recharging": {
+        "en": [
+			"* Ralsei is recharging."
+		],
+        "ja": [
+			"＊ ラルセイは　リチャージ中。"
+		]
+	},
+	
+	"txt_platact_d_ralsei_is_recharging_susie_is_ready": {
+        "en": [
+			"* Ralsei is recharging. Susie is\n  ready."
+		],
+        "ja": [
+			"＊ ラルセイは　リチャージ中。\n　 スージィは　準備OK。"
+		]
+	},
+	
+	"txt_platact_d_susie_is_recharging_ralsei_is_ready": {
+        "en": [
+			"* Susie is recharging. Ralsei is\n  ready."
+		],
+        "ja": [
+			"＊ スージィは　リチャージ中。\n　 ラルセイは　準備OK。"
+		]
+	},
+	
+	"txt_platact_d_susie_and_ralsei_are_recharging": {
+        "en": [
+			"* Susie and Ralsei are\n  recharging."
+		],
+        "ja": [
+			"＊ スージィとラルセイは　リチャージ中。"
+		]
+	},
+}

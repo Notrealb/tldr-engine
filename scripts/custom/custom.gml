@@ -7,23 +7,32 @@ function guipos_y() {
 }
 
 ///@desc Used to check if an instance is on the screen.
-///@arg {Id.Instance|Asset.GMObject} [instance]
-///@arg {Real} [tolerance]
+///@arg {Id.Instance|Asset.GMObject} [instance] instance to check
+///@arg {Real} [tolerance] tolerance for being onscreen. higher value means more tolerance. negative value means less. measured at gui scale!
 /// @arg {bool} [percise_collisions] whether the collision calculation should use a percise bounding box. false by default
+///@arg {Real} [just_the_origin] if to check instance origin instead of whole collision. false by default
 /// @return {Bool}
-function onscreen(instance = id, tolerance = 0, percise_collisions = false) {	
+function onscreen(instance = id, tolerance = 0, percise_collisions = false, just_the_origin = false) {	
     if !instance_exists(instance)
-        exit
+        exit;
     
-    if collision_rectangle(guipos_x() - tolerance, 
+	if just_the_origin and point_in_rectangle(instance.x, instance.y,
+        guipos_x() - tolerance, 
+        guipos_y() - tolerance, 
+        guipos_x() + o_camera.width + tolerance, 
+        guipos_y() + o_camera.height + tolerance
+    )
+		return true;
+    else if collision_rectangle(
+        guipos_x() - tolerance, 
         guipos_y() - tolerance, 
         guipos_x() + o_camera.width + tolerance, 
         guipos_y() + o_camera.height + tolerance, 
         instance, percise_collisions, false
     )
-        return true
+        return true;
     else
-        return false
+        return false;
 }
 
 ///@desc shakes the screen (with the gui layer) and returns the animation used
@@ -676,8 +685,8 @@ function time_format(time_s, display_hours = true){
 	return time
 }
 
-/// @desc Move with collision without slope support and returns the id of what's being collided with
-function move_and_collide_simple(dx, dy, inst) {
+/// @desc Move with collision without slope support and only return the id of what's being collided with.
+function move_and_collide_simpler(dx, dy, inst) {
 	var tx = sign(dx), ty = sign(dy), col = noone, colid = noone;
 
 	col = instance_place(x + dx, y, inst)
@@ -815,4 +824,30 @@ function keyboard_check_repeat(_key, _repeat_delay = 2, _repeat_predelay = 10) {
 
 function cap_wraparound(value, maxvalue) {
     return (value + maxvalue) % maxvalue
+}
+
+/// @desc Get instance and collision point of instance with a line between two points. via yellowafterlife
+function collision_line_point(x1, y1, x2, y2, obj, prec = true, notme = true) {
+    var rr = collision_line(x1, y1, x2, y2, obj, prec, notme);
+    var rx = x2;
+    var ry = y2;
+    if (rr != noone) {
+        var p0 = 0;
+        var p1 = 1;
+        repeat (ceil(log2(point_distance(x1, y1, x2, y2))) + 1) {
+            var np = p0 + (p1 - p0) * 0.5;
+            var nx = x1 + (x2 - x1) * np;
+            var ny = y1 + (y2 - y1) * np;
+            var px = x1 + (x2 - x1) * p0;
+            var py = y1 + (y2 - y1) * p0;
+            var nr = collision_line(px, py, nx, ny, obj, prec, notme);
+            if (nr != noone) {
+                rr = nr;
+                rx = nx;
+                ry = ny;
+                p1 = np;
+            } else p0 = np;
+        }
+    }
+    return [rr, rx, ry];
 }

@@ -1,5 +1,5 @@
-var currentspd = spd
-var check_canmove = _checkmove() && !climb_check();
+var hitstopped = hitstop > 0
+var check_canmove = _checkmove() && !climb_check() && !hitstopped;
 var x_move = 0
 var y_move = 0
 
@@ -17,331 +17,53 @@ if !init
 
 // player movement
 if is_player && check_canmove {
-	var am_moving = false
-    
-	// movement speed control
-	if ((!auto_run && InputCheck(INPUT_VERB.CANCEL)) || (auto_run && !InputCheck(INPUT_VERB.CANCEL))) && moving {
-		running = true;
-		player_run_timer ++;
-        
-        if player_run_timer > 60
-            spd = basespd + (global.world == WORLD_TYPE.LIGHT ? 3 : 2.5);
-        else if player_run_timer > 10
-            spd = basespd + 2;
-        else 
-            spd = basespd + 1;
-	}
-	else {
-		running = false;
-		spd = basespd; // instantly return to base speed
-        player_run_timer = 0;
-	}
-    
-	// move upon pressing keys
-    var hor_dir = DIR.RIGHT
-    var ver_dir = DIR.DOWN
-    var __setdir = function(target_dir) {
-        var opposite_direction = angle_add(target_dir, 180)
-        
-        if !array_contains(held_directions, target_dir)
-            array_push(held_directions, target_dir)
-        if array_contains(held_directions, opposite_direction) {
-            array_delete(held_directions, array_get_index(held_directions, opposite_direction), 1)
-            player_run_timer = 0;
-        }
-    }
-    var __unset_dir = function(target_dir) {
-        if !array_contains(held_directions, target_dir)
-            return false
-        array_delete(held_directions, array_get_index(held_directions, target_dir), 1)
-    }
-    
-	if InputCheck(INPUT_VERB.RIGHT) {
-        __setdir(DIR.RIGHT)
-        
-		x_move = currentspd
-		am_moving = true
-	}
-    else
-        __unset_dir(DIR.RIGHT)
-	if InputCheck(INPUT_VERB.LEFT) {
-        __setdir(DIR.LEFT)
-        
-		x_move = -currentspd
-		am_moving = true
-	}
-    else
-        __unset_dir(DIR.LEFT)
-    
-	if InputCheck(INPUT_VERB.DOWN) && (!sliding || slide_vertical_allow) {
-        __setdir(DIR.DOWN)
-        
-        y_move = currentspd
-		am_moving = true
-	}
-    else
-        __unset_dir(DIR.DOWN)
-	if InputCheck(INPUT_VERB.UP) && (!sliding || slide_vertical_allow) {
-        __setdir(DIR.UP)
-        
-		y_move = -currentspd
-		am_moving = true
-	}
-    else
-        __unset_dir(DIR.UP)
-    
-    if am_moving && array_length(held_directions) > 0 {
-        dir = held_directions[0]
-    }
-	
-	// interact
-	if InputPressed(INPUT_VERB.SELECT) {
-        for (var w = 2; w < 15; w ++) {
-    		var __xw = -lengthdir_x(w, dir + 90)
-    		var __yw = lengthdir_y(w, dir + 90)
-            
-            var __interactable_instances = instance_place_list_ext(x + __xw, y + __yw, array_concat([o_ow_interactable, o_actor_interactable], interactable_instances), false)
-            for (var i = 0; i < array_length(__interactable_instances); i ++) {
-                with __interactable_instances[i] {
-                    if other._checkmove()
-                        event_user(0)
-                }
-            }
-            if array_length(__interactable_instances) > 0
-                break;
-        }
-		
-	}
-	
-	// menu
-	else if InputPressed(INPUT_VERB.SPECIAL) 
-        && !o_dodge_controller.dodge_mode 
-        && !instance_exists(o_ui_menu) 
-        && !sliding
-    { // only allow while not in an overworld dodging section
-		x_move = 0
-        y_move = 0
-        am_moving = false
-        
-        // swap the menu object depending on the world
-		if global.world == WORLD_TYPE.DARK // dark world
-			instance_create(o_ui_menu)
-		else // light world
-			instance_create(o_ui_menu_lw)
-	}
+	event_user(3) // Player interactions event
 }
 
 // if i am a follower and i am following the leader
-else if follow && is_follower && instance_exists(follow_target) {
-	if get_leader().moving {
-		array_insert_cycle(record, 0, __new_record());
+else if follow && is_follower && instance_exists(follow_target) and !hitstopped{
+	if is_in_battle {
+		get_leader().player_followerhookcode_reset();
+		script_execute_ext(get_leader().player_followerhookcode_a);
+		__refresh_follow(pos);
+		script_execute_ext(get_leader().player_followerhookcode_b);
 	}
-	__refresh_follow(pos);
+	else {
+		script_execute_ext(get_leader().player_followerhookcode_a);
+		__refresh_follow(pos);
+		script_execute_ext(get_leader().player_followerhookcode_b);
+	}
 }
-else if sliding {
+else if sliding and !hitstopped{
 	if instance_exists(slideinst) && !place_meeting(x, y, slideinst){
 		sliding = false
 		y -= global.slide_speed
 	}
-    
 	y += global.slide_speed
 }
 
-if (track_footsteps || is_player) {
-    // make steps and call the `__step` method
-	if !sliding {
-		if floor((image_index % image_number)*2) % 2 != 0 {
-			if !made_step {
-                __step(floor(image_index % image_number));
-                made_step = true;
-            }
-		}
-		else 
-			made_step = false;
-	}
+// set moving for non-players, and then make sure the player isn't set as moving when they shouldn't be
+if !is_player and !hitstopped{
+	moving = false;
+	if ((abs(x - xprevious) > 0 || abs(y - yprevious) > 0) and !is_in_battle and !is_enemy) or sliding
+		moving = true;
+}
+else if s_override or hitstopped or !s_dynamic or is_in_battle or !moveable{
+	moving = false;
 }
 
-moving = false
+// handle walk sprites
+if !hitstopped
+	handle_walk_sprites();
 
-delta_x = 0;
-delta_y = 0;
-
-// actually move now
-if x_move != 0 || y_move != 0 {
-    var xx = 0
-    var yy = 0
-    var canmove_x = true
-    var canmove_y = true
-    
-    var perc_x = .5 * sign(x_move)
-    for (var j = 0; abs(j) < abs(x_move); j += perc_x) {
-        var __collisions = instance_place_list_ext(x + xx + perc_x, y + yy, o_block, true) 
-        var __canmove = true
-        
-        for (var m = 0; m < array_length(__collisions); m ++) {
-            if instance_exists(__collisions[m]) && __collisions[m].collide {
-                __canmove = false
-                break
-            }
-        }
-        
-        if __canmove
-            xx += perc_x
-        else 
-            break
-    }
-    
-    var perc_y = .5 * sign(y_move)
-    for (var j = 0; abs(j) < abs(y_move); j += perc_y) {
-        var __collisions = instance_place_list_ext(x + xx, y + yy + perc_y, o_block, true) 
-        var __canmove = true
-        
-        for (var m = 0; m < array_length(__collisions); m ++) {
-            if instance_exists(__collisions[m]) && __collisions[m].collide {
-                __canmove = false
-                break
-            }
-        }
-        
-        if __canmove
-            yy += perc_y
-        else
-            break
-    }
-    
-    // collisions when sliding
-    if sliding {
-        if instance_exists(slideinst) {
-            if !place_meeting(x + xx, y, slideinst) {
-                canmove_x = false
-            }
-        }
-    }
-    
-    if canmove_x {
-        x += xx;
-        delta_x += xx;
-    }
-    if canmove_y {
-        y += yy;
-        delta_y += yy;
-    }
-    
-    // diagonal collisions
-    var __diagonal_x = instance_place_list_ext(x + xx, y, o_block_diag, false)
-    for (var i = 0; i < array_length(__diagonal_x); i ++) {
-        if instance_exists(__diagonal_x[i]) && __diagonal_x[i].collide {
-            var compensate_y = sign(__diagonal_x[i].image_yscale) * currentspd
-            var interfering_collisions = instance_place_list_ext(x + xx, y + compensate_y, o_block, false)
-            
-            for (var j = 0; j < array_length(interfering_collisions); j ++) {
-                if instance_exists(interfering_collisions[j]) && interfering_collisions[j].object_index != o_block_diag && interfering_collisions[j].collide{
-                    compensate_y = 0
-                    break
-                }
-            }
-            
-            y += compensate_y;
-            delta_y += compensate_y;
-            
-            break
-        }
-    }
-    
-    var __diagonal_y = instance_place_list_ext(x, y + yy, o_block_diag, false)
-    for (var i = 0; i < array_length(__diagonal_y); i ++) {
-        if instance_exists(__diagonal_y[i]) && __diagonal_y[i].collide {
-            var compensate_x = sign(__diagonal_y[i].image_xscale) * currentspd
-            var interfering_collisions = instance_place_list_ext(x + compensate_x, y + yy, o_block, false)
-            
-            for (var j = 0; j < array_length(interfering_collisions); j ++) {
-                if instance_exists(interfering_collisions[j]) && interfering_collisions[j].object_index != o_block_diag && interfering_collisions[j].collide {
-                    compensate_x = 0
-                    break
-                }
-            }
-            
-            x += compensate_x;
-            delta_x += compensate_x;
-            
-            break
-        }
-    }
-    
-    moving = true
+// darken in certain conditions
+if is_follower {
+	var plat_should_darken = (global.platforming_perspective > .5 && !(instance_exists(o_enc) || instance_exists(o_enc_anim)));
+    darken_plat = increment_towards(darken_plat, (plat_should_darken ? .5 : 0), .05);
 }
 
-// just make it known that you are moving (if you are not the player)
-if !is_player 
-    && (x != xprevious || y != yprevious)
-    && !is_in_battle && !is_enemy || sliding
-    	moving = true
-else if moving // if you are already "moving," and it is confirmed by checking your x and y positions, let you still be moving
-    && (x != xprevious || y != yprevious)
-    && !is_in_battle && !is_enemy {
-       
-}
-else
-	moving = false
-
-// sprites
-if moving && !is_in_battle && !is_enemy && s_dynamic && !s_override {
-	if !startedmoving {
-		startedmoving = true
-        
-        last_walk_frame = cap_wraparound(last_walk_frame + 1, image_number);
-        last_walk_buffer = 12;
-		image_index = last_walk_frame
-	}
-	if !running
-		image_speed = s_walk_ispd
-}
-else if !is_in_battle && !is_enemy {
-	startedmoving = false
-	
-	if floor(image_index) % 2 == 0 && !s_override && s_dynamic && s_current_animation != ACTOR_ANIMATIONS.IDLE
-		s_current_animation = ACTOR_ANIMATIONS.IDLE;
-}
-
-// running sprites, walking sprites
-if !is_in_battle && !is_enemy && s_dynamic && !s_override {
-	if running && moving 
-        s_current_animation = ACTOR_ANIMATIONS.RUN;
-    else if moving
-        s_current_animation = ACTOR_ANIMATIONS.WALK;
-    
-    switch s_current_animation {
-        default: // idle
-            var possible_idle = s_idle[dir];
-            
-            if sprite_exists(possible_idle) { // switch to an idle sprite
-                sprite_index = possible_idle;
-                image_speed = s_idle_ispd;
-                
-                if s_previous_animation != s_current_animation 
-                    image_index = 0;
-            }
-            else { // using only the walk sprites
-                sprite_index = s_move[dir];
-                image_speed = 0;
-                image_index = 0;
-            }
-            
-            break;
-        case ACTOR_ANIMATIONS.WALK:
-            sprite_index = s_move[dir];
-            image_speed = s_walk_ispd;
-            
-            break;
-        case ACTOR_ANIMATIONS.RUN:
-            sprite_index = asset_get_index_state(sprite_get_name(s_move[dir]), s_run_postfix);
-            image_speed = s_run_ispd;
-            
-            break;
-    }
-}
-
-{ // timers and siners
+// timers and siners
+if !hitstopped {
 	if hurt > 0
 		hurt --
 	

@@ -10,13 +10,15 @@ function __InputConfigVerbs()
         SELECT,
         CANCEL,
         SPECIAL,
+		OTHER,
     }
     
     enum INPUT_CLUSTER
     {
-        //Add your own clusters here!
-        //Clusters are used for two-dimensional checkers (InputDirection() etc.)
-        NAVIGATION,
+        NAVIGATION, //The angles used by TLDR according to macro_dir
+		NAVIGATIONINVERSE, //Same but inverted
+		DIRECTION, //The standard angles used in GML
+		DIRECTIONINVERSE, //Same but inverted
     }
     
     if (not INPUT_ON_SWITCH)
@@ -28,6 +30,7 @@ function __InputConfigVerbs()
         InputDefineVerb(INPUT_VERB.SELECT,  "CONFIRM",     ["Z", vk_enter],        gp_face1);
         InputDefineVerb(INPUT_VERB.CANCEL,  "CANCEL",     ["X", vk_shift],        gp_face2);
         InputDefineVerb(INPUT_VERB.SPECIAL, "MENU",    ["C", vk_control],      gp_face4);
+		InputDefineVerb(INPUT_VERB.OTHER,  "OTHER",    ["V", vk_alt],      gp_face3);
     }
     else //Flip A/B over on Switch
     {
@@ -38,8 +41,12 @@ function __InputConfigVerbs()
         InputDefineVerb(INPUT_VERB.SELECT,  "CONFIRM",  undefined,   gp_face2); // !!
         InputDefineVerb(INPUT_VERB.CANCEL,  "CANCEL",  undefined,   gp_face1); // !!
         InputDefineVerb(INPUT_VERB.SPECIAL, "MENU", undefined,   gp_face4);
+		InputDefineVerb(INPUT_VERB.OTHER,  "OTHER",    undefined,   gp_face3);
     }
     
     //Define a cluster of verbs for moving around
-    InputDefineCluster(INPUT_CLUSTER.NAVIGATION, INPUT_VERB.UP, INPUT_VERB.RIGHT, INPUT_VERB.DOWN, INPUT_VERB.LEFT);
+    InputDefineCluster(INPUT_CLUSTER.NAVIGATION, INPUT_VERB.RIGHT, INPUT_VERB.UP, INPUT_VERB.LEFT, INPUT_VERB.DOWN);
+	InputDefineCluster(INPUT_CLUSTER.NAVIGATIONINVERSE, INPUT_VERB.LEFT, INPUT_VERB.DOWN, INPUT_VERB.RIGHT, INPUT_VERB.UP);
+	InputDefineCluster(INPUT_CLUSTER.DIRECTION, INPUT_VERB.UP, INPUT_VERB.RIGHT, INPUT_VERB.DOWN, INPUT_VERB.LEFT, true, true);
+	InputDefineCluster(INPUT_CLUSTER.DIRECTIONINVERSE, INPUT_VERB.DOWN, INPUT_VERB.LEFT, INPUT_VERB.UP, INPUT_VERB.RIGHT, true, true);
 }
