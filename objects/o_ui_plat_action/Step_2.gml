@@ -1,4 +1,4 @@
-if InputPressed(INPUT_VERB.SELECT) { //debug cd bar
+if InputPressed(INPUT_VERB.SELECT) { //test cooldown bar
 	for (var i = 0; i < party_length(true); ++i) {
 		var pinst = party_get_inst(global.party_names[i]);
 		var barinst = instance_create(o_ui_plat_cooldown_bar)

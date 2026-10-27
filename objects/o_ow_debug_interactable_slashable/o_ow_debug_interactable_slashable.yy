@@ -9,7 +9,10 @@
   ],
   "managed":true,
   "name":"o_ow_debug_interactable_slashable",
-  "overriddenProperties":[],
+  "overriddenProperties":[
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_slashable","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"propertyId":{"name":"slash_event_cooldown","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"6",},
+    {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_plat_slashable","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"propertyId":{"name":"slashed_playerNoslashingforframes","path":"objects/o_plat_slashable/o_plat_slashable.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"10",},
+  ],
   "parent":{
     "name":"misc",
     "path":"folders/@Engine/objects/ow/misc.yy",
@@ -32,7 +35,7 @@
   "physicsShapePoints":[],
   "physicsStartAwake":true,
   "properties":[
-    {"$GMObjectProperty":"v2","%Name":"name","filters":[],"listItems":[],"multiselect":false,"name":"name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"undefined","varType":2,},
+    {"$GMObjectProperty":"v2","%Name":"name","filters":[],"listItems":[],"multiselect":false,"name":"name","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"\"","varType":4,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

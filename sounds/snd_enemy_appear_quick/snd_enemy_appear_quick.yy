@@ -1,0 +1,26 @@
+{
+  "$GMSound":"v2",
+  "%Name":"snd_enemy_appear_quick",
+  "audioGroupId":{
+    "name":"audiogroup_default",
+    "path":"audiogroups/audiogroup_default",
+  },
+  "bitDepth":1,
+  "channelFormat":1,
+  "compression":1,
+  "compressionQuality":4,
+  "conversionMode":0,
+  "duration":1.9519274,
+  "exportDir":"",
+  "name":"snd_enemy_appear_quick",
+  "parent":{
+    "name":"sounds",
+    "path":"folders/@Engine/sounds.yy",
+  },
+  "preload":false,
+  "resourceType":"GMSound",
+  "resourceVersion":"2.0",
+  "sampleRate":44100,
+  "soundFile":"snd_enemy_appear_quick.wav",
+  "volume":1.0,
+}

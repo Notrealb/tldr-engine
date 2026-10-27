@@ -9,11 +9,3 @@ h_freq = random_range(1.1, 1.3) * choose(-1, 1);
 v_freq = random_range(1.1, 1.3) * choose(-1, 1);
 h_offset = random_range(0, 1);
 v_offset = random_range(0, 1);
-
-
-dmg = 35;
-
-th.inst = instance_create(o_eff_plataction_target)
-th.inst.target = self
-th.char = choose("susie", "ralsei", "kris", "noelle")
-th.active = true

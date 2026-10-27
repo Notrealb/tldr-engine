@@ -9,5 +9,6 @@ get_leader().pf_forceX += (abs(fling_x_abs) * (fling_dir<0 ? -1 : (fling_dir>0 ?
 
 party_attack_all(dmg, o_enc)
 o_dodge_soul.i_frames = 38
-instance_destroy()
 
+if destroy_when_collided_with
+	instance_destroy()

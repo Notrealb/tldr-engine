@@ -39,8 +39,9 @@ if global.platforming_perspective == 0 {
         
 		cutscene_animate(inst.x, x + offset_x, 14, "sine_in_out", inst, "x");
         
+		var eventual_y = __calc_y_and_do_darken(false, 1) + enter_land_yoffset
 		if instance_exists(wall_parent) 
-            cutscene_animate(inst.y, wall_parent.ystart - (-(wall_parent.tilesize * wall_parent.wall_closeness_in_tiles)), 14, "sine_in_out", inst, "y");
+            cutscene_animate(inst.y, eventual_y, 14, "sine_in_out", inst, "y");
 		
 		cutscene_animate(0, offset_y, 6, "sine_out", inst, "yoff")
 	}

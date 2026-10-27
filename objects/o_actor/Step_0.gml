@@ -1,4 +1,4 @@
-var hitstopped = hitstop > 0
+var hitstopped = hitstop_timer > 0
 var check_canmove = _checkmove() && !climb_check() && !hitstopped;
 var x_move = 0
 var y_move = 0

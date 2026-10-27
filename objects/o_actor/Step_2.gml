@@ -48,15 +48,15 @@ if x != xprevious {
 }
 
 // hitstop decay
-if hitstop > 0
-	hitstop = max(0, hitstop-1);
+if hitstop_timer > 0
+	hitstop_timer = max(0, hitstop_timer-1);
 // hitstop image speed
 if s_dynamic and !s_override {
-	if hitstop == 1 {
+	if hitstop_timer == 1 {
 		image_speed = hitstop_saved_image_speed;
 		image_index = floor(image_index);
 	}
-	else if hitstop > 0
+	else if hitstop_timer > 0
 		image_speed = 0;
 	else
 		hitstop_saved_image_speed = image_speed;

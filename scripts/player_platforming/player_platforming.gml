@@ -97,19 +97,25 @@ function player_platforming_init(){
 	pf_invulnframe = 0;
 	
 	pf_hurt = 0;
+	pf_noslashingtime = 0;
 	
 	pf_downcrouch_cooldown = 0;
 }
 
 function player_platforming_execute(){
-	// Hurt
-	pf_hurt = hurt or (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30)
-	
-	// Run hit event in slashable objects if any were hit last frame.
+	// Run hit event in slashable objects if any were hit last frame. Also, knockedback.
+	pf_hurt = hurt or pf_noslashingtime or (instance_exists(o_dodge_soul) and o_dodge_soul.i_frames > 30);
 	if ds_exists(pf_slashed_objects, ds_type_list) {
         for (var i = 0; i < ds_list_size(pf_slashed_objects); i ++) {
-            with pf_slashed_objects[|i] 
-                event_user(1);
+            with pf_slashed_objects[|i] {
+				if slash_event_cooldown_timer <= 0 {
+					event_user(1);
+					slash_event_cooldown_timer = slash_event_cooldown;
+				}
+				if slashed_playerNoslashingforframes {
+					other.pf_noslashingtime = max(other.pf_noslashingtime, slashed_playerNoslashingforframes)
+				}
+			}
         }
 		ds_list_destroy(pf_slashed_objects);
 	}
@@ -161,6 +167,11 @@ function player_platforming_execute(){
 	and ((place_meeting(x - 4, bbox_bottom + 2, player_array_collisions) and !place_meeting(x + 4, bbox_bottom + 2, player_array_collisions))
 		or (place_meeting(x + 4, bbox_bottom + 2, player_array_collisions) and !place_meeting(x - 4, bbox_bottom + 2, player_array_collisions)))
 		grounded = place_meeting(x, bbox_bottom + 2 + 2, player_array_collisions);
+	
+	if grounded repeat(3) {
+		if !place_meeting(x, bbox_bottom + 1, player_array_collisions)
+			y++
+	}
 	
 	// Pitfall rescue
 	if pf_DoPitfallRescue {
@@ -407,7 +418,7 @@ function player_platforming_execute(){
 			}
 		}
     
-		if (pf_vspeed < 0 or hitstop > 0)
+		if (pf_vspeed < 0 or hitstop_timer > 0)
 		and release_jump
 		and !pf_hurt
 			pf_vspeed *= 0.5;
@@ -457,10 +468,11 @@ function player_platforming_execute(){
 		var checkarray = [o_trigger_slide];
 		if climb_get_enabled()
 			array_push(checkarray, o_dev_climb_auto);
-		var check = instance_place(x, y + 2, checkarray)
+		var reach = 6
+		var check = instance_place(x, y + reach, checkarray)
 		if check
 		{
-			y += 2;
+			y += reach;
 			pf_downcrouch_cooldown = 8;
 			if bbox_left < check.bbox_left
 				animate(x, x - bbox_left + check.bbox_left, 4, "linear", self, "x");
@@ -507,6 +519,7 @@ function player_platforming_execute(){
 	// Combat
 	if pf_attack_airslash_buffer > 0
 	or pf_hurt
+	or pf_noslashingtime
 		keyAttackPressed = false;
 	
 	if pf_grounded == false {
@@ -514,6 +527,10 @@ function player_platforming_execute(){
 		if keyAttackPressed
 			pf_attack_airslash_buffer = pf__attack_airslash_buffer_max;
 	}
+	
+	if pf_hurt
+	or pf_noslashingtime
+		keyAttack = false;
 	
 	if keyAttack
 		pf_attack_key_hold_buffer = 4;
@@ -551,7 +568,8 @@ function player_platforming_execute(){
 	}
 	
 	pf_attacktypeprev = pf_attacktype;
-	pf_attack_airslash_buffer = max(pf_attack_airslash_buffer-1, 0)
+	pf_attack_airslash_buffer = max(pf_attack_airslash_buffer-1, 0);
+	pf_noslashingtime = max(pf_noslashingtime-1, 0);
 	if pf_grounded
 		pf_grounded_time ++;
 	else
@@ -559,8 +577,8 @@ function player_platforming_execute(){
 		
 	// Plataction
 	if global.allow_open_plataction and InputPressed(INPUT_VERB.SPECIAL) {
-		audio_play(snd_spearrise)
-		instance_create(o_ui_plat_action)
+		audio_play(snd_spearrise);
+		instance_create(o_ui_plat_action);
 	}
 }
 
@@ -704,13 +722,13 @@ function actor_platforming_combat_npointex(_sprite, _hbxsprite, _fgsprite, _npoi
 					}
 					if try_hit_stop > 0 {
 						for (var h = 0; h < array_length(global.HITSTOP_OBJECTS); h ++) {
-							if instance_exists(global.HITSTOP_OBJECTS[h]) and variable_instance_exists(global.HITSTOP_OBJECTS[h], "hitstop")
-								global.HITSTOP_OBJECTS[h].hitstop = try_hit_stop;
+							if instance_exists(global.HITSTOP_OBJECTS[h]) and variable_instance_exists(global.HITSTOP_OBJECTS[h], "hitstop_timer")
+								global.HITSTOP_OBJECTS[h].hitstop_timer = try_hit_stop;
 						}
 					}
 				}
 				
-				var inst_linger = instance_create(o_eff_slash_linger, -999, -999, DEPTH_PLATFORMER.SLASH);
+				var inst_linger = instance_create(o_eff_plat_slash_linger, -999, -999, DEPTH_PLATFORMER.SLASH);
                 inst_linger.target = id;
                 inst_linger.sprite_index = _fgsprite;
                 inst_linger.image_xscale = image_xscale;

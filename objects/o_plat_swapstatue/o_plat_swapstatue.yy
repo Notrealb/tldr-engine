@@ -38,6 +38,7 @@
   "physicsStartAwake":true,
   "properties":[
     {"$GMObjectProperty":"v2","%Name":"exit_to_movecode","filters":[],"listItems":[],"multiselect":false,"name":"exit_to_movecode","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"\"standard\"","varType":4,},
+    {"$GMObjectProperty":"v2","%Name":"enter_land_yoffset","filters":[],"listItems":[],"multiselect":false,"name":"enter_land_yoffset","rangeEnabled":false,"rangeMax":10.0,"rangeMin":0.0,"resourceType":"GMObjectProperty","resourceVersion":"2.0","value":"-1","varType":1,},
   ],
   "resourceType":"GMObject",
   "resourceVersion":"2.0",

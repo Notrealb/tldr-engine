@@ -1,8 +1,6 @@
 if image_alpha <= 0 or !visible exit;
 
-var testblend = image_blend//c_white//merge_color(image_blend, c_red, abs(wall_closeness_in_tiles)/4)
-
-__y_after_offset = lerp(y, y + o_dev_plat_controller.default_platformsdrawyoffset, global.platforming_perspective)
+var testblend = image_blend
 
 var gpp = global.platforming_perspective;
 var bltts = floor_backlength_in_tiles * tilesize;
@@ -10,12 +8,25 @@ if flatten_while_plat {bltts = lerp(floor_backlength_in_tiles, 2, gpp) * tilesiz
 var wal_width = image_xscale * sprite_get_width(sprite_index);
 var wal_height = image_yscale * sprite_get_height(sprite_index);
 
+var flr_squish = (1-((1-perspectiveangle)*gpp))
+var flr_height = bltts * flr_squish;
+
+var yco = 0
+if o_dev_plat_controller.all_walls_y_off_for_centering == "auto"
+	yco = ((o_dev_plat_controller.player_floor_centering * o_dev_plat_controller.wall_generic_bltts) * (1-((1-perspectiveangle)*gpp)))
+else
+	yco = o_dev_plat_controller.all_walls_y_off_for_centering
+//yo -= 2
+//yo += ((o_dev_plat_controller.player_floor_centering * o_dev_plat_controller.wall_generic_bltts) * (1-((1-perspectiveangle)*gpp)))
+__y_after_offset = lerp(y, y + yco + o_dev_plat_controller.default_platformsdrawyoffset, global.platforming_perspective)
+__y_after_offset = round_p(__y_after_offset, 0.5)
+
+
 // Draw the floor
 var flr_spr = floor_use_next_wall_image_instead ? sprite_index : floor_sprite;
 if sprite_exists(flr_spr) and !array_contains(["nothing", "dont", "null", 0, -1, undefined, noone], floor_drawer) and floor_backlength_in_tiles != 0 {
 	matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, 1, 1));
-	var flr_squish = (1-((1-perspectiveangle)*gpp))
-	var flr_height = bltts * flr_squish;
+
 	if floor_will_squish_with_matrix and !array_contains(["span"], floor_drawer){
 		matrix_set(matrix_world, matrix_build(x, __y_after_offset, 0, 0, 0, 0, 1, (1-((1-perspectiveangle)*gpp)), 1));
 		flr_height = bltts;
@@ -26,11 +37,11 @@ if sprite_exists(flr_spr) and !array_contains(["nothing", "dont", "null", 0, -1,
 	and !(gpp == 1 and perspectiveangle == 0)
 	{
 		if floor_drawer == undefined or floor_drawer == "matrixsquish"{
-			var b = image_blend//merge_color(testblend, c_fuchsia, 0.5)
+			var b = image_blend
 			draw_sprite_ext(flr_spr, flr_img, 0, -flr_height, wal_width/sprite_get_width(flr_spr), flr_height/sprite_get_height(flr_spr), 0, b, image_alpha);
 		}
 		else if floor_drawer == "span" { for (var i=0.5; i<=flr_height; i+=0.5) {
-			var b = image_blend//merge_color(testblend, c_lime, 0.5)
+			var b = image_blend
 			draw_sprite_ext(flr_spr, flr_img, 0, 0-i, wal_width/sprite_get_width(flr_spr), wal_height/sprite_get_height(flr_spr), 0, b, image_alpha);
 		}}
 		else if is_callable(floor_drawer) {

@@ -21,49 +21,12 @@ if selection_inst == id {
 	selection_y = selection_inst.y
 }
 
-act_targets_array = [];
-for (var i = 0; i < instance_number(o_eff_plataction_target); ++i) {
-	var ang = 35
-	var dist = 9999
-	var inst = instance_find(o_eff_plataction_target, i);
-	if inst != selection_inst
-	and onscreen(inst, 5, undefined, true)
-	and point_in_triangle(inst.x, inst.y,
-		selection_x,
-		selection_y,
-		selection_x + lengthdir_x(dist, pressdir - ang),
-		selection_y + lengthdir_y(dist, pressdir - ang),
-		selection_x + lengthdir_x(dist, pressdir + ang),
-		selection_y + lengthdir_y(dist, pressdir + ang)
-	)
-        array_push(act_targets_array, inst);
-}
-if id != selection_inst
-	array_push(act_targets_array, id);
-	
+act_targets_array = []
+__act_targets_array_do_node_search(35)
 best = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
-
-act_targets_array = [];
-for (var i = 0; i < instance_number(o_eff_plataction_target); ++i) {
-	var ang = 85
-	var dist = 9999
-	var inst = instance_find(o_eff_plataction_target, i);
-	if inst != selection_inst
-	and onscreen(inst, -25, undefined, true)
-	and point_in_triangle(inst.x, inst.y,
-		selection_x,
-		selection_y,
-		selection_x + lengthdir_x(dist, pressdir - ang),
-		selection_y + lengthdir_y(dist, pressdir - ang),
-		selection_x + lengthdir_x(dist, pressdir + ang),
-		selection_y + lengthdir_y(dist, pressdir + ang)
-	)
-        array_push(act_targets_array, inst);
-}
-if id != selection_inst
-	array_push(act_targets_array, id);
-	
+__act_targets_array_do_node_search(85)
 secondbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
+
 
 if InputPressedMany([vU, vD, vL, vR]) and best {
 	selection_inst = instance_exists(best) ? best : secondbest;

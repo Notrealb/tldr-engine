@@ -16,7 +16,7 @@ execute_code_slashed = function() {
 	
 	for (var i = 0; i < party_length(true); ++i) {
 	    cutscene_actor_move(party_get_inst(global.party_names[i]), [
-            new actor_movement(700 - (party_length(true) -  1) * 15 + i*30, 500, 1),
+            new actor_movement(700 - (party_length(true) -  1) * 15 + i*30, 500 - 2, 1),
 		], false)
 	}
 	cutscene_wait_until(function() {

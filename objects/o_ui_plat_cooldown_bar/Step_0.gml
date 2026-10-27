@@ -1,5 +1,10 @@
+with o_plat_action_node {
+	if party_get_inst(char) == other.target
+		char_in_cooldown = true;
+}
+
 if target == noone exit
-if target.hitstop >= 3 exit
+if target.hitstop_timer >= 3 exit
 if !ok {
 	cooldown_timer_max = cooldown_timer;
 	ok = true;

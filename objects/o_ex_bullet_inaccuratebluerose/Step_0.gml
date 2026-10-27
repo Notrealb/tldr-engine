@@ -1,4 +1,4 @@
-var hitstopped = hitstop > 0
+var hitstopped = hitstop_timer > 0
 
 if !hitstopped//(!global.pause_plat)
     sinertimer++;

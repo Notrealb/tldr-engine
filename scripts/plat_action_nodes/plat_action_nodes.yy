@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"plat_action_nodes",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"plat_action_nodes",
+  "parent":{
+    "name":"plat",
+    "path":"folders/@Engine/scripts/plat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}
