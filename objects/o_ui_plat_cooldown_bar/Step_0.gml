@@ -1,7 +1,4 @@
-with o_plat_action_node {
-	if party_get_inst(char) == other.target
-		char_in_cooldown = true;
-}
+__set_nodes_cooldown()
 
 if target == noone exit
 if target.hitstop_timer >= 3 exit

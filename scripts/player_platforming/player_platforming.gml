@@ -576,7 +576,7 @@ function player_platforming_execute(){
 		pf_grounded_time = -1;
 		
 	// Plataction
-	if global.allow_open_plataction and InputPressed(INPUT_VERB.SPECIAL) {
+	if !sliding and global.allow_open_plataction and InputPressed(INPUT_VERB.SPECIAL) {
 		audio_play(snd_spearrise);
 		instance_create(o_ui_plat_action);
 	}

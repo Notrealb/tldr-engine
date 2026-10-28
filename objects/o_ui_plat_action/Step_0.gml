@@ -27,7 +27,6 @@ best = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, 
 __act_targets_array_do_node_search(85)
 secondbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
 
-
 if InputPressedMany([vU, vD, vL, vR]) and best {
 	selection_inst = instance_exists(best) ? best : secondbest;
 	
@@ -35,6 +34,8 @@ if InputPressedMany([vU, vD, vL, vR]) and best {
 		audio_play(snd_plat_act_move_fail);
 	else
 		audio_play(snd_plat_act_move);
+	
+	__txt_desc_typer_clear();
 	
 	var fx = selection_x_prev
 	var fy = selection_y_prev
@@ -61,6 +62,27 @@ if InputPressedMany([vU, vD, vL, vR]) and best {
 	}
 }
 
-if selection_inst != id {
-	selection_inst.selected = true
+acts_are_available = false;
+even_though_acts_are_available_we_cant_select_because = [];
+but_there_are_available_acts_anyway = false;
+with o_plat_action_node {
+	if onscreen(self, other.onscreenrange, undefined, true)
+		other.acts_are_available = true;
+	if other.acts_are_available = true {
+		if blocked
+			array_push(other.even_though_acts_are_available_we_cant_select_because, "blocked")
+		if superblocked
+			array_push(other.even_though_acts_are_available_we_cant_select_because, "superblocked")
+		if protected
+			array_push(other.even_though_acts_are_available_we_cant_select_because, "protected")
+		if !(blocked or superblocked or protected)
+			other.but_there_are_available_acts_anyway_so_this_doesnt_matter = true;
+	}
+}
+
+if selection_inst.object_index == o_plat_action_node {
+	selection_inst.selected = true;
+	__txt_desc_typer_make();
+} else {
+	__txt_desc_typer_clear();
 }

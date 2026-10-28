@@ -10,6 +10,9 @@ if InputPressed(INPUT_VERB.SELECT) { //test cooldown bar
 	}
 }
 
-if !InputCheck(INPUT_VERB.SPECIAL)
+if !InputCheck(INPUT_VERB.SPECIAL) {
+	__txt_desc_typer_clear();
 	instance_destroy();
+}
 	
+alivetime++
