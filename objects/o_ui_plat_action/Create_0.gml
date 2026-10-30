@@ -56,6 +56,7 @@ __act_targets_array_do_node_search = function(_angle) {
 		and !inst.superblocked
 		and !inst.protected
 		and !__checked_inst_char_in_cooldown
+		and party_contains(inst.char, true)
 		and onscreen(inst, onscreenrange, undefined, true)
 		and point_in_triangle(inst.x, inst.y,
 			selection_x,

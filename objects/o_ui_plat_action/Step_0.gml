@@ -27,8 +27,25 @@ best = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, 
 __act_targets_array_do_node_search(85)
 secondbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
 
-if InputPressedMany([vU, vD, vL, vR]) and best {
-	selection_inst = instance_exists(best) ? best : secondbest;
+var currect_select_is_suddenly_unavailable_so_MOVE_please = (
+	selection_inst.object_index == o_plat_action_node
+	and (
+		!selection_inst.active
+		or selection_inst.protected
+		or selection_inst.blocked
+		or selection_inst.superblocked
+		or selection_inst.char_in_cooldown
+		or !party_contains(selection_inst.char, true)
+	)
+)
+
+if (InputPressedMany([vU, vD, vL, vR]) and best)
+or currect_select_is_suddenly_unavailable_so_MOVE_please
+{
+	if currect_select_is_suddenly_unavailable_so_MOVE_please
+		selection_inst = id;
+	else
+		selection_inst = instance_exists(best) ? best : secondbest;
 	
 	if selection_inst == id
 		audio_play(snd_plat_act_move_fail);

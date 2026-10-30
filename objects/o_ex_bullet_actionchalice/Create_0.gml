@@ -8,20 +8,35 @@ animate(0, 1, 40, anime_curve.elastic_out, self, "image_xscale")
 call_later(5, time_source_units_frames, function(){animate(0, 1.4, 40, anime_curve.elastic_out, self, "image_yscale")})
 animate(0.1, 1, 20, anime_curve.linear, self, "actnodes_alpha")
 
-
 plat_create_action_node(
-	-5,
+	-30,
+	0,
+	"kris"
 )
 plat_create_action_node(
-	5,
+	-10,
+	0,
+	"susie"
 )
-
+plat_create_action_node(
+	10,
+	0,
+	"ralsei"
+)
+plat_create_action_node(
+	30,
+	0,
+	"noelle"
+)
 
 
 plat_create_action_node(//blocked
 	-30,
 	-40,
-	undefined,undefined,undefined,undefined,
+	undefined,
+	undefined,
+	undefined,
+	undefined,
 	true,
 	true,
 	false,
@@ -30,7 +45,10 @@ plat_create_action_node(//blocked
 plat_create_action_node(//superblocked
 	0,
 	-40,
-	undefined,undefined,undefined,undefined,
+	undefined,
+	undefined,
+	undefined,
+	undefined,
 	true,
 	false,
 	true,

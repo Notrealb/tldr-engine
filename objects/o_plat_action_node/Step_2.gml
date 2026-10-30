@@ -43,11 +43,5 @@ if instance_exists(o_ui_plat_action)
 else
 	alpha = clamp(alpha - 0.1, 0, 1);
 
-if instance_exists(bwoosh_inst) {
-	bwoosh_inst.image_alpha = clamp(bwoosh_inst.image_alpha, 0, alpha);
-	if variable_instance_exists(bwoosh_inst, "alpha")
-		bwoosh_inst.alpha = clamp(bwoosh_inst.alpha, 0, alpha);
-}
-
 if instance_exists(host) and variable_instance_exists(host, "actnodes_alpha")
 	alpha *= host.actnodes_alpha;
