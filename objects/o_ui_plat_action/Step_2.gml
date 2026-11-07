@@ -1,4 +1,4 @@
-if InputPressed(INPUT_VERB.SELECT) { //test cooldown bar
+/*if InputPressed(INPUT_VERB.SELECT) { //test cooldown bar
 	for (var i = 0; i < party_length(true); ++i) {
 		var pinst = party_get_inst(global.party_names[i]);
 		var barinst = instance_create(o_ui_plat_cooldown_bar)
@@ -8,11 +8,21 @@ if InputPressed(INPUT_VERB.SELECT) { //test cooldown bar
 		}
 		pinst.pf_cooldown_bar_inst = barinst
 	}
-}
+}*/
+
+alivetime++
 
 if !InputCheck(INPUT_VERB.SPECIAL) {
+	if selection_inst
+	and selection_inst.object_index == o_plat_action_node
+	and selection_inst.selected
+	and is_callable(party_getdata(selection_inst.char, "plataction_default_action")) {
+		party_getdata(selection_inst.char, "plataction_default_action")();
+		audio_play(snd_plat_act_select);
+	}
+		
+		
 	__txt_desc_typer_clear();
 	instance_destroy();
 }
-	
-alivetime++
+

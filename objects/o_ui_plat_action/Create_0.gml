@@ -35,7 +35,7 @@ il = function(st, en, va){
 	return (va - st) / (en - st);	
 }
 
-__checked_inst_char_in_cooldown = false
+//__checked_inst_char_in_cooldown = false
 __act_targets_array_do_node_search = function(_angle) {
 	act_targets_array = [];
 	for (var i = 0; i < instance_number(o_plat_action_node); ++i) {
@@ -43,11 +43,10 @@ __act_targets_array_do_node_search = function(_angle) {
 		var dist = 9999
 		var inst = instance_find(o_plat_action_node, i);
 		
-		__checked_inst_char_in_cooldown = false
-		if instance_exists(o_ui_plat_cooldown_bar)
-		with o_ui_plat_cooldown_bar {
-			__set_nodes_cooldown()
-			other.__checked_inst_char_in_cooldown = __char_in_cooldown_returned
+		var coolingdown = false
+		for (var c = 0; c < instance_number(o_ui_plat_cooldown_bar); c++) {
+			if party_get_inst(inst.char) == instance_find(o_ui_plat_cooldown_bar, c).target
+				coolingdown = true;
 		}
 		
 		if inst != selection_inst
@@ -55,7 +54,8 @@ __act_targets_array_do_node_search = function(_angle) {
 		and !inst.blocked
 		and !inst.superblocked
 		and !inst.protected
-		and !__checked_inst_char_in_cooldown
+		and !coolingdown
+		
 		and party_contains(inst.char, true)
 		and onscreen(inst, onscreenrange, undefined, true)
 		and point_in_triangle(inst.x, inst.y,
@@ -101,4 +101,18 @@ __txt_desc_typer_clear = function() {
 		instance_destroy(description_typer_inst);
 		description_typer_inst = noone;
 	}	
+}
+
+
+__cooldownbar_create = function(_char, _text = -1) {
+	var pinst = _char;//party_get_inst(global.party_names[_char]);
+	var barinst = instance_create(o_ui_plat_cooldown_bar)
+	barinst.target = pinst
+	if variable_instance_exists(pinst, "pf_cooldown_bar_inst") and instance_exists(pinst.pf_cooldown_bar_inst) {
+		instance_destroy(pinst.pf_cooldown_bar_inst)
+	}
+	pinst.pf_cooldown_bar_inst = barinst
+	
+	if _text != -1
+		barinst.text = _text
 }

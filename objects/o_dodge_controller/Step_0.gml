@@ -1,6 +1,6 @@
 // make the dodge effects fade in and fade out
 if !dodge_override {
-	if dodge_mode
+	if dodge_mode and !instance_exists(o_enc) and !instance_exists(o_enc_anim)
 		dodge_alpha = lerp(dodge_alpha, 1, global.platforming_perspective ? 0.16 : .2)
 	else 
 		dodge_alpha = lerp(dodge_alpha, 0, global.platforming_perspective ? 0.1 : .15)

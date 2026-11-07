@@ -5,7 +5,7 @@ direction += (angle_difference(dir, direction) / 4);
 image_angle = direction
 
 instance_create(o_eff_rudebuster_trail, x, y, depth + 10, {
-    sprite_index, image_index, image_speed, image_angle
+    image_index, image_angle, image_blend, image_alpha
 })
 
 if InputPressed(INPUT_VERB.SELECT) && !upgraded {
@@ -40,10 +40,12 @@ if point_distance(x, y, target_x, target_y) < 20 {
         instance_create(o_eff_rudebuster_exp, x, y, depth, {
             speed: 4.5,
             image_angle: i,
+			image_speed: 2,
         })
         instance_create(o_eff_rudebuster_exp, x, y, depth, {
             speed: 4.75,
             image_angle: i,
+			image_speed: 2,
         })
     }
     

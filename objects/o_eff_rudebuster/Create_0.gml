@@ -12,3 +12,5 @@ timer = 0
 upgraded = false
 
 audio_play(snd_rudebuster_swing)
+
+image_speed = 0.25

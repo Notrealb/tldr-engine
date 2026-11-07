@@ -153,6 +153,8 @@
     {"name":"inst_752F8F16","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
     {"name":"inst_14E75CB5","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
     {"name":"inst_3BFBFED3","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
+    {"name":"inst_4CA0472F","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
+    {"name":"inst_21000490","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -456,6 +458,8 @@
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_trigger","path":"objects/o_trigger/o_trigger.yy",},"propertyId":{"name":"span_vertical","path":"objects/o_trigger/o_trigger.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"True",},
             {"$GMOverriddenProperty":"v1","%Name":"","name":"","objectId":{"name":"o_trigger","path":"objects/o_trigger/o_trigger.yy",},"propertyId":{"name":"can_while_not_platforming","path":"objects/o_trigger/o_trigger.yy",},"resourceType":"GMOverriddenProperty","resourceVersion":"2.0","value":"False",},
           ],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.5,"x":800.0,"y":810.0,},
+        {"$GMRInstance":"v4","%Name":"inst_4CA0472F","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_4CA0472F","objectId":{"name":"o_actor_e_virovirokun","path":"objects/o_actor_e_virovirokun/o_actor_e_virovirokun.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":390.0,"y":380.0,},
+        {"$GMRInstance":"v4","%Name":"inst_21000490","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_21000490","objectId":{"name":"o_trigger_enemy_chase","path":"objects/o_trigger_enemy_chase/o_trigger_enemy_chase.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":26.0,"scaleY":24.5,"x":-80.0,"y":70.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets_1","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_3A85306D1","animationSpeed":1.0,"colour":285212671,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_3A85306D1","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":10.0,"scaleY":800.0,"spriteId":{"name":"spr_intro_ch5_gradient","path":"sprites/spr_intro_ch5_gradient/spr_intro_ch5_gradient.yy",},"x":0.0,"y":0.0,},

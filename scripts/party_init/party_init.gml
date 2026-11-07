@@ -126,6 +126,9 @@ function party_m(_initialized_name) constructor {
 		new item_s_testdmg(),
 	]
 	
+	// platforming default action
+	plataction_default_action = noone;
+	
 	// sprites config
     s_name = ""
     s_prefix = ""
@@ -270,6 +273,9 @@ function party_m_susie(_initialized_name) : party_m(_initialized_name) construct
         new item_s_susieheal({progress: 3, uses: 0}),
         new item_s_scythemare()
 	]
+	
+	// platforming default action
+	plataction_default_action = plat_action_susie_rudebuster;
 	
 	// sprites
     s_name = "susie"
