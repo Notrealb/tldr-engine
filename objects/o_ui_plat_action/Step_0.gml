@@ -26,6 +26,11 @@ __act_targets_array_do_node_search(35)
 best = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
 __act_targets_array_do_node_search(85)
 secondbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
+__act_targets_array_do_node_search(-1)
+thirdbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
+//show_debug_message(string(best))
+//show_debug_message(string(secondbest))
+//show_debug_message(string(thirdbest))
 
 var currect_select_is_suddenly_unavailable_so_MOVE_please = (
 	selection_inst.object_index == o_plat_action_node
@@ -39,13 +44,13 @@ var currect_select_is_suddenly_unavailable_so_MOVE_please = (
 	)
 )
 
-if (InputPressedMany([vU, vD, vL, vR]) and best)
+if (InputPressedMany([vU, vD, vL, vR]) and (best or secondbest or thirdbest))
 or currect_select_is_suddenly_unavailable_so_MOVE_please
 {
 	if currect_select_is_suddenly_unavailable_so_MOVE_please
 		selection_inst = id;
 	else
-		selection_inst = instance_exists(best) ? best : secondbest;
+		selection_inst = instance_exists(best) ? best : (instance_exists(secondbest) ? secondbest : thirdbest);
 	
 	if selection_inst == id
 		audio_play(snd_plat_act_move_fail);

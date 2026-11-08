@@ -209,6 +209,9 @@ function party_m_kris(_initialized_name) : party_m(_initialized_name) constructo
 		new item_s_act()
 	]
 	
+	// platforming default action
+	plataction_default_action = plat_action_kris_openmenu;
+	
 	// sprites
     s_name = "kris"
 	s_state =		""

@@ -23,6 +23,7 @@ selection_inst = id
 pressdir = 0
 best = noone
 secondbest = noone
+thirdbest = noone
 onscreenrange = 5
 
 if instance_exists(o_eff_plat_action_darken)
@@ -36,11 +37,9 @@ il = function(st, en, va){
 }
 
 //__checked_inst_char_in_cooldown = false
-__act_targets_array_do_node_search = function(_angle) {
+__act_targets_array_do_node_search = function(_angle, _dist = 9999) {
 	act_targets_array = [];
 	for (var i = 0; i < instance_number(o_plat_action_node); ++i) {
-		var ang = _angle
-		var dist = 9999
 		var inst = instance_find(o_plat_action_node, i);
 		
 		var coolingdown = false
@@ -58,14 +57,14 @@ __act_targets_array_do_node_search = function(_angle) {
 		
 		and party_contains(inst.char, true)
 		and onscreen(inst, onscreenrange, undefined, true)
-		and point_in_triangle(inst.x, inst.y,
+		and (_angle <= 0 or point_in_triangle(inst.x, inst.y,
 			selection_x,
 			selection_y,
-			selection_x + lengthdir_x(dist, pressdir - ang),
-			selection_y + lengthdir_y(dist, pressdir - ang),
-			selection_x + lengthdir_x(dist, pressdir + ang),
-			selection_y + lengthdir_y(dist, pressdir + ang)
-		)
+			selection_x + lengthdir_x(_dist, pressdir - _angle),
+			selection_y + lengthdir_y(_dist, pressdir - _angle),
+			selection_x + lengthdir_x(_dist, pressdir + _angle),
+			selection_y + lengthdir_y(_dist, pressdir + _angle)
+		))
 	        array_push(act_targets_array, inst);
 	}
 	if id != selection_inst

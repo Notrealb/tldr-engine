@@ -16,7 +16,7 @@ bwoosh_method = -1
 
 host = noone
 
-draw_myself = true
+draw_myself = false
 selected = false
 bwooshtimer = irandom_range(0,9999)
 hoverlerp = 0

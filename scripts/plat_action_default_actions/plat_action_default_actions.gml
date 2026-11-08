@@ -65,3 +65,29 @@ function plat_action_susie_rudebuster_old(){
 	cutscene_set_variable(m, "s_override", false)
 	cutscene_play()	
 }
+
+function plat_action_kris_openmenu(){
+	var tgt = self.selection_inst;
+	if instance_exists(tgt.host) {
+		if variable_instance_exists(tgt.host, "open")
+			tgt.host.open = true;
+		if variable_instance_exists(tgt.host, "open_sound")
+			audio_play(tgt.host.open_sound);
+	}
+	var l = get_leader();
+	if !instance_exists([o_ui_menu, o_ui_menu_lw]) 
+    and !o_dodge_controller.dodge_mode
+	and !l.sliding
+	{
+		if global.world == WORLD_TYPE.DARK instance_create(o_ui_menu);
+		else if global.world == WORLD_TYPE.LIGHT instance_create(o_ui_menu_lw);
+	}
+	else {
+		audio_stop_sound(snd_error);
+		audio_play(snd_error,,,, 1);
+	}
+}
+
+function plat_action_ralsei_hang(){
+	
+}

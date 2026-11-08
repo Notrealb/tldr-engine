@@ -19,9 +19,9 @@ if !InputCheck(INPUT_VERB.SPECIAL) {
 	and is_callable(party_getdata(selection_inst.char, "plataction_default_action")) {
 		party_getdata(selection_inst.char, "plataction_default_action")();
 		audio_play(snd_plat_act_select);
+		selection_inst.hoverlerp = 0;
+		selection_inst.alpha = 0;
 	}
-		
-		
 	__txt_desc_typer_clear();
 	instance_destroy();
 }

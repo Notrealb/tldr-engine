@@ -3,7 +3,9 @@ var yy = soul_origin_y
 var cx = selection_x
 var cy = selection_y
 
-var col = selection_inst.image_blend
+var col = c_white;
+if variable_instance_exists(selection_inst, "node_color")
+	col = selection_inst.node_color;
 
 //party outline
 for (var i = party_length(true)-1; i > -1; i --) {
@@ -16,7 +18,7 @@ for (var i = party_length(true)-1; i > -1; i --) {
 	if !sprite_exists(inst.sprite_index) 
 		spr = spr_default
 	
-	var im_acting = (_pcolor == selection_inst.image_blend)
+	var im_acting = (variable_instance_exists(selection_inst, "char") and inst == party_get_inst(selection_inst.char))
 	var havent_selected_yet = selection_inst == id
 	
 	var xx2 = inst.x + inst.xoff + sine(.5, inst.shake)
