@@ -32,7 +32,8 @@ function player_locomote_and_collide_except(_colo, _xcep, StepSpeed,
 	//
 	var attemptX = 0;
 	var attemptY = 0;
-	StepSpeed = max(StepSpeed, PositionRounding);
+	if PositionRounding > 0
+		StepSpeed = max(StepSpeed, PositionRounding);
 	
 	// Calculate attemptX and attemptY
 	if OverrideAttemptX != 0

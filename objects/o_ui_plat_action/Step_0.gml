@@ -19,18 +19,18 @@ if selection_inst == id {
 } else {
 	selection_x = selection_inst.x
 	selection_y = selection_inst.y
+	if variable_instance_exists(selection_inst, "xoff")
+		x += selection_inst.xoff;
+	if variable_instance_exists(selection_inst, "yoff")
+		y += selection_inst.yoff;
 }
 
 act_targets_array = []
-__act_targets_array_do_node_search(35)
-best = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
-__act_targets_array_do_node_search(85)
-secondbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
-__act_targets_array_do_node_search(-1)
-thirdbest = array_length(act_targets_array) >= 1 ? instance_nth_nearest(selection_x, selection_y, act_targets_array, 1) : noone
-//show_debug_message(string(best))
-//show_debug_message(string(secondbest))
-//show_debug_message(string(thirdbest))
+bestarray = []
+
+__act_targets_array_do_node_search_and_add_to_bestarray(35)
+__act_targets_array_do_node_search_and_add_to_bestarray(85)
+__act_targets_array_do_node_search_and_add_to_bestarray(-1)
 
 var currect_select_is_suddenly_unavailable_so_MOVE_please = (
 	selection_inst.object_index == o_plat_action_node
@@ -44,13 +44,13 @@ var currect_select_is_suddenly_unavailable_so_MOVE_please = (
 	)
 )
 
-if (InputPressedMany([vU, vD, vL, vR]) and (best or secondbest or thirdbest))
+if (InputPressedMany([vU, vD, vL, vR]) and array_length(bestarray) > 0)
 or currect_select_is_suddenly_unavailable_so_MOVE_please
 {
 	if currect_select_is_suddenly_unavailable_so_MOVE_please
 		selection_inst = id;
 	else
-		selection_inst = instance_exists(best) ? best : (instance_exists(secondbest) ? secondbest : thirdbest);
+		selection_inst = bestarray[0];
 	
 	if selection_inst == id
 		audio_play(snd_plat_act_move_fail);

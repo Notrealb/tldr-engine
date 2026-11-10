@@ -36,6 +36,8 @@ function plat_create_action_node(
 	_inst.node_color = _node_color;
 	_inst.bwoosh_color = _bwoosh_color;
 	_inst.bwoosh_method = _bwoosh_method;
+	
+	return _inst
 }
 
 

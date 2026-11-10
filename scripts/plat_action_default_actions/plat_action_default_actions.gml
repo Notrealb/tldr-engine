@@ -89,5 +89,11 @@ function plat_action_kris_openmenu(){
 }
 
 function plat_action_ralsei_hang(){
+	var tgt = self.selection_inst
+	var n = tgt.char
+	var m = party_get_inst(n)
+	
+	variable_instance_set(m, "pahang_node", tgt)
+	variable_instance_set(m, "pahang_stage", 1)
 	
 }

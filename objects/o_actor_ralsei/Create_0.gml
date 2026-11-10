@@ -11,3 +11,15 @@ s_plat_land = spr_plat_ralsei_land;
 s_plat_run = spr_plat_ralsei_run;
 s_plat_run_stop = spr_plat_ralsei_run_stop;
 s_plat_turn = spr_plat_ralsei_turn;
+
+// misc
+pahang_node = noone;
+pahang_ralsei_inst = noone;
+
+pahang_stage = 0;
+
+pahang_offsetx = 0;
+pahang_offsety = 0;
+
+pahang_node_trackx = 0;
+pahang_node_tracky = 0;

@@ -454,7 +454,7 @@ function player_platforming_execute(){
 		{U : 0, D : can_slopeandstick ? (highstep ? 64 : 18) : 0, L : 0, R : 0},
 		false, //DoCircularize
 		false, //slowintowalls
-		undefined, //positionrounding
+		place_meeting(x, y + 4, o_eff_ralseihang) ? 0.1 : undefined, //positionrounding
 		true, //SuppressHorizontalInput
 		true, //SuppressVerticalInput
 		true, //RestrictXBasedOnPreviousY

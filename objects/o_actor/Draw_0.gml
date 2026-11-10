@@ -18,7 +18,7 @@ var pf_hurt_alpha = (is_player and global.platforming_perspective == 1 and (inst
 var xx = x + xoff + sine(.5, shake)
 var yy = y + yoff
 var __angle = image_angle + angleoff
-var __alpha = image_alpha * pf_hurt_alpha
+var __alpha = image_alpha * pf_hurt_alpha * plataction_alpha
 
 var isave = image_blend
 image_blend = merge_color(image_blend, c_black, clamp(darken + darken_plat, 0, 1));

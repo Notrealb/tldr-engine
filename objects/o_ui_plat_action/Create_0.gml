@@ -21,9 +21,7 @@ selection_x = 0
 selection_y = 0
 selection_inst = id
 pressdir = 0
-best = noone
-secondbest = noone
-thirdbest = noone
+bestarray = []
 onscreenrange = 5
 
 if instance_exists(o_eff_plat_action_darken)
@@ -37,7 +35,7 @@ il = function(st, en, va){
 }
 
 //__checked_inst_char_in_cooldown = false
-__act_targets_array_do_node_search = function(_angle, _dist = 9999) {
+__act_targets_array_do_node_search_and_add_to_bestarray = function(_angle, _dist = 9999) {
 	act_targets_array = [];
 	for (var i = 0; i < instance_number(o_plat_action_node); ++i) {
 		var inst = instance_find(o_plat_action_node, i);
@@ -67,8 +65,12 @@ __act_targets_array_do_node_search = function(_angle, _dist = 9999) {
 		))
 	        array_push(act_targets_array, inst);
 	}
+	
 	if id != selection_inst
 		array_push(act_targets_array, id);
+	
+	if array_length(act_targets_array) >= 1
+		array_push(bestarray, instance_nth_nearest(selection_x, selection_y, act_targets_array, 1))
 }
 
 acts_are_available = false

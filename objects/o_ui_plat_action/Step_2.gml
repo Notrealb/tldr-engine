@@ -12,10 +12,14 @@
 
 alivetime++
 
-if !InputCheck(INPUT_VERB.SPECIAL) {
+if !global.player_moveable_global {
+	instance_destroy();
+}
+else if !InputCheck(INPUT_VERB.SPECIAL) {
 	if selection_inst
 	and selection_inst.object_index == o_plat_action_node
 	and selection_inst.selected
+	and !party_getdata(selection_inst.char, "s_override")
 	and is_callable(party_getdata(selection_inst.char, "plataction_default_action")) {
 		party_getdata(selection_inst.char, "plataction_default_action")();
 		audio_play(snd_plat_act_select);

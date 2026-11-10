@@ -44,6 +44,14 @@ for (var i = party_length(true)-1; i > -1; i --) {
 					inst.image_xscale, inst.image_yscale,
 					inst.image_angle, c_white, 1//image_alpha
 				)
+				if global.party_names[i] == "ralsei" and instance_exists(o_eff_ralseihang) {
+					_pdrawer(o_eff_ralseihang.sprite_index, o_eff_ralseihang.image_index, 
+						160 + xdelta - (inst.x - o_eff_ralseihang.x),
+						120 + ydelta - (inst.y - o_eff_ralseihang.y),
+						o_eff_ralseihang.image_xscale, o_eff_ralseihang.image_yscale,
+						o_eff_ralseihang.image_angle, c_white, 1//image_alpha
+					)
+				}
 			}
 		
 			gpu_set_fog(false, c_white, 0, 0)
@@ -59,6 +67,14 @@ for (var i = party_length(true)-1; i > -1; i --) {
 		inst.image_xscale, inst.image_yscale, 
 		inst.image_angle, c_white, global.plataction_fade//image_alpha * alpha_mod
 	)
+	if global.party_names[i] == "ralsei" and instance_exists(o_eff_ralseihang) {
+		_pdrawer(o_eff_ralseihang.sprite_index, o_eff_ralseihang.image_index, 
+			xx2 - (inst.x - o_eff_ralseihang.x),
+			yy2 - (inst.y - o_eff_ralseihang.y),
+			o_eff_ralseihang.image_xscale, o_eff_ralseihang.image_yscale,
+			o_eff_ralseihang.image_angle, c_white, 1//image_alpha
+		)
+	}
 }
 
 var size = 0.5;

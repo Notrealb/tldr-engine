@@ -1,0 +1,1 @@
+node = plat_create_action_node(0, 0, char)

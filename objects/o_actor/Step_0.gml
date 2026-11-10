@@ -58,7 +58,8 @@ if !hitstopped
 
 // darken in certain conditions
 if is_follower {
-	var plat_should_darken = (global.platforming_perspective > .5 && !(instance_exists(o_enc) || instance_exists(o_enc_anim)));
+	var plat_should_darken = (global.platforming_perspective > .5 && !(instance_exists(o_enc) || instance_exists(o_enc_anim)))
+	and !s_override
     darken_plat = increment_towards(darken_plat, (plat_should_darken ? .5 : 0), .05);
 }
 

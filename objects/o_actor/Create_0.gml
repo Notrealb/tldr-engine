@@ -76,6 +76,8 @@ is_party = false
     interaction_code = function(){}
     interaction_args = []
     interactable_instances = []
+	
+	plataction_alpha = 1
 }
 { // visual
 	{ // sprites

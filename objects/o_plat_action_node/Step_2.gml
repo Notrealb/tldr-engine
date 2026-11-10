@@ -3,6 +3,12 @@ if instance_exists(host) {
 	x = host.x + xcorrect;
 	y = host.y + ycorrect;
 	depth = host.depth + depthcorrect;
+	if variable_instance_exists(host, "xoff")
+		x += host.xoff;
+	if variable_instance_exists(host, "yoff")
+		y += host.yoff;
+	if variable_instance_exists(host, "depthoff")
+		depth += host.depthoff;
 }
 
 // depth

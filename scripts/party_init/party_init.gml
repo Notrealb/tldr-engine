@@ -349,6 +349,9 @@ function party_m_ralsei(_initialized_name) : party_m(_initialized_name) construc
         new item_s_revivesong(),
 	]
 	
+	// platforming default action
+	plataction_default_action = plat_action_ralsei_hang;
+	
 	// sprites
     s_name = "ralsei"
 	s_state =		"" // sad, sad_subtle, hat, serious
