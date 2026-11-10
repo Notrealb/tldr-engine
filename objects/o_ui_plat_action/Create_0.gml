@@ -117,3 +117,23 @@ __cooldownbar_create = function(_char, _text = -1) {
 	if _text != -1
 		barinst.text = _text
 }
+
+__extradraw_outline = function(extra, name, i, inst, xdelta, ydelta) {
+	if global.party_names[i] == "ralsei" and instance_exists(o_eff_ralseihang)
+		_pdrawer(extra.sprite_index, extra.image_index, 
+			160 + xdelta - (inst.x - extra.x),
+			120 + ydelta - (inst.y - extra.y),
+			extra.image_xscale, extra.image_yscale,
+			extra.image_angle, c_white, 1//image_alpha
+		)
+}
+
+__extradraw_sprite = function(extra, name, i, inst, xx2, yy2) {
+	if global.party_names[i] == "ralsei" and instance_exists(o_eff_ralseihang)
+		_pdrawer(extra.sprite_index, extra.image_index, 
+			xx2 - (inst.x - extra.x),
+			yy2 - (inst.y - extra.y),
+			extra.image_xscale, extra.image_yscale,
+			extra.image_angle, c_white, 1//image_alpha
+		)
+}

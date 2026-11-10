@@ -9,7 +9,7 @@ depth = target.depth - 1
 
 var l = get_leader();
 
-var ontop = l.y <= y+1 and place_meeting(x, y - 4, l) 
+var ontop = l.y <= y+3 and place_meeting(x, y - 4, l) 
 
 if ontop {
 	depth = l.depth - 20
@@ -38,6 +38,8 @@ if ontop {
 		l.x += x - xprevious;
 	if y != yprevious
 		l.y += y - yprevious;
+		
+	l.y = y
 	if instance_exists(head)
 		head.image_index = 2;
 }

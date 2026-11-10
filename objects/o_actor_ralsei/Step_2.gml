@@ -82,8 +82,8 @@ if !array_contains([0, 1, 7], pahang_stage) {
 		pahang_node_trackx = pahang_node.x + pahang_offsetx
 		pahang_node_tracky = pahang_node.y + pahang_offsety
 	}
-	if instance_exists(pahang_node)
-		depth = pahang_node.depth - 1
+	if instance_exists(pahang_node) and instance_exists(pahang_node.host)
+		depth = pahang_node.host.depth - 1;
 	x = pahang_node_trackx;
 	y = pahang_node_tracky;
 }
