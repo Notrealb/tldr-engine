@@ -15,3 +15,8 @@ if open {
 	if variable_instance_exists(l, "pf_final_xchange")
 		l.pf_final_xchange = 0;
 }
+
+if instance_exists(o_dodge_controller) and o_dodge_controller.dodge_mode == true
+	node.blocked = true;
+else
+	node.blocked = false;

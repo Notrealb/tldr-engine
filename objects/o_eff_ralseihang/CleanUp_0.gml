@@ -1,1 +1,2 @@
 instance_destroy(o_eff_ralseihanghead)
+instance_destroy(node)

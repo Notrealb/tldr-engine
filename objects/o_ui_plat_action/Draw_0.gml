@@ -97,5 +97,3 @@ if selection_inst != id {
 	}
 }
 
-//soul
-draw_sprite_ext(spr_soul, 0, selection_x, selection_y, 0.5, 0.5, 0, c_red, 1)

@@ -4,6 +4,7 @@ char = "susie"
 effect = function(){}
 ui_header_override = -1
 ui_description_override = -1
+in_use = false
 active = true
 blocked = false
 superblocked = false

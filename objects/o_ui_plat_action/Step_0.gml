@@ -36,6 +36,7 @@ var currect_select_is_suddenly_unavailable_so_MOVE_please = (
 	selection_inst.object_index == o_plat_action_node
 	and (
 		!selection_inst.active
+		or selection_inst.in_use
 		or selection_inst.protected
 		or selection_inst.blocked
 		or selection_inst.superblocked

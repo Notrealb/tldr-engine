@@ -28,6 +28,10 @@ if instance_exists(o_eff_plat_action_darken)
 	instance_destroy(o_eff_plat_action_darken)
 overdraw_inst = instance_create(o_eff_plat_action_darken)
 
+if instance_exists(o_eff_plat_action_soul)
+	instance_destroy(o_eff_plat_action_soul)
+souldraw_inst = instance_create(o_eff_plat_action_soul)
+
 il = function(st, en, va){
 	if (va == st)
 		return 0;
@@ -48,6 +52,7 @@ __act_targets_array_do_node_search_and_add_to_bestarray = function(_angle, _dist
 		
 		if inst != selection_inst
 		and inst.active
+		and !inst.in_use
 		and !inst.blocked
 		and !inst.superblocked
 		and !inst.protected
@@ -102,20 +107,6 @@ __txt_desc_typer_clear = function() {
 		instance_destroy(description_typer_inst);
 		description_typer_inst = noone;
 	}	
-}
-
-
-__cooldownbar_create = function(_char, _text = -1) {
-	var pinst = _char;//party_get_inst(global.party_names[_char]);
-	var barinst = instance_create(o_ui_plat_cooldown_bar)
-	barinst.target = pinst
-	if variable_instance_exists(pinst, "pf_cooldown_bar_inst") and instance_exists(pinst.pf_cooldown_bar_inst) {
-		instance_destroy(pinst.pf_cooldown_bar_inst)
-	}
-	pinst.pf_cooldown_bar_inst = barinst
-	
-	if _text != -1
-		barinst.text = _text
 }
 
 __extradraw_outline = function(extra, name, i, inst, xdelta, ydelta) {

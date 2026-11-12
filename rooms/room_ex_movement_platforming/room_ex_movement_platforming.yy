@@ -158,6 +158,7 @@
     {"name":"inst_11E98E83","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
     {"name":"inst_267369B4","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
     {"name":"inst_672C7474","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
+    {"name":"inst_3CC108EC","path":"rooms/room_ex_movement_platforming/room_ex_movement_platforming.yy",},
   ],
   "isDnd":false,
   "layers":[
@@ -466,6 +467,7 @@
         {"$GMRInstance":"v4","%Name":"inst_11E98E83","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_11E98E83","objectId":{"name":"o_plat_menucloset","path":"objects/o_plat_menucloset/o_plat_menucloset.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":780.0,"y":470.0,},
         {"$GMRInstance":"v4","%Name":"inst_267369B4","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_267369B4","objectId":{"name":"o_plat_hanghook","path":"objects/o_plat_hanghook/o_plat_hanghook.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":880.0,"y":360.0,},
         {"$GMRInstance":"v4","%Name":"inst_672C7474","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_672C7474","objectId":{"name":"o_plat_hanghook","path":"objects/o_plat_hanghook/o_plat_hanghook.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":820.0,"y":360.0,},
+        {"$GMRInstance":"v4","%Name":"inst_3CC108EC","colour":4294967295,"frozen":false,"hasCreationCode":false,"ignore":false,"imageIndex":0,"imageSpeed":1.0,"inheritCode":false,"inheritedItemId":null,"inheritItemSettings":false,"isDnd":false,"name":"inst_3CC108EC","objectId":{"name":"o_plat_hanghook","path":"objects/o_plat_hanghook/o_plat_hanghook.yy",},"properties":[],"resourceType":"GMRInstance","resourceVersion":"2.0","rotation":0.0,"scaleX":1.0,"scaleY":1.0,"x":650.0,"y":300.0,},
       ],"layers":[],"name":"Instances","properties":[],"resourceType":"GMRInstanceLayer","resourceVersion":"2.0","userdefinedDepth":false,"visible":true,},
     {"$GMRAssetLayer":"","%Name":"Assets_1","assets":[
         {"$GMRSpriteGraphic":"v1","%Name":"graphic_3A85306D1","animationSpeed":1.0,"colour":285212671,"frozen":false,"headPosition":0.0,"ignore":false,"inheritedItemId":null,"inheritItemSettings":false,"name":"graphic_3A85306D1","resourceType":"GMRSpriteGraphic","resourceVersion":"2.0","rotation":0.0,"scaleX":10.0,"scaleY":800.0,"spriteId":{"name":"spr_intro_ch5_gradient","path":"sprites/spr_intro_ch5_gradient/spr_intro_ch5_gradient.yy",},"x":0.0,"y":0.0,},

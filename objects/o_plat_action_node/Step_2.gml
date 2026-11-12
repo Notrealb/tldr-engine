@@ -13,12 +13,13 @@ if instance_exists(host) {
 
 // depth
 if instance_exists(o_ui_plat_action)
-	depth = o_ui_plat_action.depth + 2;
+	depth = o_ui_plat_action.depth - 2;
 
 // visible
 vis = true;
 if global.platforming_perspective == 0
 or !active
+or in_use
 or !party_contains(char, true)
 	vis = false;
 

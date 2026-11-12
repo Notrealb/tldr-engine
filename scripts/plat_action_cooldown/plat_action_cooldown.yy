@@ -1,0 +1,13 @@
+{
+  "$GMScript":"v1",
+  "%Name":"plat_action_cooldown",
+  "isCompatibility":false,
+  "isDnD":false,
+  "name":"plat_action_cooldown",
+  "parent":{
+    "name":"plat",
+    "path":"folders/@Engine/scripts/plat.yy",
+  },
+  "resourceType":"GMScript",
+  "resourceVersion":"2.0",
+}

@@ -7,3 +7,6 @@ if destroy_when_host_missing and !instance_exists(host) {
 	if instance_exists(bwoosh_inst)
 		instance_destroy(bwoosh_inst);
 }
+
+// in use reset
+in_use = false;

@@ -3,7 +3,7 @@ __set_nodes_cooldown()
 if target == noone exit
 if target.hitstop_timer >= 3 exit
 if !ok {
-	cooldown_timer_max = cooldown_timer;
+	cooldown_timer_startedat = cooldown_timer;
 	ok = true;
 }
 

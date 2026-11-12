@@ -30,3 +30,7 @@ else if !InputCheck(INPUT_VERB.SPECIAL) {
 	instance_destroy();
 }
 
+if instance_exists(souldraw_inst) {
+	souldraw_inst.x = selection_x;
+	souldraw_inst.y = selection_y;
+}

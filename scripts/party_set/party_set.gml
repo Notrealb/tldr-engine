@@ -50,10 +50,13 @@ function party_subtractdata(name, hash, value) {
 }
 
 ///@desc set whether the party members should be following their leader
-function party_setfollow(follow) {
+function party_setfollow(follow, name = "all") {
 	for (var i = 1; i < party_length(true); ++i) {
-		party_get_inst(global.party_names[i]).follow = follow;
-		party_get_inst(global.party_names[i]).follow_target = get_leader();
-		party_get_inst(global.party_names[i]).pos = get_leader().spacing * i;
+		if name == "all"
+		or party_get_inst(global.party_names[i]) == party_get_inst(name) {
+			party_get_inst(global.party_names[i]).follow = follow;
+			party_get_inst(global.party_names[i]).follow_target = get_leader();
+			party_get_inst(global.party_names[i]).pos = get_leader().spacing * i;
+		}
 	}
 }

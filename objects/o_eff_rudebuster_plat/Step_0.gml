@@ -80,9 +80,16 @@ if point_distance(x, y, target_x, target_y) < 20 {
     y = target_y
     
 	if enemy_o.host with enemy_o.host {
-		hitstop_timer = hit_stop_frames;
-		event_user(1);
-		slash_event_cooldown_timer = slash_event_cooldown;
+		if variable_instance_exists(self, "hitstop_timer") {
+			hitstop_timer = hit_stop_frames;
+		}
+		if variable_instance_exists(self, "slash_event_cooldown_timer") {
+			event_user(1);
+			slash_event_cooldown_timer = slash_event_cooldown;
+		}
+		if object_index == o_eff_ralseihang {
+			target.pahang_stage = 9
+		}
 	}
 	
     audio_play(snd_rudebuster_hit)

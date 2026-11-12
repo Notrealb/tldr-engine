@@ -195,9 +195,9 @@ function cutscene_player_canmove(_can_move, _global = false) {
     );
 }
 /// @desc set whether the party members are following the leader
-function cutscene_party_follow(follow) {
-    var event = new cutscene_event(method({follow}, function() {
-        party_setfollow(follow);
+function cutscene_party_follow(follow, name = "all") {
+    var event = new cutscene_event(method({follow, name}, function() {
+        party_setfollow(follow, name);
     }));
     
     cutscene_queue_event(
