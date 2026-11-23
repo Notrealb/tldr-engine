@@ -16,8 +16,6 @@ if o_dev_plat_controller.all_walls_y_off_for_centering == "auto"
 	yco = ((o_dev_plat_controller.player_floor_centering * o_dev_plat_controller.wall_generic_bltts) * (1-((1-perspectiveangle)*gpp)))
 else
 	yco = o_dev_plat_controller.all_walls_y_off_for_centering
-//yo -= 2
-//yo += ((o_dev_plat_controller.player_floor_centering * o_dev_plat_controller.wall_generic_bltts) * (1-((1-perspectiveangle)*gpp)))
 __y_after_offset = lerp(y, y + yco + o_dev_plat_controller.default_platformsdrawyoffset, global.platforming_perspective)
 __y_after_offset = round_p(__y_after_offset, 0.5)
 
@@ -62,6 +60,3 @@ if do_draw_wall {
 // Reset anything that needs to be reset
 matrix_reset();
 pal_swap_reset();
-
-
-//draw_text_scale(string(depth), x, __y_after_offset, 0.5, c_white, 0.4)

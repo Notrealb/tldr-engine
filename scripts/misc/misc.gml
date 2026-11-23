@@ -415,3 +415,54 @@ function instance_nth_nearest(_x, _y, objects_array, n)
     ds_priority_destroy(list);
     return nearest;
 }
+
+///@desc	Generate tile sprite
+function __generate_tile_sprite(tile_layer = "Tiles_1", remove_original_tile = true, layer_make_invisible = false, match_layer_depth = true){
+    draw_set_colour(c_white);
+    var _cell_x = floor(x / 20);
+    var _cell_y = floor(y / 20);
+    
+    if (layer_exists(tile_layer)) and (sprite_width > 0) and (sprite_height > 0) {
+    
+        var _tilemap = layer_tilemap_get_id(tile_layer);
+        var _tileset = tilemap_get_tileset(_tilemap);
+        
+        var _tempsurf = surface_create(sprite_width, sprite_height);
+        
+        surface_set_target(_tempsurf);
+        draw_clear_alpha(0, 0);
+        
+        for (var i = 0; i < image_xscale; i++) {
+            for (var j = 0; j < image_yscale; j++) {
+                var _tile_data = tilemap_get(_tilemap, _cell_x + i, _cell_y + j);
+                draw_tile(_tileset, _tile_data, 0, (i) * 20, (j) * 20);
+                if (remove_original_tile)
+                    tilemap_set(_tilemap, 0, _cell_x + i, _cell_y + j);
+            }
+        }
+        
+        surface_reset_target();
+        
+		var _get_origin_xoffset = sprite_get_xoffset(sprite_index)
+		var _get_origin_yoffset = sprite_get_yoffset(sprite_index)
+        sprite_index = sprite_create_from_surface(_tempsurf, 0, 0, sprite_width, sprite_height, false, false, _get_origin_xoffset, _get_origin_yoffset);
+        
+        surface_free(_tempsurf);
+        
+        image_xscale = 1;
+        image_yscale = 1;
+		
+		//
+		
+		if (layer_make_invisible)
+		    layer_set_visible(tile_layer, false);
+    
+		if (match_layer_depth)
+		    depth = layer_get_depth(layer_get_id(tile_layer));
+		
+		return [sprite_index, depth, x, y, image_xscale, image_yscale, sprite_width, sprite_height]
+    } else {
+        show_debug_message($"[{object_get_name(object_index)}]: {tile_layer} is not a valid tile layer.");
+		return 0
+    }
+}

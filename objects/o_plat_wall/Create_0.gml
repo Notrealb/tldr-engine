@@ -22,14 +22,5 @@ _pf_paletteswap_set = function(_p_sprite, _p_array, _gpp = global.platforming_pe
 	}
 }
 
-if use_pulpit_collision {
-	solid_while_pf = false
-	with instance_copy(false) {
-		solid_while_pf = true
-		if other.use_pulpit_mask_also sprite_index = spr_plat_pulpit_mask
-		image_xscale = (other.image_xscale * sprite_get_width(other.sprite_index)) / sprite_get_width(sprite_index)
-		floor_drawer = "nothing"
-		visible = false
-		image_alpha = 0
-	}
-}
+pulpit_copy_inst = noone
+is_the_made_pulpit_copy_inst = false
