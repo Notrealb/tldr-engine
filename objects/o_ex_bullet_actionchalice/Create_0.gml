@@ -11,7 +11,13 @@ animate(0.1, 1, 20, anime_curve.linear, self, "actnodes_alpha")
 plat_create_action_node(
 	-30,
 	0,
-	"kris"
+	"kris",
+	function(){
+		audio_play(snd_queen_bitcrushlaugh)
+		repeat(20) {
+			instance_create(o_eff_magicstar, x-30 + random_range(-10, 10), 0 + random_range(-10, 10), depth-1)
+		}
+	}
 )
 plat_create_action_node(
 	-10,
@@ -33,10 +39,7 @@ plat_create_action_node(
 plat_create_action_node(//blocked
 	-30,
 	-40,
-	undefined,
-	undefined,
-	undefined,
-	undefined,
+	undefined,undefined,undefined,undefined,undefined,undefined,
 	true,
 	true,
 	false,
@@ -45,10 +48,7 @@ plat_create_action_node(//blocked
 plat_create_action_node(//superblocked
 	0,
 	-40,
-	undefined,
-	undefined,
-	undefined,
-	undefined,
+	undefined,undefined,undefined,undefined,undefined,undefined,
 	true,
 	false,
 	true,
@@ -57,7 +57,7 @@ plat_create_action_node(//superblocked
 plat_create_action_node(//protected
 	30,
 	-40,
-	undefined,undefined,undefined,undefined,
+	undefined,undefined,undefined,undefined,undefined,undefined,
 	true,
 	false,
 	false,

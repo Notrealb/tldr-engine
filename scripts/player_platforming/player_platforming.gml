@@ -342,7 +342,7 @@ function player_platforming_execute(){
 			if pf_airtime > pf__airmintime and o_fader.image_alpha == 0 && pf_jumpstage == "falling" {
 	            instance_create(o_eff_generic_animation, x - 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: 1});
 	            instance_create(o_eff_generic_animation, x + 16, y, depth, {sprite_index: spr_eff_plat_land_dust, image_xscale: -1});
-	            if pf_hmove == 0 and pf_attacktime == 0 and pf_airborn_jumps == 0 {
+	            if (pf_hmove <= 0.1 and pf_hmove >= -0.1) and pf_attacktime == 0 and pf_airborn_jumps == 0 {
 	                audio_play(snd_noise, , , 1.2);
 		            pf_land = 8;
 				}

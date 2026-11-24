@@ -1,7 +1,9 @@
 xcorrect = 0
 ycorrect = 0
 char = "susie"
-effect = function(){}
+host_effect = -1
+node_effect = -1
+action_override = -1
 ui_header_override = -1
 ui_description_override = -1
 in_use = false

@@ -2,7 +2,9 @@ function plat_create_action_node(
 	_xcorrect = 0,
 	_ycorrect = 0,
 	_char = "susie",
-	_effect = -1,
+	_host_effect = -1,
+	_node_effect = -1,
+	_action_override = -1,
 	_ui_header_override = -1,
 	_ui_description_override = -1,
 	_active = true,
@@ -24,7 +26,9 @@ function plat_create_action_node(
 	_inst.xcorrect = _xcorrect;
 	_inst.ycorrect = _ycorrect;
 	_inst.char = _char;
-	_inst.effect = _effect;
+	_inst.host_effect = _host_effect;
+	_inst.node_effect = _node_effect;
+	_inst.action_override = _action_override;
 	_inst.ui_header_override = _ui_header_override;
 	_inst.ui_description_override = _ui_description_override;
 	_inst.active = _active;

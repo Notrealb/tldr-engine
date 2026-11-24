@@ -53,10 +53,10 @@ function plat_action_kris_openmenu(){
 		if global.world == WORLD_TYPE.DARK instance_create(o_ui_menu);
 		else if global.world == WORLD_TYPE.LIGHT instance_create(o_ui_menu_lw);
 	}
-	else {
+	/*else {
 		audio_stop_sound(snd_error);
 		audio_play(snd_error,,,, 1);
-	}
+	}*/
 }
 
 function plat_action_ralsei_hang(){

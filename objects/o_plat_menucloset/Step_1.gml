@@ -14,6 +14,7 @@ if open {
 		l.pf_hmove = 0;
 	if variable_instance_exists(l, "pf_final_xchange")
 		l.pf_final_xchange = 0;
+	l.sprite_index = l.s_plat_idle
 }
 
 if instance_exists(o_dodge_controller) and o_dodge_controller.dodge_mode == true

@@ -1,3 +1,6 @@
+event_inherited();
+is_the_made_pulpit_copy_inst = true
+
 target = noone
 head = noone
 stepon = 0
