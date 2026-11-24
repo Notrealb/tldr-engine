@@ -13,11 +13,17 @@ plat_create_action_node(
 	0,
 	"kris",
 	function(){
-		audio_play(snd_queen_bitcrushlaugh)
+		audio_stop_sound(snd_plat_act_select)
+		audio_play(snd_sparkle_glock, false, 0.9, random_range(0.7, 0.9))
 		repeat(20) {
-			instance_create(o_eff_magicstar, x-30 + random_range(-10, 10), 0 + random_range(-10, 10), depth-1)
+			var inst = instance_create(o_eff_magicstar, x - 30 + random_range(-10, 10), y + random_range(-10, 10), depth-1)
+			inst.image_blend = choose(c_red, c_yellow, c_blue, c_aqua, c_fuchsia, c_lime, c_orange)
+			inst.image_xscale = random_range(.5, 1)
+			inst.image_yscale = random_range(.5, 1)
 		}
-	}
+	},
+	undefined,
+	function(){}
 )
 plat_create_action_node(
 	-10,

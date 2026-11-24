@@ -21,16 +21,16 @@ else if !InputCheck(INPUT_VERB.SPECIAL) {
 	and selection_inst.selected
 	and !party_getdata(selection_inst.char, "s_override") {
 		audio_play(snd_plat_act_select);
-		if is_callable(selection_inst.action_override)
-			selection_inst.action_override()
-		else is_callable(party_getdata(selection_inst.char, "plataction_default_action"))
-			party_getdata(selection_inst.char, "plataction_default_action")();
 		selection_inst.hoverlerp = 0;
 		selection_inst.alpha = 0;
+		if is_callable(selection_inst.action_override)
+			selection_inst.action_override();
+		else if is_callable(party_getdata(selection_inst.char, "plataction_default_action"))
+			party_getdata(selection_inst.char, "plataction_default_action")();
 		if is_callable(selection_inst.host_effect) and instance_exists(selection_inst.host)
-			with selection_inst {with host host_effect()}
+			with selection_inst {with host other.host_effect()};
 		if is_callable(selection_inst.node_effect)
-			with selection_inst node_effect()
+			with selection_inst node_effect();
 	}
 	__txt_desc_typer_clear();
 	instance_destroy();
