@@ -41,6 +41,7 @@ var currect_select_is_suddenly_unavailable_so_MOVE_please = (
 		or selection_inst.blocked
 		or selection_inst.superblocked
 		or selection_inst.char_in_cooldown
+		or !selection_inst.vis
 		or !party_contains(selection_inst.char, true)
 	)
 )
@@ -85,27 +86,6 @@ or currect_select_is_suddenly_unavailable_so_MOVE_please
 	}
 }
 
-acts_are_available = false;
-even_though_acts_are_available_we_cant_select_because = [];
-but_there_are_available_acts_anyway = false;
-with o_plat_action_node {
-	if onscreen(self, other.onscreenrange, undefined, true)
-		other.acts_are_available = true;
-	if other.acts_are_available = true {
-		if blocked
-			array_push(other.even_though_acts_are_available_we_cant_select_because, "blocked")
-		if superblocked
-			array_push(other.even_though_acts_are_available_we_cant_select_because, "superblocked")
-		if protected
-			array_push(other.even_though_acts_are_available_we_cant_select_because, "protected")
-		if !(blocked or superblocked or protected)
-			other.but_there_are_available_acts_anyway_so_this_doesnt_matter = true;
-	}
-}
-
 if selection_inst.object_index == o_plat_action_node {
 	selection_inst.selected = true;
-	__txt_desc_typer_make();
-} else {
-	__txt_desc_typer_clear();
 }

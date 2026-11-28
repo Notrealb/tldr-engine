@@ -2,6 +2,7 @@ if instance_exists(get_leader())
 	get_leader().moveable_menu = false
 
 menuroll = 0
+menuroll_hpforce = 0
 close = false
 timer = 80
 surf = -1

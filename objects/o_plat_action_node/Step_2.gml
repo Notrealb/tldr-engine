@@ -21,6 +21,7 @@ if global.platforming_perspective == 0
 or !active
 or in_use
 or !party_contains(char, true)
+or !onscreen(self, -6, undefined, true)
 	vis = false;
 
 // hovered lerp and angle

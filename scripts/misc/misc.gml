@@ -466,3 +466,27 @@ function __generate_tile_sprite(tile_layer = "Tiles_1", remove_original_tile = t
 		return 0
     }
 }
+
+///@desc string_replace(), but, many
+///	string    -     String to be copied
+///	array     -     [substring, newstring]
+///	array     -     [substring, newstring]
+///	...
+function string_replace_many() {
+	var str = argument[0]
+	if argument_count > 1 for (var i = 1; i < argument_count; i ++) {
+		str = string_replace(str, argument[i][0], argument[i][1]);
+	}
+	return str
+}
+
+///@desc lerp() but it snaps to the second value if under a certain range
+///@param {real} a The first value.
+///@param {real} b The second value.
+///@param {real} amt The amount to interpolate.
+///@param {real} r The range that the return should snap to the second value at.
+function lerp_snap(a, b, amt, r=0.1){
+	if a == b return b;
+	else if (a >= b-r && a <= b+r) return b;
+	else return lerp(a, b, amt);
+}

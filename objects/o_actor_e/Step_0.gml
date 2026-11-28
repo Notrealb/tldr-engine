@@ -34,12 +34,32 @@ if !instance_exists(get_leader())
 if chasing && !is_in_battle
 	&& get_leader()._checkmove()
 {
-	var xx = dcos(point_direction(x, y, get_leader().x, get_leader().y))
-	var yy = -dsin(point_direction(x, y, get_leader().x, get_leader().y))
+	var l = get_leader()
+	var xx = dcos(point_direction(x, y, l.x, l.y))
+	var yy = -dsin(point_direction(x, y, l.x, l.y))
+	
+	// pushback
+	var m = place_meeting(x, y, pushback_objects)
+	var pbx = 0
+	var pby = 0
+	pushback = max(0, pushback)
+	if m || pushback != 0 {
+		if m {
+			pushback = is_callable(pushback_pushed_val) ? pushback_pushed_val() : pushback_pushed_val
+			if pushback != pushbackprevious
+				pushback_exec()
+		}
+		var p = pushback
+		if pushback_do_y 
+			pbx += l.x <= x ? p : -p
+		pby += l.y <= y ? p : -p
+	}
+	pushbackprevious = pushback
+	pushback = lerp_snap(pushback, 0, .1)
 	
 	// the direction of the movement that is determined by the xx and yy
-	var rx = xx * chase_spd
-	var ry = yy * chase_spd
+	var rx = (xx * chase_spd) + pbx
+	var ry = (yy * chase_spd) + pby
 	
 	if (!place_meeting(x + rx, y, o_block) 
 	|| (instance_place(x + rx, y, o_block) != noone && !instance_place(x + rx, y, o_block).collide))
@@ -49,7 +69,7 @@ if chasing && !is_in_battle
 	|| (instance_place(x, y + ry, o_block) != noone && !instance_place(x, y + ry, o_block).collide))
     && (!instance_exists(chase_zone) || place_meeting(x, y + ry, chase_zone))
 		y += ry
-		
+	
 	// diagonal collision
 	if place_meeting(x + xx, y, o_block_diag) 
 		y += sign(instance_place(x + xx, y, o_block_diag).image_yscale) * chase_spd

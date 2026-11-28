@@ -14,12 +14,39 @@
         "en": [
 			"No ACT",
 			"Check",
-			"ACT"
+			"ACT",
+			"Stunbuster",
+			"Hook",
+			"Menu",
+			"Use",
+			"Ralsei Fall",
 		],
         "ja": [
 			"こうどうなし",
 			"ぶんせき",
-			"こうどう"
+			"こうどう",
+			"スタンバスター",
+			"引っかける",
+			"メニュー",
+			"使う",
+			"ラルセイフォール",
+		]
+	},
+	
+	"txt_platact_dialogues_basic": {
+        "en": [
+			"This should stop it for a sec.",
+			"If it hooks, I can hang!",
+			"Look at and access your menu.",
+			"I'll cut down Ralsei.",
+			
+		],
+        "ja": [
+			"これで少しのあいだ　止まるはずだ。",
+			"引っかかるなら　ぶら下がれるよ！",
+			"メニューに　アクセスできる。",
+			"ラルセイを切り落とすぜ。",
+			
 		]
 	},
 	
@@ -29,8 +56,9 @@
 			"* Press a direction to select an ACT.",
 			"* The enemy is guarding against ACTS!",
 			"* {0} is recharging.",
-			"* {0} is recharging. {1} is\n  ready.",
-			"* {0} and {1} are\n  recharging.",
+			"* {0} is recharging. {1} is  ready.",
+			"* {0} and {1} are  recharging.",
+			"*",
 		],
         "ja": [
 			"＊ できる「こうどう」がない。",
@@ -39,62 +67,20 @@
 			"＊ {0}　リチャージ中。",
 			"＊ {0}　リチャージ中。\n　 {1}　準備OK。",
 			"＊ スージィとラルセイは　リチャージ中。",
+			"＊"
 		]
 	},
 	
 	"txt_platact_descriptions_extended": {
         "en": [
-			"* {0} and {1} and\n  {2} are recharging.",
-			"* {0} and {1} are recharging.\n  {2} is ready.",
-			"* {0} is recharging. {1} and\n  {2} are ready.",
-			
-			"* {0}, {1}, {2} and\n  {3} are recharging.",
+			"* {0} and {1} and {2} are recharging.",
+			"* {0} and {1} are recharging.\n{2} is ready.",
+			"* {0} is recharging.\n{1} and {2} are ready.",
+			"* {0}, {1}, {2}, {3} are recharging.",
+			"* {0} and {1} and {2} are recharging.\n{3} is ready.",
+			"* {0} and {1} are recharging.\n{2} and {3} are ready.",
+			"* {0} is recharging.\n{1}, {2} and {3} are ready.",
+			"* Everyone is recharging.",
 		]
-	},
-	
-	
-	"txt_platact_d_susie_is_recharging": {
-        "en": [
-			"* Susie is recharging."
-		],
-        "ja": [
-			"＊ スージィは　リチャージ中。"
-		]
-	},
-	
-	"txt_platact_d_ralsei_is_recharging": {
-        "en": [
-			"* Ralsei is recharging."
-		],
-        "ja": [
-			"＊ ラルセイは　リチャージ中。"
-		]
-	},
-	
-	"txt_platact_d_ralsei_is_recharging_susie_is_ready": {
-        "en": [
-			"* Ralsei is recharging. Susie is\n  ready."
-		],
-        "ja": [
-			"＊ ラルセイは　リチャージ中。\n　 スージィは　準備OK。"
-		]
-	},
-	
-	"txt_platact_d_susie_is_recharging_ralsei_is_ready": {
-        "en": [
-			"* Susie is recharging. Ralsei is\n  ready."
-		],
-        "ja": [
-			"＊ スージィは　リチャージ中。\n　 ラルセイは　準備OK。"
-		]
-	},
-	
-	"txt_platact_d_susie_and_ralsei_are_recharging": {
-        "en": [
-			"* Susie and Ralsei are\n  recharging."
-		],
-        "ja": [
-			"＊ スージィとラルセイは　リチャージ中。"
-		]
-	},
+	}
 }

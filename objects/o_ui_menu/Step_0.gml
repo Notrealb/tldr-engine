@@ -4,7 +4,9 @@ if fading_out
     exit
 
 menuroll = lerp(menuroll, (close ? 0 : 1), .4)
-if menuroll < .1 && close 
+if only_hp
+	menuroll_hpforce = lerp(menuroll_hpforce, (close ? 0 : 1), .4)
+if menuroll < .1 && close && menuroll_hpforce < .1
 	instance_destroy()
 
 if !only_hp {
@@ -585,7 +587,8 @@ if !only_hp {
 }
 
 timer --
-if timer <= 0 && only_hp 
+if (timer <= 0 && only_hp && !(global.platforming_perspective == 1))
+or instance_exists(o_enc)
 	close = true
 
 if buffer > 0 

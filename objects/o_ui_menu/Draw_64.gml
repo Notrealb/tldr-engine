@@ -1,4 +1,5 @@
-var roll = 80 * menuroll
+var roll = (80) * menuroll
+var hproll = (global.platforming_perspective == 1 ? 60 : 80) * clamp(menuroll, menuroll_hpforce, 1)
 var __top_txt_len = 310
 
 draw_set_font(loc_font("main"))
@@ -21,7 +22,7 @@ if !only_hp { // top
 	draw_text_transformed(520, 20 - 80 + roll, string("D$ {0}", save_get("money")), 2, 2, 0)
 }
 { // bottom
-	draw_sprite_ext(spr_pixel, 0, 0, 417 + 80 - roll, 640, 63, 0, c_black, 1)
+	draw_sprite_ext(spr_pixel, 0, 0, 417 + 80 - hproll, 640, 63, 0, c_black, 1)
 	for (var i = 0; i < party_length(); ++i) {
 		var xoff = 319.5 + party_length() * -213/2
 		var col = bcolor
@@ -31,12 +32,12 @@ if !only_hp { // top
 		if e_pmselection == i && selection == 1 && state > 0 
 			col = party_getdata(global.party_names[i], "color")
 		
-		draw_sprite_ext(spr_pixel, 0, i*213 + xoff, 417 + 80 - roll, 213, 2, 0, col, 1)
+		draw_sprite_ext(spr_pixel, 0, i*213 + xoff, 417 + 80 - hproll, 213, 2, 0, col, 1)
 		
 		if (i == i_pmselection || i_mode == 1) && state == 3 && selection == 0
-			draw_sprite_ext(spr_ui_menu_heart, 0, 18+213*i+xoff, 430+80-roll, 1, 1, 0, c_white, 1)
+			draw_sprite_ext(spr_ui_menu_heart, 0, 18+213*i+xoff, 430+80-hproll, 1, 1, 0, c_white, 1)
 		else
-			draw_sprite_ext(party_get_icon(global.party_names[i]), 0, 12 + 213*i + xoff, 430 + 80-roll, 1, 1, 0, c_white, 1)
+			draw_sprite_ext(party_get_icon(global.party_names[i]), 0, 12 + 213*i + xoff, 430 + 80-hproll, 1, 1, 0, c_white, 1)
 		
 		var font = global.font_name[0]
 		
@@ -46,21 +47,21 @@ if !only_hp { // top
 			font = global.font_name[2]
 		
 		draw_set_font(font)
-		draw_text_transformed(51 + 213*i + xoff, 430 + 80 - roll, string_upper(party_getname(global.party_names[i], false)), 1, 1, 0)
+		draw_text_transformed(51 + 213*i + xoff, 430 + 80 - hproll, string_upper(party_getname(global.party_names[i], false)), 1, 1, 0)
 		
 		draw_set_font(global.font_ui_hp)
-		draw_sprite_ext(loc_sprite("menu_caption_hp"), 0, 110 + 213*i + xoff, 441 + 80 - roll, 1, 1, 0, c_white, 1)
+		draw_sprite_ext(loc_sprite("menu_caption_hp"), 0, 110 + 213*i + xoff, 441 + 80 - hproll, 1, 1, 0, c_white, 1)
 		
-		draw_sprite_ext(spr_pixel, 0, 128 + 213*i + xoff, 441 + 80 - roll, 76, 9, 0, c_maroon, 1)
-		draw_sprite_ext(spr_pixel, 0, 128 + 213*i + xoff, 441 + 80 - roll, 76*(party_getdata(global.party_names[i], "hp")/party_getdata(global.party_names[i], "max_hp")), 9, 0,party_getdata(global.party_names[i], "color"), 1)
+		draw_sprite_ext(spr_pixel, 0, 128 + 213*i + xoff, 441 + 80 - hproll, 76, 9, 0, c_maroon, 1)
+		draw_sprite_ext(spr_pixel, 0, 128 + 213*i + xoff, 441 + 80 - hproll, 76*(party_getdata(global.party_names[i], "hp")/party_getdata(global.party_names[i], "max_hp")), 9, 0,party_getdata(global.party_names[i], "color"), 1)
 		
 		draw_set_halign(fa_right)
 		if party_getdata(global.party_names[i], "hp") < 30 
 			draw_set_color(c_yellow)
 		
-		draw_text_transformed(160 + 213*i + xoff, 428 + 80 - roll, string(party_getdata(global.party_names[i], "hp")), 1, 1, 0)
-		draw_sprite_ext(spr_ui_hp_seperator, 0, 161 + 213*i + xoff, 428 + 80 - roll, 1, 1, 0, c_white, 1)
-		draw_text_transformed(205 + 213*i + xoff, 428 + 80 - roll, party_getdata(global.party_names[i], "max_hp"), 1, 1, 0)
+		draw_text_transformed(160 + 213*i + xoff, 428 + 80 - hproll, string(party_getdata(global.party_names[i], "hp")), 1, 1, 0)
+		draw_sprite_ext(spr_ui_hp_seperator, 0, 161 + 213*i + xoff, 428 + 80 - hproll, 1, 1, 0, c_white, 1)
+		draw_text_transformed(205 + 213*i + xoff, 428 + 80 - hproll, party_getdata(global.party_names[i], "max_hp"), 1, 1, 0)
         
         gpu_set_colourwriteenable(true, true, true, false);
 		draw_set_color(c_white)
@@ -70,7 +71,7 @@ if !only_hp { // top
 		draw_set_color(c_white)
 		
 		if is_string(partyreaction[i]) 
-			draw_text_transformed(213*i+xoff, 456 + 80 - roll, partyreaction[i], 1, 1, 0)
+			draw_text_transformed(213*i+xoff, 456 + 80 - hproll, partyreaction[i], 1, 1, 0)
 		draw_set_alpha(1)
         gpu_set_colourwriteenable(true, true, true, true);
 	}

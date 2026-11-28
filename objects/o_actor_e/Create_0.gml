@@ -17,6 +17,14 @@ chasing = false
 notice_timer = -1
 notice = false
 
+pushback_objects = [o_eff_plat_slash_linger]
+pushback = -1
+pushbackprevious = pushback
+pushback_exec = function(){if !audio_is_playing(snd_grab) audio_play(snd_grab)}
+pushback_do_x = false
+pushback_do_y = false
+pushback_pushed_val = function(){return chase_spd * 2}
+
 // visual animation
 drawsiner = 0
 // the encounter that would be initialized upon collision is in variable definitions

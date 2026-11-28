@@ -128,6 +128,9 @@ function party_m(_initialized_name) constructor {
 	
 	// platforming default action
 	plataction_default_action = noone;
+	plataction_default_action_title_front = "";
+	plataction_default_action_title = loc("txt_platact_headers_basic")[2] + "--> " + loc("txt_platact_headers_basic")[6];
+	plataction_default_action_dialogue = loc("txt_platact_headers_basic")[6];
 	
 	// sprites config
     s_name = ""
@@ -211,6 +214,9 @@ function party_m_kris(_initialized_name) : party_m(_initialized_name) constructo
 	
 	// platforming default action
 	plataction_default_action = plat_action_kris_openmenu;
+	plataction_default_action_title_front = loc("txt_platact_headers_basic")[2] + "--> ";
+	plataction_default_action_title = loc("txt_platact_headers_basic")[5];
+	plataction_default_action_dialogue = loc("txt_platact_dialogues_basic")[2];
 	
 	// sprites
     s_name = "kris"
@@ -279,6 +285,9 @@ function party_m_susie(_initialized_name) : party_m(_initialized_name) construct
 	
 	// platforming default action
 	plataction_default_action = plat_action_susie_rudebuster;
+	plataction_default_action_title_front = loc_string("item_s_party_action_name", loc("party_susie_action_letter")) + "  --> ";
+	plataction_default_action_title = loc("txt_platact_headers_basic")[3];
+	plataction_default_action_dialogue = loc("txt_platact_dialogues_basic")[0];
 	
 	// sprites
     s_name = "susie"
@@ -351,6 +360,9 @@ function party_m_ralsei(_initialized_name) : party_m(_initialized_name) construc
 	
 	// platforming default action
 	plataction_default_action = plat_action_ralsei_hang;
+	plataction_default_action_title_front = loc_string("item_s_party_action_name", loc("party_ralsei_action_letter")) + "  --> ";
+	plataction_default_action_title = loc("txt_platact_headers_basic")[4];
+	plataction_default_action_dialogue = loc("txt_platact_dialogues_basic")[1];
 	
 	// sprites
     s_name = "ralsei"
@@ -420,6 +432,12 @@ function party_m_noelle(_initialized_name) : party_m(_initialized_name) construc
 		new item_s_sleepmist(),
 		new item_s_iceshock(),
 	]
+	
+	// platforming default action
+	//...
+	plataction_default_action_title_front = loc_string("item_s_party_action_name", loc("party_noelle_action_letter")) + "  --> ";
+	//...
+	//...
 	
 	// sprites
     s_name = "noelle"

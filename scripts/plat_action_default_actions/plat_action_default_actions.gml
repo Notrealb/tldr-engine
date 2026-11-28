@@ -46,17 +46,23 @@ function plat_action_kris_openmenu(){
 			audio_play(tgt.host.open_sound);
 	}
 	var l = get_leader();
-	if !instance_exists([o_ui_menu, o_ui_menu_lw]) 
+	var menu_was_showing_already = false;
+	if instance_exists(o_ui_menu) {
+		menu_was_showing_already = true;
+		instance_destroy(o_ui_menu);
+	}
+	if !instance_exists(o_ui_menu) 
     and !o_dodge_controller.dodge_mode
 	and !l.sliding
+	and global.world == WORLD_TYPE.DARK
 	{
-		if global.world == WORLD_TYPE.DARK instance_create(o_ui_menu);
-		else if global.world == WORLD_TYPE.LIGHT instance_create(o_ui_menu_lw);
+		instance_create(o_ui_menu);
+		if menu_was_showing_already
+			o_ui_menu.menuroll = 1;
 	}
-	/*else {
-		audio_stop_sound(snd_error);
-		audio_play(snd_error,,,, 1);
-	}*/
+	else {
+		audio_play(snd_error);
+	}
 }
 
 function plat_action_ralsei_hang(){

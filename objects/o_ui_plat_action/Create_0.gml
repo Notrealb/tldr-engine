@@ -1,13 +1,16 @@
+// If true, and the party has so many members that the recharging/ready text would normally
+// continue off the screen, draw the ready text in a smaller overflow text position.
+// If false, just cut off the ready text if needed.
+__cfg_DrawOverflowDescriptionReadyText = false
+
 cutscene_create()
 cutscene_player_canmove(false)
-cutscene_party_follow(false)
 for (var i = 0; i < party_length(true); i ++) {
 	var inst = party_get_inst(global.party_names[i])
 	cutscene_set_variable(inst, "image_speed", 0)
 }
 cutscene_wait_until(function(){return !instance_exists(o_ui_plat_action)})
 cutscene_player_canmove(true)
-cutscene_party_follow(true)
 cutscene_play()
 
 depth = DEPTH_UI.MENU_UI
@@ -22,7 +25,6 @@ selection_y = 0
 selection_inst = id
 pressdir = 0
 bestarray = []
-onscreenrange = 5
 
 if instance_exists(o_eff_plat_action_darken)
 	instance_destroy(o_eff_plat_action_darken)
@@ -38,28 +40,12 @@ il = function(st, en, va){
 	return (va - st) / (en - st);	
 }
 
-//__checked_inst_char_in_cooldown = false
-__act_targets_array_do_node_search_and_add_to_bestarray = function(_angle, _dist = 9999) {
+__act_targets_array_do_node_search_and_add_to_bestarray = function(_angle, _dist = 9999, _dont_push_to_bestarray = false) {
 	act_targets_array = [];
 	for (var i = 0; i < instance_number(o_plat_action_node); ++i) {
 		var inst = instance_find(o_plat_action_node, i);
 		
-		var coolingdown = false
-		for (var c = 0; c < instance_number(o_ui_plat_cooldown_bar); c++) {
-			if party_get_inst(inst.char) == instance_find(o_ui_plat_cooldown_bar, c).target
-				coolingdown = true;
-		}
-		
-		if inst != selection_inst
-		and inst.active
-		and !inst.in_use
-		and !inst.blocked
-		and !inst.superblocked
-		and !inst.protected
-		and !coolingdown
-		
-		and party_contains(inst.char, true)
-		and onscreen(inst, onscreenrange, undefined, true)
+		if plat_get_action_node_is_selectable(inst, selection_inst)
 		and (_angle <= 0 or point_in_triangle(inst.x, inst.y,
 			selection_x,
 			selection_y,
@@ -74,7 +60,7 @@ __act_targets_array_do_node_search_and_add_to_bestarray = function(_angle, _dist
 	if id != selection_inst
 		array_push(act_targets_array, id);
 	
-	if array_length(act_targets_array) >= 1
+	if !_dont_push_to_bestarray and array_length(act_targets_array) >= 1
 		array_push(bestarray, instance_nth_nearest(selection_x, selection_y, act_targets_array, 1))
 }
 
@@ -84,13 +70,12 @@ but_there_are_available_acts_anyway_so_this_doesnt_matter = false
 
 alivetime = 0
 description_typer_inst = noone
-
-__txt_desc_typer_make = function() {
+__txt_desc_typer_make = function(_text) {
 	if !instance_exists(description_typer_inst){
 		description_typer_inst = text_typer_create(
-			"Test test",
+			_text,
 			20,
-			(o_camera.height*2) - 100 + 40,
+			(o_camera.height * 2) - 100 - (instance_exists(o_ui_menu) ? ((60 - 17) * o_ui_menu.menuroll) : 0) + 40,
 			depth - 8,
 			"{can_skip(false)}{voice(nil)}{auto_breaks(false)}* ",
 			"{stop}", {

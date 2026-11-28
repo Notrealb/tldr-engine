@@ -44,5 +44,23 @@ function plat_create_action_node(
 	return _inst
 }
 
-
-
+function plat_get_action_node_is_selectable(inst, selection_inst = noone, _show_regardless_of_cooldown = false){
+	var coolingdown = false
+	for (var c = 0; c < instance_number(o_ui_plat_cooldown_bar); c++) {
+		if party_get_inst(inst.char) == instance_find(o_ui_plat_cooldown_bar, c).target
+			coolingdown = true;
+	}
+	
+	if onscreen(inst, -6, undefined, true)
+	and party_contains(inst.char, true)
+	and inst != selection_inst
+	and (!coolingdown or _show_regardless_of_cooldown)
+	and inst.active
+	and !inst.in_use
+	and !inst.blocked
+	and !inst.superblocked
+	and !inst.protected
+		return true;
+	else
+		return false;
+}

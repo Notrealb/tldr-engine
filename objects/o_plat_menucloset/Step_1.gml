@@ -1,6 +1,8 @@
 event_inherited()
 
-if open and !instance_exists(o_ui_menu) and !instance_exists(o_ui_menu_lw) {
+var ui_open = (instance_exists(o_ui_menu) and !o_ui_menu.only_hp)
+
+if open and !ui_open {
 	open = false;
 	audio_play(close_sound);
 }
